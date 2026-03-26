@@ -68,7 +68,6 @@ a {
   position: absolute;
   inset: 0;
   background: #fdfdfd;
-  transition: background-color 0.6s ease;
 }
 
 #intro img {
@@ -76,19 +75,20 @@ a {
   width: 160px;
   height: auto;
   z-index: 1;
-  transition: opacity 0.6s ease;
 }
 
 #intro.fade-white #intro-bg {
+  transition: background-color 0.4s ease;
   background-color: #ffffff;
 }
 
 #intro.fade-white img {
+  transition: opacity 0.4s ease;
   opacity: 0;
 }
 
 #intro.fade-out {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
   opacity: 0;
 }
 
@@ -409,52 +409,104 @@ a {
     font-size: 22px;
   }
 
-  .info-header { padding: 20px; }
-  .info-title { font-size: 24px; }
-  .info-body { padding: 0 20px 32px 20px; }
-  .info-text { font-size: 24px; }
-  .info-address { font-size: 24px; }
-  .equip-header { padding: 20px; }
-  .equip-title { font-size: 24px; }
-  .equip-list { padding: 40px 20px 60px 20px; }
-  .equip-section { display: block; }
-  .equip-section-title { margin-bottom: 10px; }
+  .info-header {
+    padding: 20px;
+  }
+
+  .info-title {
+    font-size: 24px;
+  }
+
+  .info-body {
+    padding: 0 20px 32px 20px;
+  }
+
+  .info-text {
+    font-size: 24px;
+  }
+
+  .info-address {
+    font-size: 24px;
+  }
+
+  .equip-header {
+    padding: 20px;
+  }
+
+  .equip-title {
+    font-size: 24px;
+  }
+
+  .equip-list {
+    padding: 40px 20px 60px 20px;
+  }
+
+  .equip-section {
+    display: block;
+  }
+
+  .equip-section-title {
+    margin-bottom: 10px;
+  }
 }
 
 /* ---- TABLET ---- */
 
 @media (min-width: 769px) and (max-width: 1024px) {
-  .home-tagline { font-size: 24px; }
-  .home-nav { font-size: 24px; }
-  .home-copyright { font-size: 24px; }
-  .home-counter { font-size: 24px; }
-  .home-image img { width: 45vw; }
-  .info-text { font-size: 28px; }
-  .info-address { font-size: 28px; }
+
+  .home-tagline {
+    font-size: 24px;
+  }
+
+  .home-nav {
+    font-size: 24px;
+  }
+
+  .home-copyright {
+    font-size: 24px;
+  }
+
+  .home-counter {
+    font-size: 24px;
+  }
+
+  .home-image img {
+    width: 45vw;
+  }
+
+  .info-text {
+    font-size: 28px;
+  }
+
+  .info-address {
+    font-size: 28px;
+  }
 }
 
 </style>
 </head>
 <body>
 
+<!-- INTRO -->
 <div id="intro">
   <div id="intro-bg"></div>
   <img id="intro-logo" src="K_Block_Red_White.png" alt="Kiosk Recording">
 </div>
 
+<!-- SITE -->
 <div id="site">
 
   <section class="page-home">
     <div class="home-header">
-      <div class="home-title">Kiosk Recording®</div>
+      <div class="home-title">Kiosk Recording&#174;</div>
       <div class="home-tagline">Always open.<br>Always recording.</div>
       <nav class="home-nav">
         <a href="#" class="nav-info">Information</a>
         <a href="#" class="nav-equip">Equipment</a>
-        <a href="mailto:info@kioskrecording.studio">Contact</a>
+        <a href="mailto:info&#64;kioskrecording.studio">Contact</a>
         <a href="https://www.instagram.com/kioskrecording" target="_blank" rel="noopener">Instagram</a>
       </nav>
-      <div class="home-copyright">©2026</div>
+      <div class="home-copyright">&#169;2026</div>
     </div>
 
     <div class="home-image" id="home-image">
@@ -467,13 +519,14 @@ a {
       <div class="mobile-nav">
         <a href="#" class="nav-info">Information</a>
         <a href="#" class="nav-equip">Equipment</a>
-        <a href="mailto:info@kioskrecording.studio">Contact</a>
+        <a href="mailto:info&#64;kioskrecording.studio">Contact</a>
         <a href="https://www.instagram.com/kioskrecording" target="_blank" rel="noopener">Instagram</a>
       </div>
-      <div class="mobile-copyright">©2026</div>
+      <div class="mobile-copyright">&#169;2026</div>
     </div>
   </section>
 
+  <!-- INFORMATION OVERLAY -->
   <div class="overlay page-info" id="page-info">
     <div class="info-header">
       <div class="info-title">Information</div>
@@ -481,7 +534,7 @@ a {
     </div>
     <div class="info-body">
       <div class="info-text">
-        <strong>Kiosk Recording®</strong> is an independent music studio in South London, run by Tom Rea and Dougal Gray. We focus on making records with clarity and momentum. Big ideas, done quickly and properly. We work across songwriting, production and finishing — helping take tracks from rough demos to something ready to release. See <a href="#" id="equip-link">equipment list</a>.
+        <strong>Kiosk Recording&#174;</strong> is an independent music studio in South London, run by Tom Rea and Dougal Gray. We focus on making records with clarity and momentum. Big ideas, done quickly and properly. We work across songwriting, production and finishing &#8212; helping take tracks from rough demos to something ready to release. See <a href="#" id="equip-link">equipment list</a>.
       </div>
       <div class="info-address">
         Unit 2<br>
@@ -492,12 +545,14 @@ a {
     </div>
   </div>
 
+  <!-- EQUIPMENT OVERLAY -->
   <div class="overlay page-equip" id="page-equip">
     <div class="equip-header">
       <div class="equip-title">Equipment</div>
       <button class="overlay-close" id="equip-close" aria-label="Close">&#10005;</button>
     </div>
     <div class="equip-list">
+
       <div class="equip-section">
         <div class="equip-section-title">Outboard</div>
         <div class="equip-section-body">
@@ -507,6 +562,7 @@ a {
           <p>Tech 21 SansAmp RBI</p>
         </div>
       </div>
+
       <div class="equip-section">
         <div class="equip-section-title">Monitors</div>
         <div class="equip-section-body">
@@ -515,6 +571,7 @@ a {
           <p>Beyerdynamic DT770 Pro (x2)</p>
         </div>
       </div>
+
       <div class="equip-section">
         <div class="equip-section-title">Microphones</div>
         <div class="equip-section-body">
@@ -527,6 +584,7 @@ a {
           <p>Audio-Technica ATM250</p>
         </div>
       </div>
+
       <div class="equip-section">
         <div class="equip-section-title">Guitars/Bass/Amps</div>
         <div class="equip-section-body">
@@ -540,6 +598,7 @@ a {
           <p>Kemper Rig Profiler Rack</p>
         </div>
       </div>
+
       <div class="equip-section">
         <div class="equip-section-title">Keys/Synths</div>
         <div class="equip-section-body">
@@ -550,6 +609,7 @@ a {
           <p>Arturia Wireless MIDI Keyboard</p>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -557,6 +617,9 @@ a {
 
 <script>
 (function() {
+
+  // --- INTRO SEQUENCE ---
+
   var introEl = document.getElementById('intro');
   var introBg = document.getElementById('intro-bg');
   var introLogo = document.getElementById('intro-logo');
@@ -568,9 +631,20 @@ a {
     { bg: '#fd3248', src: 'K_Block_White_Red.png' }
   ];
 
-  states.forEach(function(s) { var i = new Image(); i.src = s.src; });
-  ['studio_image_1.png','studio_image_2.png','studio_image_3.png'].forEach(function(s) { var i = new Image(); i.src = s; });
+  // Preload intro logos
+  states.forEach(function(s) {
+    var img = new Image();
+    img.src = s.src;
+  });
 
+  // Preload studio images
+  var studioImages = ['studio_image_1.png', 'studio_image_2.png', 'studio_image_3.png'];
+  studioImages.forEach(function(s) {
+    var img = new Image();
+    img.src = s;
+  });
+
+  // Cycle through logo states, then fade to site
   var step = 0;
   var introTimer = setInterval(function() {
     step++;
@@ -579,39 +653,80 @@ a {
       introLogo.src = states[step].src;
     } else {
       clearInterval(introTimer);
+
+      // Show site behind intro
       siteEl.classList.add('visible');
+
+      // Fade logo out and bg to white
       introEl.classList.add('fade-white');
-      setTimeout(function() { introEl.classList.add('fade-out'); }, 600);
-      setTimeout(function() { introEl.classList.add('hidden'); }, 1200);
+
+      // Fade entire intro layer out
+      setTimeout(function() {
+        introEl.classList.add('fade-out');
+      }, 400);
+
+      // Remove intro and start image carousel
+      setTimeout(function() {
+        introEl.classList.add('hidden');
+        startCarousel();
+      }, 800);
     }
   }, 500);
 
-  var imgs = ['studio_image_1.png','studio_image_2.png','studio_image_3.png'];
-  var cur = 0;
-  var imgEl = document.getElementById('studio-img');
-  var ctrEl = document.getElementById('home-counter');
-  setInterval(function() {
-    cur = (cur + 1) % imgs.length;
-    imgEl.src = imgs[cur];
-    ctrEl.textContent = (cur + 1) + '/' + imgs.length;
-  }, 2000);
+  // --- IMAGE CAROUSEL ---
+
+  function startCarousel() {
+    var currentImg = 0;
+    var imgEl = document.getElementById('studio-img');
+    var counterEl = document.getElementById('home-counter');
+
+    setInterval(function() {
+      currentImg = (currentImg + 1) % studioImages.length;
+      imgEl.src = studioImages[currentImg];
+      counterEl.textContent = (currentImg + 1) + '/' + studioImages.length;
+    }, 3000);
+  }
+
+  // --- OVERLAY NAVIGATION ---
 
   var pageInfo = document.getElementById('page-info');
   var pageEquip = document.getElementById('page-equip');
 
+  // Open Information
   document.querySelectorAll('.nav-info').forEach(function(el) {
-    el.addEventListener('click', function(e) { e.preventDefault(); pageInfo.classList.add('open'); });
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      pageInfo.classList.add('open');
+    });
   });
+
+  // Open Equipment
   document.querySelectorAll('.nav-equip').forEach(function(el) {
-    el.addEventListener('click', function(e) { e.preventDefault(); pageEquip.classList.add('open'); });
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      pageEquip.classList.add('open');
+    });
   });
-  document.getElementById('info-close').addEventListener('click', function() { pageInfo.classList.remove('open'); });
+
+  // Close Information
+  document.getElementById('info-close').addEventListener('click', function() {
+    pageInfo.classList.remove('open');
+  });
+
+  // Equipment link from Information page
   document.getElementById('equip-link').addEventListener('click', function(e) {
     e.preventDefault();
     pageEquip.classList.add('open');
-    setTimeout(function() { pageInfo.classList.remove('open'); }, 500);
+    setTimeout(function() {
+      pageInfo.classList.remove('open');
+    }, 500);
   });
-  document.getElementById('equip-close').addEventListener('click', function() { pageEquip.classList.remove('open'); });
+
+  // Close Equipment
+  document.getElementById('equip-close').addEventListener('click', function() {
+    pageEquip.classList.remove('open');
+  });
+
 })();
 </script>
 
