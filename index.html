@@ -503,7 +503,7 @@ a {
       <nav class="home-nav">
         <a href="#" class="nav-info">Information</a>
         <a href="#" class="nav-equip">Equipment</a>
-        <a href="mailto:info&#64;kioskrecording.studio">Contact</a>
+        <a href="/cdn-cgi/l/email-protection#85ecebe3eaa3a6b3b1beeeeceaf6eef7e0e6eaf7e1ecebe2abf6f1f0e1ecea">Contact</a>
         <a href="https://www.instagram.com/kioskrecording" target="_blank" rel="noopener">Instagram</a>
       </nav>
       <div class="home-copyright">&#169;2026</div>
@@ -519,7 +519,7 @@ a {
       <div class="mobile-nav">
         <a href="#" class="nav-info">Information</a>
         <a href="#" class="nav-equip">Equipment</a>
-        <a href="mailto:info&#64;kioskrecording.studio">Contact</a>
+        <a href="/cdn-cgi/l/email-protection#60090e060f464356545b0b090f130b1205030f1204090e074e13141504090f">Contact</a>
         <a href="https://www.instagram.com/kioskrecording" target="_blank" rel="noopener">Instagram</a>
       </div>
       <div class="mobile-copyright">&#169;2026</div>
@@ -615,7 +615,7 @@ a {
 
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 (function() {
 
   // --- INTRO SEQUENCE ---
@@ -649,8 +649,13 @@ a {
   var introTimer = setInterval(function() {
     step++;
     if (step < states.length) {
+      // Hide logo, swap bg + src simultaneously, show on next paint
+      introLogo.style.visibility = 'hidden';
       introBg.style.backgroundColor = states[step].bg;
       introLogo.src = states[step].src;
+      requestAnimationFrame(function() {
+        introLogo.style.visibility = 'visible';
+      });
     } else {
       clearInterval(introTimer);
 
@@ -718,17 +723,4 @@ a {
     e.preventDefault();
     pageEquip.classList.add('open');
     setTimeout(function() {
-      pageInfo.classList.remove('open');
-    }, 500);
-  });
-
-  // Close Equipment
-  document.getElementById('equip-close').addEventListener('click', function() {
-    pageEquip.classList.remove('open');
-  });
-
-})();
-</script>
-
-</body>
-</html>
+      pageInfo.classList.rem
