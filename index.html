@@ -62,11 +62,22 @@ a {
   align-items: center;
   justify-content: center;
   background: #fdfdfd;
+  transition: opacity 0.6s ease;
 }
 
 #intro img {
   width: 160px;
   height: auto;
+  transition: transform 0.8s ease, opacity 0.8s ease;
+}
+
+#intro.reveal img {
+  transform: scale(12);
+  opacity: 0;
+}
+
+#intro.reveal {
+  opacity: 0;
 }
 
 #intro.hidden {
@@ -140,8 +151,8 @@ a {
 
 .home-image {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 24px;
+  left: 28px;
   z-index: 1;
 }
 
@@ -171,12 +182,13 @@ a {
   position: fixed;
   inset: 0;
   z-index: 50;
-  display: none;
   overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .overlay.open {
-  display: block;
+  transform: translateY(0);
 }
 
 /* ---- INFORMATION ---- */
@@ -593,8 +605,21 @@ a {
       introLogo.src = states[step].src;
     } else {
       clearInterval(introTimer);
-      introEl.classList.add('hidden');
+      // Show site behind intro before reveal
       siteEl.classList.add('visible');
+      // Switch to white logo and trigger grow/fade
+      introEl.style.backgroundColor = '#ffffff';
+      introLogo.src = 'K_Block_Red_White.png';
+      // Small delay so the white swap registers before the scale animation
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          introEl.classList.add('reveal');
+        });
+      });
+      // Remove intro after animation completes
+      setTimeout(function() {
+        introEl.classList.add('hidden');
+      }, 900);
     }
   }, 500);
 
@@ -615,8 +640,11 @@ a {
 
   document.getElementById('equip-link').addEventListener('click', function(e) {
     e.preventDefault();
-    pageInfo.classList.remove('open');
     pageEquip.classList.add('open');
+    // Delay removing info so equip slides over it
+    setTimeout(function() {
+      pageInfo.classList.remove('open');
+    }, 500);
   });
 
   document.getElementById('equip-close').addEventListener('click', function() {
