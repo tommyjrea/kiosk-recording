@@ -40,6 +40,7 @@
 
 html, body {
   height: 100%;
+  background: #ffffff;
 }
 
 body {
@@ -61,22 +62,38 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#intro-bg {
+  position: absolute;
+  inset: 0;
   background: #fdfdfd;
-  transition: opacity 0.6s ease;
 }
 
 #intro img {
+  position: relative;
   width: 160px;
   height: auto;
-  transition: transform 0.8s ease, opacity 0.8s ease;
+  z-index: 1;
 }
 
-#intro.reveal img {
-  transform: scale(12);
+#intro.reveal #intro-bg {
+  transition: transform 1.2s ease, opacity 1.2s ease;
+  transform: scale(1);
+  opacity: 1;
+}
+
+#intro.reveal.go #intro-bg {
+  transform: scale(20);
   opacity: 0;
 }
 
-#intro.reveal {
+#intro.reveal img {
+  transition: transform 1.2s ease, opacity 1.2s ease;
+}
+
+#intro.reveal.go img {
+  transform: scale(20);
   opacity: 0;
 }
 
@@ -162,7 +179,6 @@ a {
   bottom: 24px;
   left: 28px;
   z-index: 1;
-  cursor: pointer;
 }
 
 .home-image img {
@@ -398,7 +414,6 @@ a {
     font-size: 22px;
   }
 
-  /* Info mobile */
   .info-header {
     padding: 20px;
   }
@@ -419,7 +434,6 @@ a {
     font-size: 24px;
   }
 
-  /* Equipment mobile */
   .equip-header {
     padding: 20px;
   }
@@ -479,6 +493,7 @@ a {
 
 <!-- INTRO -->
 <div id="intro">
+  <div id="intro-bg"></div>
   <img id="intro-logo" src="K_Block_Red_White.png" alt="Kiosk Recording">
 </div>
 
@@ -490,8 +505,8 @@ a {
       <div class="home-title">Kiosk Recording®</div>
       <div class="home-tagline">Where records<br>are made.</div>
       <nav class="home-nav">
-        <a href="#" class="nav-equip">Equipment</a>
         <a href="#" class="nav-info">Information</a>
+        <a href="#" class="nav-equip">Equipment</a>
         <a href="mailto:info@kioskrecording.studio">Contact</a>
         <a href="https://www.instagram.com/kioskrecording" target="_blank" rel="noopener">Instagram</a>
       </nav>
@@ -506,8 +521,8 @@ a {
 
     <div class="home-footer-mobile">
       <div class="mobile-nav">
-        <a href="#" class="nav-equip">Equipment</a>
         <a href="#" class="nav-info">Information</a>
+        <a href="#" class="nav-equip">Equipment</a>
         <a href="mailto:info@kioskrecording.studio">Contact</a>
         <a href="https://www.instagram.com/kioskrecording" target="_blank" rel="noopener">Instagram</a>
       </div>
@@ -605,6 +620,7 @@ a {
 <script>
 (function() {
   var introEl = document.getElementById('intro');
+  var introBg = document.getElementById('intro-bg');
   var introLogo = document.getElementById('intro-logo');
   var siteEl = document.getElementById('site');
 
@@ -619,53 +635,51 @@ a {
     var img = new Image();
     img.src = s.src;
   });
-  // Preload the white-on-red logo used for reveal
-  var revealImg = new Image();
-  revealImg.src = 'K_Block_White_Red.png';
-  // Preload studio images
   ['studio_image_1.png', 'studio_image_2.png', 'studio_image_3.png'].forEach(function(src) {
     var img = new Image();
     img.src = src;
   });
 
+  // Intro: cycle through states then reveal
   var step = 0;
   var introTimer = setInterval(function() {
     step++;
     if (step < states.length) {
-      introEl.style.backgroundColor = states[step].bg;
+      introBg.style.backgroundColor = states[step].bg;
       introLogo.src = states[step].src;
     } else {
       clearInterval(introTimer);
-      // Show site behind intro before reveal
+      // Show site behind
       siteEl.classList.add('visible');
-      // The last state is already white-on-red (K_Block_White_Red.png)
-      // Set bg to white so the white K blends into the white site
-      introEl.style.backgroundColor = '#ffffff';
-      introLogo.src = 'K_Block_White_Red.png';
-      // Trigger grow/fade
+      // Last state was white K on red bg — keep that logo,
+      // set the bg div to match so logo edges are invisible
+      introBg.style.backgroundColor = '#fd3248';
+      // Prepare reveal class (sets up transitions)
+      introEl.classList.add('reveal');
+      // Trigger the scale+fade on next frame
       requestAnimationFrame(function() {
         requestAnimationFrame(function() {
-          introEl.classList.add('reveal');
+          introEl.classList.add('go');
         });
       });
-      // Remove intro after animation completes
+      // Clean up after animation
       setTimeout(function() {
         introEl.classList.add('hidden');
-      }, 900);
+      }, 1400);
     }
   }, 500);
 
-  // Image carousel
+  // Image auto-carousel
   var studioImages = ['studio_image_1.png', 'studio_image_2.png', 'studio_image_3.png'];
   var currentImg = 0;
   var studioImgEl = document.getElementById('studio-img');
   var counterEl = document.getElementById('home-counter');
 
-  document.getElementById('home-image').addEventListener('click', function() {
+  setInterval(function() {
     currentImg = (currentImg + 1) % studioImages.length;
     studioImgEl.src = studioImages[currentImg];
     counterEl.textContent = (currentImg + 1) + '/' + studioImages.length;
-  });
+  }, 2000);
 
   // Overlays
   var pageInfo = document.getElementById('page-info');
