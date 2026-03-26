@@ -11,77 +11,66 @@
 @font-face { font-family: 'SuisseIntl'; src: url('SuisseIntl-Regular.woff') format('woff'); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: 'ABCDiatype'; src: url('ABCDiatype-Medium.woff') format('woff'); font-weight: 500; font-style: normal; font-display: swap; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { height: 100%; background: #ffffff; }
-body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html, body { height: 100%%; background: #fff; }
+body { -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
-
 #intro { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; }
 #intro-bg { position: absolute; inset: 0; background: #fdfdfd; }
 #intro img { position: relative; width: 160px; height: auto; z-index: 1; }
-#intro.fade-white #intro-bg { transition: background-color 0.4s ease; background-color: #ffffff; }
+#intro.fade-white #intro-bg { transition: background-color 0.4s ease; background-color: #fff; }
 #intro.fade-white img { transition: opacity 0.4s ease; opacity: 0; }
 #intro.fade-out { transition: opacity 0.3s ease; opacity: 0; }
 #intro.hidden { display: none; }
-
 #site { display: none; }
 #site.visible { display: block; }
-
-.page-home { position: relative; width: 100%; height: 100vh; height: 100dvh; background: #ffffff; color: #000000; overflow: hidden; }
+.page-home { position: relative; width: 100%%; height: 100vh; height: 100dvh; background: #fff; color: #000; overflow: hidden; }
 .home-header { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: flex-start; padding: 24px 28px; z-index: 2; }
-.home-title { font-family: 'Times New Roman', Times, serif; font-weight: 700; font-size: 38px; line-height: 1.1; white-space: nowrap; }
-.home-tagline { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 32px; line-height: 1.3; }
-.home-nav { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 32px; line-height: 1.3; }
+.home-title { font-family: 'Times New Roman', Times, serif; font-weight: 700; font-size: 30px; line-height: 1.1; white-space: nowrap; }
+.home-tagline { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 24px; line-height: 1.3; }
+.home-nav { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 24px; line-height: 1.3; }
 .home-nav a { display: block; }
 .home-nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
-.home-copyright { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 32px; line-height: 1.1; white-space: nowrap; }
+.home-copyright { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 24px; line-height: 1.1; white-space: nowrap; }
 .home-image { position: absolute; bottom: 24px; left: 28px; z-index: 1; }
 .home-image img { display: block; width: 40vw; height: auto; }
-.home-counter { position: absolute; bottom: 24px; right: 28px; font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 32px; z-index: 2; }
+.home-counter { position: absolute; bottom: 24px; right: 28px; font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 24px; z-index: 2; }
 .home-footer-mobile { display: none; }
-
-.overlay { position: fixed; inset: 0; z-index: 50; overflow-y: auto; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+.overlay { position: fixed; inset: 0; z-index: 50; overflow-y: auto; transform: translateY(100%%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
 .overlay.open { transform: translateY(0); }
-
 .page-info { background: #480016; color: #FD3249; font-family: 'ABCDiatype', sans-serif; font-weight: 500; }
 .info-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 24px 28px; }
-.info-title { font-size: 32px; line-height: 1.1; }
-.overlay-close { font-size: 28px; cursor: pointer; background: none; border: none; color: inherit; line-height: 1; padding: 0; }
+.info-title { font-size: 24px; line-height: 1.1; }
+.overlay-close { font-size: 24px; cursor: pointer; background: none; border: none; color: inherit; line-height: 1; padding: 0; }
 .overlay-close:hover { opacity: 0.5; }
 .info-body { position: absolute; bottom: 0; left: 0; right: 0; padding: 0 28px 40px 28px; }
-.info-text { font-size: 32px; line-height: 1.3; max-width: 640px; }
+.info-text { font-size: 24px; line-height: 1.3; max-width: 640px; }
 .info-text strong { font-family: 'Times New Roman', Times, serif; font-weight: 700; font-style: italic; }
 .info-text a { text-decoration: underline; text-underline-offset: 4px; }
 .info-text a:hover { opacity: 0.5; }
-.info-address { margin-top: 36px; font-size: 32px; line-height: 1.35; }
-
-.page-equip { background: #A1A1A1; color: #FFFFFF; }
+.info-address { margin-top: 36px; font-size: 24px; line-height: 1.35; }
+.page-equip { background: #A1A1A1; color: #FFF; }
 .equip-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 24px 28px; }
-.equip-title { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 32px; line-height: 1.1; }
+.equip-title { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 24px; line-height: 1.1; }
 .equip-list { padding: 80px 28px 60px 28px; max-width: 700px; }
 .equip-section { border-top: 1px solid rgba(255,255,255,0.35); padding: 20px 0 40px 0; display: grid; grid-template-columns: 200px 1fr; gap: 0 40px; }
-.equip-section-title { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 16px; line-height: 140%; }
-.equip-section-body { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 16px; line-height: 140%; }
+.equip-section-title { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 16px; line-height: 140%%; }
+.equip-section-body { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 16px; line-height: 140%%; }
 .equip-section-body p { margin: 0; }
-
 @media (max-width: 768px) {
-  .home-header { display: block; padding: 20px; }
-  .home-title { font-size: 28px; }
+  .home-header { display: block; padding: 20px; } .home-title { font-size: 24px; }
   .home-tagline, .home-nav, .home-copyright { display: none; }
-  .home-image { left: 0; right: 0; bottom: auto; top: 50%; transform: translateY(-50%); padding: 0 20px; }
-  .home-image img { width: 100%; }
+  .home-image { left: 0; right: 0; bottom: auto; top: 50%%; transform: translateY(-50%%); padding: 0 20px; } .home-image img { width: 100%%; }
   .home-counter { display: none; }
   .home-footer-mobile { display: flex; justify-content: space-between; align-items: flex-end; position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; z-index: 2; }
-  .mobile-nav { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 22px; line-height: 1.4; }
-  .mobile-nav a { display: block; }
-  .mobile-nav a:hover { text-decoration: underline; text-underline-offset: 3px; }
-  .mobile-copyright { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 22px; }
-  .info-header { padding: 20px; } .info-title { font-size: 24px; } .info-body { padding: 0 20px 32px 20px; } .info-text { font-size: 24px; } .info-address { font-size: 24px; }
-  .equip-header { padding: 20px; } .equip-title { font-size: 24px; } .equip-list { padding: 40px 20px 60px 20px; } .equip-section { display: block; } .equip-section-title { margin-bottom: 10px; }
+  .mobile-nav { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 20px; line-height: 1.4; }
+  .mobile-nav a { display: block; } .mobile-nav a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .mobile-copyright { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 20px; }
+  .info-header { padding: 20px; } .info-title { font-size: 20px; } .info-body { padding: 0 20px 32px 20px; } .info-text { font-size: 20px; } .info-address { font-size: 20px; }
+  .equip-header { padding: 20px; } .equip-title { font-size: 20px; } .equip-list { padding: 40px 20px 60px 20px; } .equip-section { display: block; } .equip-section-title { margin-bottom: 10px; }
 }
-
 @media (min-width: 769px) and (max-width: 1024px) {
-  .home-tagline { font-size: 24px; } .home-nav { font-size: 24px; } .home-copyright { font-size: 24px; } .home-counter { font-size: 24px; }
-  .home-image img { width: 45vw; } .info-text { font-size: 28px; } .info-address { font-size: 28px; }
+  .home-tagline { font-size: 20px; } .home-nav { font-size: 20px; } .home-copyright { font-size: 20px; } .home-counter { font-size: 20px; }
+  .home-image img { width: 45vw; } .info-text { font-size: 22px; } .info-address { font-size: 22px; }
 }
 </style>
 </head>
@@ -91,7 +80,7 @@ a { color: inherit; text-decoration: none; }
   <section class="page-home">
     <div class="home-header">
       <div class="home-title">Kiosk Recording&#174;</div>
-      <div class="home-tagline">Tom Rea.<br>Dougal Gray.</div>
+      <div class="home-tagline">Always open.<br>Still here.</div>
       <nav class="home-nav">
         <a href="#" class="nav-info">Information</a>
         <a href="#" class="nav-equip">Equipment</a>
@@ -143,9 +132,20 @@ a { color: inherit; text-decoration: none; }
   ];
   var studioImages = ['studio_image_1.png', 'studio_image_2.png', 'studio_image_3.png'];
   var loaded = 0;
-  function onLogoLoad() { loaded++; if (loaded >= states.length) { beginIntro(); } }
-  for (var i = 0; i < states.length; i++) { var img = new Image(); img.onload = onLogoLoad; img.onerror = onLogoLoad; img.src = states[i].src; }
-  for (var j = 0; j < studioImages.length; j++) { var si = new Image(); si.src = studioImages[j]; }
+  function onLoad() {
+    loaded++;
+    if (loaded >= states.length) beginIntro();
+  }
+  for (var i = 0; i < states.length; i++) {
+    var img = new Image();
+    img.onload = onLoad;
+    img.onerror = onLoad;
+    img.src = states[i].src;
+  }
+  for (var j = 0; j < studioImages.length; j++) {
+    var si = new Image();
+    si.src = studioImages[j];
+  }
   function beginIntro() {
     var step = 0;
     var timer = setInterval(function() {
@@ -157,8 +157,13 @@ a { color: inherit; text-decoration: none; }
         clearInterval(timer);
         siteEl.classList.add('visible');
         introEl.classList.add('fade-white');
-        setTimeout(function() { introEl.classList.add('fade-out'); }, 400);
-        setTimeout(function() { introEl.classList.add('hidden'); beginCarousel(); }, 800);
+        setTimeout(function() {
+          introEl.classList.add('fade-out');
+        }, 400);
+        setTimeout(function() {
+          introEl.classList.add('hidden');
+          beginCarousel();
+        }, 800);
       }
     }, 500);
   }
@@ -166,15 +171,31 @@ a { color: inherit; text-decoration: none; }
     var cur = 0;
     var el = document.getElementById('studio-img');
     var ct = document.getElementById('home-counter');
-    setInterval(function() { cur = (cur + 1) % studioImages.length; el.src = studioImages[cur]; ct.textContent = (cur + 1) + '/' + studioImages.length; }, 3000);
+    setInterval(function() {
+      cur = (cur + 1) % studioImages.length;
+      el.src = studioImages[cur];
+      ct.textContent = (cur + 1) + '/' + studioImages.length;
+    }, 3000);
   }
   var pi = document.getElementById('page-info');
   var pe = document.getElementById('page-equip');
-  document.querySelectorAll('.nav-info').forEach(function(x) { x.addEventListener('click', function(e) { e.preventDefault(); pi.classList.add('open'); }); });
-  document.querySelectorAll('.nav-equip').forEach(function(x) { x.addEventListener('click', function(e) { e.preventDefault(); pe.classList.add('open'); }); });
-  document.getElementById('info-close').addEventListener('click', function() { pi.classList.remove('open'); });
-  document.getElementById('equip-link').addEventListener('click', function(e) { e.preventDefault(); pe.classList.add('open'); setTimeout(function() { pi.classList.remove('open'); }, 500); });
-  document.getElementById('equip-close').addEventListener('click', function() { pe.classList.remove('open'); });
+  document.querySelectorAll('.nav-info').forEach(function(x) {
+    x.addEventListener('click', function(e) { e.preventDefault(); pi.classList.add('open'); });
+  });
+  document.querySelectorAll('.nav-equip').forEach(function(x) {
+    x.addEventListener('click', function(e) { e.preventDefault(); pe.classList.add('open'); });
+  });
+  document.getElementById('info-close').addEventListener('click', function() {
+    pi.classList.remove('open');
+  });
+  document.getElementById('equip-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    pe.classList.add('open');
+    setTimeout(function() { pi.classList.remove('open'); }, 500);
+  });
+  document.getElementById('equip-close').addEventListener('click', function() {
+    pe.classList.remove('open');
+  });
 })();
 </script>
 </body>
