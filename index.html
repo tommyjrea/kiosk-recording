@@ -126,9 +126,16 @@ a {
   white-space: nowrap;
 }
 
+.home-tagline {
+  font-family: 'SuisseIntl', sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.3;
+}
+
 .home-nav {
   font-family: 'SuisseIntl', sans-serif;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 32px;
   line-height: 1.3;
 }
@@ -138,12 +145,13 @@ a {
 }
 
 .home-nav a:hover {
-  opacity: 0.5;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .home-copyright {
   font-family: 'SuisseIntl', sans-serif;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 32px;
   line-height: 1.1;
   white-space: nowrap;
@@ -154,6 +162,7 @@ a {
   bottom: 24px;
   left: 28px;
   z-index: 1;
+  cursor: pointer;
 }
 
 .home-image img {
@@ -167,7 +176,7 @@ a {
   bottom: 24px;
   right: 28px;
   font-family: 'SuisseIntl', sans-serif;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 32px;
   z-index: 2;
 }
@@ -326,6 +335,10 @@ a {
     font-size: 28px;
   }
 
+  .home-tagline {
+    display: none;
+  }
+
   .home-nav {
     display: none;
   }
@@ -365,7 +378,7 @@ a {
 
   .mobile-nav {
     font-family: 'SuisseIntl', sans-serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 22px;
     line-height: 1.4;
   }
@@ -374,9 +387,14 @@ a {
     display: block;
   }
 
+  .mobile-nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   .mobile-copyright {
     font-family: 'SuisseIntl', sans-serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 22px;
   }
 
@@ -426,6 +444,10 @@ a {
 /* ---- TABLET ---- */
 
 @media (min-width: 769px) and (max-width: 1024px) {
+  .home-tagline {
+    font-size: 24px;
+  }
+
   .home-nav {
     font-size: 24px;
   }
@@ -466,7 +488,9 @@ a {
   <section class="page-home">
     <div class="home-header">
       <div class="home-title">Kiosk Recording®</div>
+      <div class="home-tagline">Where records<br>are made.</div>
       <nav class="home-nav">
+        <a href="#" class="nav-equip">Equipment</a>
         <a href="#" class="nav-info">Information</a>
         <a href="mailto:info@kioskrecording.studio">Contact</a>
         <a href="https://www.instagram.com/kioskrecording" target="_blank" rel="noopener">Instagram</a>
@@ -474,14 +498,15 @@ a {
       <div class="home-copyright">©2026</div>
     </div>
 
-    <div class="home-image">
-      <img src="studio_image.png" alt="Studio">
+    <div class="home-image" id="home-image">
+      <img id="studio-img" src="studio_image_1.png" alt="Studio">
     </div>
 
-    <div class="home-counter">1/1</div>
+    <div class="home-counter" id="home-counter">1/3</div>
 
     <div class="home-footer-mobile">
       <div class="mobile-nav">
+        <a href="#" class="nav-equip">Equipment</a>
         <a href="#" class="nav-info">Information</a>
         <a href="mailto:info@kioskrecording.studio">Contact</a>
         <a href="https://www.instagram.com/kioskrecording" target="_blank" rel="noopener">Instagram</a>
@@ -594,8 +619,14 @@ a {
     var img = new Image();
     img.src = s.src;
   });
-  var studioImg = new Image();
-  studioImg.src = 'studio_image.png';
+  // Preload the white-on-red logo used for reveal
+  var revealImg = new Image();
+  revealImg.src = 'K_Block_White_Red.png';
+  // Preload studio images
+  ['studio_image_1.png', 'studio_image_2.png', 'studio_image_3.png'].forEach(function(src) {
+    var img = new Image();
+    img.src = src;
+  });
 
   var step = 0;
   var introTimer = setInterval(function() {
@@ -607,10 +638,11 @@ a {
       clearInterval(introTimer);
       // Show site behind intro before reveal
       siteEl.classList.add('visible');
-      // Switch to white logo and trigger grow/fade
+      // The last state is already white-on-red (K_Block_White_Red.png)
+      // Set bg to white so the white K blends into the white site
       introEl.style.backgroundColor = '#ffffff';
-      introLogo.src = 'K_Block_Red_White.png';
-      // Small delay so the white swap registers before the scale animation
+      introLogo.src = 'K_Block_White_Red.png';
+      // Trigger grow/fade
       requestAnimationFrame(function() {
         requestAnimationFrame(function() {
           introEl.classList.add('reveal');
@@ -623,6 +655,18 @@ a {
     }
   }, 500);
 
+  // Image carousel
+  var studioImages = ['studio_image_1.png', 'studio_image_2.png', 'studio_image_3.png'];
+  var currentImg = 0;
+  var studioImgEl = document.getElementById('studio-img');
+  var counterEl = document.getElementById('home-counter');
+
+  document.getElementById('home-image').addEventListener('click', function() {
+    currentImg = (currentImg + 1) % studioImages.length;
+    studioImgEl.src = studioImages[currentImg];
+    counterEl.textContent = (currentImg + 1) + '/' + studioImages.length;
+  });
+
   // Overlays
   var pageInfo = document.getElementById('page-info');
   var pageEquip = document.getElementById('page-equip');
@@ -634,6 +678,13 @@ a {
     });
   });
 
+  document.querySelectorAll('.nav-equip').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      pageEquip.classList.add('open');
+    });
+  });
+
   document.getElementById('info-close').addEventListener('click', function() {
     pageInfo.classList.remove('open');
   });
@@ -641,7 +692,6 @@ a {
   document.getElementById('equip-link').addEventListener('click', function(e) {
     e.preventDefault();
     pageEquip.classList.add('open');
-    // Delay removing info so equip slides over it
     setTimeout(function() {
       pageInfo.classList.remove('open');
     }, 500);
