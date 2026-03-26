@@ -499,7 +499,7 @@ a {
   <section class="page-home">
     <div class="home-header">
       <div class="home-title">Kiosk Recording&#174;</div>
-      <div class="home-tagline">Tom Rea &<br>Dougal Gray.</div>
+      <div class="home-tagline">Tom Rea.<br>Dougal Gray.</div>
       <nav class="home-nav">
         <a href="#" class="nav-info">Information</a>
         <a href="#" class="nav-equip">Equipment</a>
@@ -649,13 +649,13 @@ a {
   var introTimer = setInterval(function() {
     step++;
     if (step < states.length) {
-      // Hide logo, swap bg + src simultaneously, show on next paint
+      // Hide logo, swap bg + src, show once image loaded
       introLogo.style.visibility = 'hidden';
       introBg.style.backgroundColor = states[step].bg;
-      introLogo.src = states[step].src;
-      requestAnimationFrame(function() {
+      introLogo.onload = function() {
         introLogo.style.visibility = 'visible';
-      });
+      };
+      introLogo.src = states[step].src;
     } else {
       clearInterval(introTimer);
 
