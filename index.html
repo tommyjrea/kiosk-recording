@@ -90,7 +90,7 @@ a { color: inherit; text-decoration: none; }
   <section class="page-home">
     <div class="home-header">
       <div class="home-title">Kiosk Recording&#174;</div>
-      <div class="home-tagline">Writing. Recording.<br>Production. Mixing.</div>
+      <div class="home-tagline">Recording. Production.<br>Mixing.</div>
       <nav class="home-nav">
         <a href="#" class="nav-info">Information</a>
         <a href="#" class="nav-equip">Equipment</a>
@@ -100,7 +100,7 @@ a { color: inherit; text-decoration: none; }
       <div class="home-copyright">&#169;2026</div>
     </div>
     <div class="home-image"><img id="studio-img" src="studio_image_1.png" alt="Studio"></div>
-    <div class="home-counter" id="home-counter">1/3</div>
+    <div class="home-counter" id="home-counter">1/2</div>
     <div class="home-footer-mobile">
       <div class="mobile-nav">
         <a href="#" class="nav-info">Information</a>
@@ -114,7 +114,7 @@ a { color: inherit; text-decoration: none; }
   <div class="overlay page-info" id="page-info">
     <div class="info-header"><div class="info-title">Information</div><button class="overlay-close" id="info-close" aria-label="Close">&#10005;</button></div>
     <div class="info-body">
-      <div class="info-text"><strong>Kiosk Recording&#174;</strong> is an independent music studio in South London, run by <a href="/tom">Tom Rea</a> and Dougal Gray. We focus on making records with clarity and momentum. Big ideas, done quickly and properly. We work across songwriting, production and finishing &#8212; helping take tracks from rough demos to something ready to release. See <a href="#" id="equip-link">equipment list</a>.</div>
+      <div class="info-text"><strong>Kiosk Recording&#174;</strong> is an independent music studio in South London, run by <a href="tom.html">Tom Rea</a> and Dougal Gray. We focus on making records with clarity and momentum. Big ideas, done quickly and properly. We work across songwriting, production and finishing &#8212; helping take tracks from rough demos to something ready to release. See <a href="#" id="equip-link">equipment list</a>.</div>
       <div class="info-address">Unit 2<br>Plough Way<br>SE16 7FQ<br>London</div>
     </div>
   </div>
@@ -140,11 +140,22 @@ a { color: inherit; text-decoration: none; }
     { bg: '#781c1f', src: 'K_Block_Red_DarkRed.png' },
     { bg: '#fd3248', src: 'K_Block_White_Red.png' }
   ];
-  var studioImages = ['studio_image_1.png', 'studio_image_2.png', 'studio_image_3.png'];
-  var loaded = 0;
-  function onLoad() { loaded++; if (loaded >= states.length) beginIntro(); }
-  for (var i = 0; i < states.length; i++) { var img = new Image(); img.onload = onLoad; img.onerror = onLoad; img.src = states[i].src; }
+  var studioImages = ['studio_image_1.png', 'studio_image_2.png'];
+
+  // Skip intro if already visited this session
+  if (sessionStorage.getItem('kiosk-visited')) {
+    introEl.classList.add('hidden');
+    siteEl.classList.add('visible');
+    beginCarousel();
+  } else {
+    var loaded = 0;
+    function onLoad() { loaded++; if (loaded >= states.length) beginIntro(); }
+    for (var i = 0; i < states.length; i++) { var img = new Image(); img.onload = onLoad; img.onerror = onLoad; img.src = states[i].src; }
+  }
+
+  // Preload studio images
   for (var j = 0; j < studioImages.length; j++) { var si = new Image(); si.src = studioImages[j]; }
+
   function beginIntro() {
     var step = 0;
     var timer = setInterval(function() {
@@ -157,7 +168,7 @@ a { color: inherit; text-decoration: none; }
         siteEl.classList.add('visible');
         introEl.classList.add('fade-white');
         setTimeout(function() { introEl.classList.add('fade-out'); }, 400);
-        setTimeout(function() { introEl.classList.add('hidden'); beginCarousel(); }, 800);
+        setTimeout(function() { introEl.classList.add('hidden'); sessionStorage.setItem('kiosk-visited', '1'); beginCarousel(); }, 800);
       }
     }, 500);
   }
