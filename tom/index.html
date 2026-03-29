@@ -4,91 +4,38 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tom Rea | Kiosk Recording</title>
-<link rel="icon" href="../favicon.ico">
-<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
-@font-face { font-family: 'SuisseIntl'; src: url('../SuisseIntl-Medium.woff') format('woff'); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: 'SuisseIntl'; src: url('../SuisseIntl-Regular.woff') format('woff'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SuisseIntl'; src: url('SuisseIntl-Medium.woff') format('woff'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'SuisseIntl'; src: url('SuisseIntl-Regular.woff') format('woff'); font-weight: 400; font-style: normal; font-display: swap; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { height: 100%; }
 body { background: #A1A1A1; color: #FFF; -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
-
-.tom-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 24px 28px;
-}
-
-.tom-title {
-  font-family: 'SuisseIntl', sans-serif;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 1.1;
-}
-
-.tom-back {
-  font-family: 'SuisseIntl', sans-serif;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 1;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.tom-back:hover {
-  opacity: 0.5;
-}
-
-.tom-list {
-  padding: 80px 28px 60px 28px;
-  max-width: 700px;
-}
-
-.tom-entry {
-  padding: 0 0 28px 0;
-}
-
-.tom-artist {
-  font-family: 'SuisseIntl', sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 140%;
-}
-
-.tom-track {
-  font-family: 'SuisseIntl', sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 140%;
-}
-
-.tom-role {
-  font-family: 'SuisseIntl', sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 140%;
-  opacity: 0.6;
-  margin-top: 2px;
-}
-
+.tom-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 24px 28px; }
+.tom-title { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 24px; line-height: 1.1; }
+.tom-back { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 24px; line-height: 1; cursor: pointer; }
+.tom-back:hover { opacity: 0.5; }
+.tom-list { padding: 80px 28px 60px 28px; max-width: 700px; }
+.tom-divider { border: none; border-top: 1px solid rgba(255,255,255,0.35); margin: 0 0 20px 0; padding: 0; }
+.tom-entry { padding: 0 0 28px 0; transition: opacity 0.2s ease; }
+.tom-entry:hover { opacity: 0.5; }
+.tom-artist { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 16px; line-height: 140%; }
+.tom-track { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 16px; line-height: 140%; }
+.tom-role { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 12px; line-height: 140%; opacity: 0.6; margin-top: 2px; }
 @media (max-width: 768px) {
-  .tom-header { padding: 20px; }
-  .tom-title { font-size: 20px; }
-  .tom-back { font-size: 20px; }
-  .tom-list { padding: 40px 20px 60px 20px; }
+  .tom-header { padding: 20px; } .tom-title { font-size: 20px; } .tom-back { font-size: 20px; } .tom-list { padding: 40px 20px 60px 20px; }
 }
 </style>
 </head>
 <body>
-
 <div class="tom-header">
   <div class="tom-title">Tom Rea | Selected Work</div>
-  <a href="../" class="tom-back">&#10005;</a>
+  <a href="./" class="tom-back">&#10005;</a>
 </div>
-
 <div class="tom-list">
+  <hr class="tom-divider">
   <div class="tom-entry"><div class="tom-artist">junodream</div><div class="tom-track">Pools of Colour</div><div class="tom-role">mix, producer, engineer, composer</div></div>
   <div class="tom-entry"><div class="tom-artist">junodream</div><div class="tom-track">Dream Untitled</div><div class="tom-role">mix, producer, engineer, composer</div></div>
   <div class="tom-entry"><div class="tom-artist">junodream</div><div class="tom-track">Death Drive 2.0</div><div class="tom-role">mix, producer, engineer, composer</div></div>
@@ -105,9 +52,9 @@ a { color: inherit; text-decoration: none; }
   <div class="tom-entry"><div class="tom-artist">Angel Parker</div><div class="tom-track">The House of the Poet</div><div class="tom-role">mix, producer, engineer</div></div>
   <div class="tom-entry"><div class="tom-artist">Porcelain Twin</div><div class="tom-track">Everybody Running</div><div class="tom-role">mix</div></div>
   <div class="tom-entry"><div class="tom-artist">Joe Khalique-Brown</div><div class="tom-track">The Getaway</div><div class="tom-role">mix</div></div>
+  <hr class="tom-divider">
   <div class="tom-entry"><div class="tom-artist">Somesuch Super 8 (Soundtrack)</div><div class="tom-track">And Then There Were Two</div><div class="tom-role">mix, producer, engineer, composer</div></div>
   <div class="tom-entry"><div class="tom-artist">Saturday Born (Soundtrack)</div><div class="tom-track">Film by Saabeah</div><div class="tom-role">producer, engineer, composer</div></div>
 </div>
-
 </body>
 </html>
