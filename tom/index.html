@@ -12,6 +12,8 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { height: 100%; }
 body { background: #A1A1A1; color: #FFF; -webkit-font-smoothing: antialiased; }
+@keyframes slide-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.tom-page { animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 a { color: inherit; text-decoration: none; }
 .tom-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 24px 28px; }
 .tom-title { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 24px; line-height: 1.1; }
@@ -30,6 +32,7 @@ a { color: inherit; text-decoration: none; }
 </style>
 </head>
 <body>
+<div class="tom-page">
 <div class="tom-header">
   <div class="tom-title">Tom Rea | Selected Work</div>
   <a href="/" class="tom-back">&#10005;</a>
@@ -55,6 +58,7 @@ a { color: inherit; text-decoration: none; }
   <hr class="tom-divider">
   <div class="tom-entry"><div class="tom-artist">Somesuch Super 8 (Soundtrack)</div><div class="tom-track">And Then There Were Two</div><div class="tom-role">mix, producer, engineer, composer</div></div>
   <div class="tom-entry"><div class="tom-artist">Saturday Born (Soundtrack)</div><div class="tom-track">Film by Saabeah</div><div class="tom-role">producer, engineer, composer</div></div>
+</div>
 </div>
 </body>
 </html>
