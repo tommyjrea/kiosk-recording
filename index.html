@@ -66,12 +66,22 @@ a { color: inherit; text-decoration: none; }
   .mobile-nav a { display: block; } .mobile-nav a:hover { text-decoration: underline; text-underline-offset: 3px; }
   .mobile-copyright { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 20px; }
   .info-header { padding: 20px; } .info-title { font-size: 20px; } .info-body { padding: 0 20px 32px 20px; } .info-text { font-size: 20px; } .info-address { font-size: 20px; }
-  .equip-header { padding: 20px; } .equip-title { font-size: 20px; } .equip-list { padding: 40px 20px 60px 20px; } .equip-section { display: block; } .equip-section-title { margin-bottom: 10px; }
+  .equip-header { padding: 20px; } .equip-title { font-size: 20px; }
+  .tom-header { padding: 20px; } .tom-title { font-size: 20px; } .tom-list { padding: 40px 20px 60px 20px; } .equip-list { padding: 40px 20px 60px 20px; } .equip-section { display: block; } .equip-section-title { margin-bottom: 10px; }
 }
 @media (min-width: 769px) and (max-width: 1024px) {
   .home-tagline { font-size: 20px; } .home-nav { font-size: 20px; } .home-copyright { font-size: 20px; } .home-counter { font-size: 20px; }
   .home-image img { width: 45vw; } .info-text { font-size: 22px; } .info-address { font-size: 22px; }
 }
+
+.page-tom { background: #A1A1A1; color: #FFF; }
+.tom-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 24px 28px; }
+.tom-title { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 24px; line-height: 1.1; }
+.tom-list { padding: 80px 28px 60px 28px; max-width: 700px; }
+.tom-entry { padding: 0 0 28px 0; }
+.tom-artist { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 16px; line-height: 140%; }
+.tom-track { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 16px; line-height: 140%; }
+.tom-role { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 12px; line-height: 140%; opacity: 0.6; margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -80,7 +90,7 @@ a { color: inherit; text-decoration: none; }
   <section class="page-home">
     <div class="home-header">
       <div class="home-title">Kiosk Recording&#174;</div>
-      <div class="home-tagline">Always open.<br>Still here.</div>
+      <div class="home-tagline">Writing. Recording.<br>Production. Mixing.</div>
       <nav class="home-nav">
         <a href="#" class="nav-info">Information</a>
         <a href="#" class="nav-equip">Equipment</a>
@@ -104,7 +114,7 @@ a { color: inherit; text-decoration: none; }
   <div class="overlay page-info" id="page-info">
     <div class="info-header"><div class="info-title">Information</div><button class="overlay-close" id="info-close" aria-label="Close">&#10005;</button></div>
     <div class="info-body">
-      <div class="info-text"><strong>Kiosk Recording&#174;</strong> is an independent music studio in South London, run by Tom Rea and Dougal Gray. We focus on making records with clarity and momentum. Big ideas, done quickly and properly. We work across songwriting, production and finishing &#8212; helping take tracks from rough demos to something ready to release. See <a href="#" id="equip-link">equipment list</a>.</div>
+      <div class="info-text"><strong>Kiosk Recording&#174;</strong> is an independent music studio in South London, run by <a href="/tom">Tom Rea</a> and Dougal Gray. We focus on making records with clarity and momentum. Big ideas, done quickly and properly. We work across songwriting, production and finishing &#8212; helping take tracks from rough demos to something ready to release. See <a href="#" id="equip-link">equipment list</a>.</div>
       <div class="info-address">Unit 2<br>Plough Way<br>SE16 7FQ<br>London</div>
     </div>
   </div>
@@ -130,22 +140,11 @@ a { color: inherit; text-decoration: none; }
     { bg: '#781c1f', src: 'K_Block_Red_DarkRed.png' },
     { bg: '#fd3248', src: 'K_Block_White_Red.png' }
   ];
-  var studioImages = ['studio_image_1.png', 'studio_image_2.png'];
+  var studioImages = ['studio_image_1.png', 'studio_image_2.png', 'studio_image_3.png'];
   var loaded = 0;
-  function onLoad() {
-    loaded++;
-    if (loaded >= states.length) beginIntro();
-  }
-  for (var i = 0; i < states.length; i++) {
-    var img = new Image();
-    img.onload = onLoad;
-    img.onerror = onLoad;
-    img.src = states[i].src;
-  }
-  for (var j = 0; j < studioImages.length; j++) {
-    var si = new Image();
-    si.src = studioImages[j];
-  }
+  function onLoad() { loaded++; if (loaded >= states.length) beginIntro(); }
+  for (var i = 0; i < states.length; i++) { var img = new Image(); img.onload = onLoad; img.onerror = onLoad; img.src = states[i].src; }
+  for (var j = 0; j < studioImages.length; j++) { var si = new Image(); si.src = studioImages[j]; }
   function beginIntro() {
     var step = 0;
     var timer = setInterval(function() {
@@ -157,13 +156,8 @@ a { color: inherit; text-decoration: none; }
         clearInterval(timer);
         siteEl.classList.add('visible');
         introEl.classList.add('fade-white');
-        setTimeout(function() {
-          introEl.classList.add('fade-out');
-        }, 400);
-        setTimeout(function() {
-          introEl.classList.add('hidden');
-          beginCarousel();
-        }, 800);
+        setTimeout(function() { introEl.classList.add('fade-out'); }, 400);
+        setTimeout(function() { introEl.classList.add('hidden'); beginCarousel(); }, 800);
       }
     }, 500);
   }
@@ -171,31 +165,15 @@ a { color: inherit; text-decoration: none; }
     var cur = 0;
     var el = document.getElementById('studio-img');
     var ct = document.getElementById('home-counter');
-    setInterval(function() {
-      cur = (cur + 1) % studioImages.length;
-      el.src = studioImages[cur];
-      ct.textContent = (cur + 1) + '/' + studioImages.length;
-    }, 3000);
+    setInterval(function() { cur = (cur + 1) % studioImages.length; el.src = studioImages[cur]; ct.textContent = (cur + 1) + '/' + studioImages.length; }, 3000);
   }
   var pi = document.getElementById('page-info');
   var pe = document.getElementById('page-equip');
-  document.querySelectorAll('.nav-info').forEach(function(x) {
-    x.addEventListener('click', function(e) { e.preventDefault(); pi.classList.add('open'); });
-  });
-  document.querySelectorAll('.nav-equip').forEach(function(x) {
-    x.addEventListener('click', function(e) { e.preventDefault(); pe.classList.add('open'); });
-  });
-  document.getElementById('info-close').addEventListener('click', function() {
-    pi.classList.remove('open');
-  });
-  document.getElementById('equip-link').addEventListener('click', function(e) {
-    e.preventDefault();
-    pe.classList.add('open');
-    setTimeout(function() { pi.classList.remove('open'); }, 500);
-  });
-  document.getElementById('equip-close').addEventListener('click', function() {
-    pe.classList.remove('open');
-  });
+  document.querySelectorAll('.nav-info').forEach(function(x) { x.addEventListener('click', function(e) { e.preventDefault(); pi.classList.add('open'); }); });
+  document.querySelectorAll('.nav-equip').forEach(function(x) { x.addEventListener('click', function(e) { e.preventDefault(); pe.classList.add('open'); }); });
+  document.getElementById('info-close').addEventListener('click', function() { pi.classList.remove('open'); });
+  document.getElementById('equip-link').addEventListener('click', function(e) { e.preventDefault(); pe.classList.add('open'); setTimeout(function() { pi.classList.remove('open'); }, 500); });
+  document.getElementById('equip-close').addEventListener('click', function() { pe.classList.remove('open'); });
 })();
 </script>
 </body>
