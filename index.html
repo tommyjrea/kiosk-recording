@@ -142,28 +142,17 @@ a { color: inherit; text-decoration: none; }
   ];
   var studioImages = ['studio_image_1.png', 'studio_image_2.png'];
 
-  // Skip intro if already visited this session
-  if (sessionStorage.getItem('kiosk-visited')) {
+  // Preload images
+  states.forEach(function(s) { var i = new Image(); i.src = s.src; });
+  studioImages.forEach(function(s) { var i = new Image(); i.src = s; });
+
+  // Skip intro if coming from own site (e.g. back from /tom)
+  var fromOwnSite = document.referrer && document.referrer.indexOf(location.hostname) !== -1;
+  if (fromOwnSite) {
     introEl.classList.add('hidden');
     siteEl.classList.add('visible');
     beginCarousel();
   } else {
-    var loaded = 0;
-    function check() { loaded++; if (loaded >= states.length) beginIntro(); }
-    for (var i = 0; i < states.length; i++) {
-      var img = new Image();
-      img.onload = check;
-      img.onerror = check;
-      img.src = states[i].src;
-      if (img.complete) check();
-    }
-    // Fallback: if nothing fires within 2s, start anyway
-    setTimeout(function() { if (loaded < states.length) { loaded = states.length; beginIntro(); } }, 2000);
-  }
-
-  for (var j = 0; j < studioImages.length; j++) { var si = new Image(); si.src = studioImages[j]; }
-
-  function beginIntro() {
     var step = 0;
     var timer = setInterval(function() {
       step++;
@@ -175,10 +164,11 @@ a { color: inherit; text-decoration: none; }
         siteEl.classList.add('visible');
         introEl.classList.add('fade-white');
         setTimeout(function() { introEl.classList.add('fade-out'); }, 400);
-        setTimeout(function() { introEl.classList.add('hidden'); sessionStorage.setItem('kiosk-visited', '1'); beginCarousel(); }, 800);
+        setTimeout(function() { introEl.classList.add('hidden'); beginCarousel(); }, 800);
       }
     }, 500);
   }
+
   function beginCarousel() {
     var cur = 0;
     var el = document.getElementById('studio-img');
