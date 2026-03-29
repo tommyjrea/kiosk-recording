@@ -149,11 +149,18 @@ a { color: inherit; text-decoration: none; }
     beginCarousel();
   } else {
     var loaded = 0;
-    function onLoad() { loaded++; if (loaded >= states.length) beginIntro(); }
-    for (var i = 0; i < states.length; i++) { var img = new Image(); img.onload = onLoad; img.onerror = onLoad; img.src = states[i].src; }
+    function check() { loaded++; if (loaded >= states.length) beginIntro(); }
+    for (var i = 0; i < states.length; i++) {
+      var img = new Image();
+      img.onload = check;
+      img.onerror = check;
+      img.src = states[i].src;
+      if (img.complete) check();
+    }
+    // Fallback: if nothing fires within 2s, start anyway
+    setTimeout(function() { if (loaded < states.length) { loaded = states.length; beginIntro(); } }, 2000);
   }
 
-  // Preload studio images
   for (var j = 0; j < studioImages.length; j++) { var si = new Image(); si.src = studioImages[j]; }
 
   function beginIntro() {
