@@ -15,11 +15,15 @@ body { background: #A1A1A1; color: #FFF; -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
 @keyframes slide-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .tom-page { animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
 .tom-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 24px 28px; }
-.tom-title { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 24px; line-height: 1.1; }
+.tom-header-left { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 24px; line-height: 1.1; }
+.tom-header-right { display: flex; align-items: flex-start; gap: 28px; }
+.tom-header-right-title { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 24px; line-height: 1.1; display: none; }
 .tom-back { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 24px; line-height: 1; cursor: pointer; }
 .tom-back:hover { opacity: 0.5; }
-.tom-content { padding: 80px 28px 60px 28px; }
+
+.tom-body { padding: 80px 28px 60px 28px; }
 .tom-list { max-width: 700px; }
 .tom-divider { border: none; border-top: 1px solid rgba(255,255,255,0.35); margin: 0 0 20px 0; padding: 0; }
 .tom-entry { padding: 0 0 28px 0; transition: opacity 0.2s ease; }
@@ -27,20 +31,25 @@ a { color: inherit; text-decoration: none; }
 .tom-artist { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 16px; line-height: 140%; }
 .tom-track { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 16px; line-height: 140%; }
 .tom-role { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 12px; line-height: 140%; opacity: 0.6; margin-top: 2px; }
+
 .tom-player-desktop { display: none; }
 .tom-player-mobile { padding: 40px 28px 60px 28px; max-width: 700px; }
+.tom-player-mobile-title { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 16px; line-height: 140%; margin-bottom: 16px; }
+.tom-player-divider { border: none; border-top: 1px solid rgba(255,255,255,0.35); margin: 0 0 20px 0; padding: 0; }
 
 @media (min-width: 1024px) {
-  .tom-content { position: relative; padding: 80px 28px 60px 28px; }
-  .tom-list { max-width: 50%; }
-  .tom-player-desktop { display: block; position: fixed; top: 148px; right: 28px; bottom: 28px; width: calc(50% - 56px); max-width: 500px; }
-  .tom-player-desktop iframe { height: 100% !important; }
+  .tom-header-right-title { display: block; }
+  .tom-body { display: flex; gap: 0; padding: 80px 28px 60px 28px; }
+  .tom-list { flex: 0 0 50%; max-width: 50%; padding-right: 40px; }
+  .tom-player-desktop { display: block; flex: 0 0 50%; max-width: 50%; position: sticky; top: 80px; align-self: flex-start; }
   .tom-player-mobile { display: none; }
 }
 
 @media (max-width: 768px) {
-  .tom-header { padding: 20px; } .tom-title { font-size: 20px; } .tom-back { font-size: 20px; }
-  .tom-content { padding: 40px 20px 40px 20px; }
+  .tom-header { padding: 20px; }
+  .tom-header-left { font-size: 20px; }
+  .tom-back { font-size: 20px; }
+  .tom-body { padding: 40px 20px 40px 20px; }
   .tom-player-mobile { padding: 20px 20px 60px 20px; }
 }
 </style>
@@ -48,10 +57,13 @@ a { color: inherit; text-decoration: none; }
 <body>
 <div class="tom-page">
 <div class="tom-header">
-  <div class="tom-title">Tom Rea | Selected Work</div>
-  <a href="/" class="tom-back">&#10005;</a>
+  <div class="tom-header-left">Tom Rea | Selected Work</div>
+  <div class="tom-header-right">
+    <div class="tom-header-right-title">Mix | Recent Highlights</div>
+    <a href="/" class="tom-back">&#10005;</a>
+  </div>
 </div>
-<div class="tom-content">
+<div class="tom-body">
   <div class="tom-list">
     <hr class="tom-divider">
     <div class="tom-entry"><div class="tom-artist">junodream</div><div class="tom-track">Pools of Colour</div><div class="tom-role">mix, producer, engineer, composer</div></div>
@@ -75,10 +87,13 @@ a { color: inherit; text-decoration: none; }
     <div class="tom-entry"><div class="tom-artist">Saturday Born (Soundtrack)</div><div class="tom-track">Film by Saabeah</div><div class="tom-role">producer, engineer, composer</div></div>
   </div>
   <div class="tom-player-desktop">
-    <iframe src="https://samply.app/embed/9wk0iJrb5ocyrkeT22Ub?color=A1A1A1" width="100%" height="480px" frameborder="0" style="border: 0; border-radius: 4px; height: 100%;"></iframe>
+    <hr class="tom-player-divider">
+    <iframe src="https://samply.app/embed/9wk0iJrb5ocyrkeT22Ub?color=A1A1A1" width="100%" height="480px" frameborder="0" style="border: 0; border-radius: 4px;"></iframe>
   </div>
 </div>
 <div class="tom-player-mobile">
+  <div class="tom-player-mobile-title">Mix | Recent Highlights</div>
+  <hr class="tom-player-divider">
   <iframe src="https://samply.app/embed/9wk0iJrb5ocyrkeT22Ub?color=A1A1A1" width="100%" height="480px" frameborder="0" style="border: 0; border-radius: 4px;"></iframe>
 </div>
 </div>
