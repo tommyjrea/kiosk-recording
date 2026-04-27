@@ -98,6 +98,39 @@
   .nav a { transition: opacity .2s ease; }
   .nav a:hover { opacity: 0.5; }
 
+  /* Work dropdown — Tom / Dougal sub-pages */
+  .nav-work {
+    position: relative;
+    /* extend the hover area below the link to bridge to the menu */
+    padding-bottom: 20px;
+    margin-bottom: -20px;
+  }
+  .nav-work-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    /* no margin gap — padding inside keeps a continuous hover area */
+    padding-top: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition: opacity .25s ease, transform .25s ease;
+  }
+  .nav-work:hover .nav-work-menu,
+  .nav-work:focus-within .nav-work-menu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .nav-work-menu a {
+    display: block;
+    white-space: nowrap;
+  }
+
   /* ============================================================
      SHARED SECTION SHELL
      ============================================================ */
@@ -175,8 +208,8 @@
     display: block;
     height: auto;
     width: auto;
-    max-width: 100%;
-    max-height: 80%;
+    max-width: 90%;
+    max-height: 56vh;
     user-select: none;
   }
 
@@ -331,6 +364,59 @@
     font-size: 10px;
     letter-spacing: 0.16em;
   }
+
+  /* Tom / Dougal switcher */
+  .work-switch {
+    display: inline-flex;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 3px;
+    margin-bottom: 18px;
+    gap: 2px;
+  }
+  .work-switch button {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 12px 7px;
+    border: none;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    border-radius: 999px;
+    transition: background-color .25s ease, color .25s ease, opacity .2s ease;
+    opacity: 0.55;
+  }
+  .work-switch button:hover { opacity: 1; }
+  .work-switch button.is-active {
+    background: var(--c-white);
+    color: var(--c-black);
+    opacity: 1;
+  }
+
+  /* Empty state shown when Dougal is selected */
+  .work-empty {
+    grid-column: 4 / span 9;
+    padding: 80px 14px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    display: none;
+  }
+  .work-empty p {
+    font-family: var(--sans-alt);
+    font-weight: 500;
+    font-size: clamp(20px, 2.4vw, 32px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    max-width: 30ch;
+  }
+  .work-empty a { border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+
+  /* Toggle states */
+  .work-body[data-view="dougal"] .work-list { display: none; }
+  .work-body[data-view="dougal"] .work-empty { display: block; }
 
   .work-list { grid-column: 4 / span 9; }
   .work-row {
@@ -662,7 +748,13 @@
   <div class="nav-r">
     <a href="#information">Information</a>
     <a href="#studio">Studio</a>
-    <a href="#work">Work</a>
+    <span class="nav-work">
+      <a href="#work">Work</a>
+      <span class="nav-work-menu">
+        <a href="/tom">↗ Tom</a>
+        <a href="/dougal">↗ Dougal</a>
+      </span>
+    </span>
     <a href="#practice">Practice</a>
     <a href="#equipment">Equipment</a>
     <a href="#contact">Contact</a>
@@ -765,10 +857,13 @@
       <span class="of">03 / 06</span>
     </header>
 
-    <div class="work-body">
+    <div class="work-body" data-view="tom">
       <aside class="work-aside">
         <span class="label">Selected Work</span>
-        <div class="person"><a href="/tom" style="border-bottom: 1px solid currentColor; padding-bottom: 2px;">Tom Rea ↗</a></div>
+        <div class="work-switch" role="tablist">
+          <button type="button" data-target="tom" class="is-active">Tom Rea</button>
+          <button type="button" data-target="dougal">Dougal Gray</button>
+        </div>
         <span class="label">Mix · Production<br>Recording · Composition</span>
         <span class="pill">Recent Highlights</span>
       </aside>
@@ -792,6 +887,10 @@
         <a class="work-row" href="https://open.spotify.com/track/0Mt1EZ8vviQFV3vYJjZ9nK" target="_blank" rel="noopener"><span class="work-num">16</span><span class="work-artist">Joe Khalique-Brown</span><span class="work-track">The Getaway</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
         <span class="work-row" style="cursor:default"><span class="work-num">17</span><span class="work-artist">Somesuch · Super 8</span><span class="work-track">And Then There Were Two</span><span class="work-role">Mix · Producer · Engineer · Composer · Soundtrack</span><span class="work-arrow"></span></span>
         <span class="work-row" style="cursor:default"><span class="work-num">18</span><span class="work-artist">Saturday Born</span><span class="work-track">Film by Saabeah</span><span class="work-role">Producer · Engineer · Composer · Soundtrack</span><span class="work-arrow"></span></span>
+      </div>
+
+      <div class="work-empty">
+        <p>Selected work coming soon. In the meantime, get in touch — <a href="mailto:info&#64;kioskrecording.studio">info@kioskrecording.studio</a></p>
       </div>
     </div>
   </section>
@@ -941,6 +1040,21 @@
 </main>
 
 <script>
+  // Tom / Dougal switch on the work section
+  (function() {
+    const body = document.querySelector('.work-body');
+    if (!body) return;
+    body.querySelectorAll('.work-switch button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.target;
+        body.dataset.view = target;
+        body.querySelectorAll('.work-switch button').forEach(b => {
+          b.classList.toggle('is-active', b.dataset.target === target);
+        });
+      });
+    });
+  })();
+
   // Subtle reveal on scroll — single sustained motion per page
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
