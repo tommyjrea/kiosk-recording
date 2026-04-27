@@ -73,51 +73,6 @@
   ::selection { background: var(--c-red); color: var(--c-white); }
 
   /* ============================================================
-     INTRO — fullscreen K mark, scales into cover position.
-     Uses FLIP-style coordinate hand-off for pixel accuracy.
-     ============================================================ */
-  .intro {
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    background: var(--c-white);
-    overflow: hidden;
-    pointer-events: none;
-  }
-  .intro.is-done { opacity: 0; transition: opacity 0.5s ease 0.05s; }
-
-  .intro-mark {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transform-origin: top left;
-    will-change: transform, width, height;
-    user-select: none;
-  }
-
-  /* Initial states — cover wakes up after the intro transitions away */
-  body.is-intro .nav,
-  body.is-intro .cover-top,
-  body.is-intro .cover-text,
-  body.is-intro .cover-foot { opacity: 0; }
-  body.is-intro .cover-mark img { visibility: hidden; }
-
-  body.intro-done .nav,
-  body.intro-done .cover-top,
-  body.intro-done .cover-text,
-  body.intro-done .cover-foot {
-    opacity: 1;
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  body.intro-done .cover-text { transition-delay: 0.15s; }
-  body.intro-done .cover-foot { transition-delay: 0.25s; }
-  body.intro-done .cover-top  { transition-delay: 0.05s; }
-  body.intro-done .nav        { transition-delay: 0.30s; }
-
-  /* ============================================================
      MASTHEAD — fixed, monochrome, mixes with section colour
      ============================================================ */
   .nav {
@@ -215,6 +170,7 @@
     position: relative;
     overflow: hidden;
     background: var(--c-white);
+    align-self: stretch;
   }
   .cover-mark img {
     position: absolute;
@@ -222,7 +178,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: right center;
     user-select: none;
   }
 
@@ -555,6 +511,22 @@
   }
   .contact-mail:hover { color: var(--c-white); padding-left: 8px; }
 
+  .contact-mark {
+    margin-top: 48px;
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    overflow: hidden;
+    background: var(--c-red);
+  }
+  .contact-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: right center;
+    display: block;
+    user-select: none;
+  }
+
   .contact-foot {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -639,10 +611,22 @@
     .work-body { grid-template-columns: 1fr; padding-top: 32px; }
     .work-aside { grid-column: 1 / -1; position: static; margin-bottom: 28px; }
     .work-list { grid-column: 1 / -1; }
-    .work-row { grid-template-columns: 32px 1fr 18px; gap: 12px; padding: 14px 0; }
+    .work-row {
+      grid-template-columns: 32px 1fr 18px;
+      grid-template-areas:
+        "num artist arrow"
+        "num track  arrow"
+        "num role   .";
+      gap: 4px 12px;
+      padding: 14px 0;
+      align-items: start;
+    }
     .work-row:hover { padding: 14px 8px; }
-    .work-track { display: none; }
-    .work-role  { grid-column: 1 / -1; padding-left: 44px; padding-top: 4px; font-size: 10px; }
+    .work-num    { grid-area: num; padding-top: 4px; }
+    .work-artist { grid-area: artist; font-size: 16px; }
+    .work-track  { grid-area: track; display: block; font-size: 14px; opacity: 0.85; }
+    .work-role   { grid-area: role; font-size: 10px; padding-top: 4px; }
+    .work-arrow  { grid-area: arrow; font-size: 12px; align-self: start; padding-top: 4px; }
 
     /* Practice */
     .practice-mark { display: none; }
@@ -663,6 +647,7 @@
     /* Contact */
     .contact-headline { font-size: clamp(40px, 14vw, 80px); margin-top: 32px; }
     .contact-mail { font-size: 22px; margin-top: 36px; }
+    .contact-mark { margin-top: 32px; aspect-ratio: 16 / 9; }
     .contact-foot { grid-template-columns: 1fr 1fr; gap: 20px var(--gutter); margin-top: 32px; }
 
     footer.colophon { grid-template-columns: 1fr; gap: 6px; }
@@ -670,15 +655,7 @@
   }
 </style>
 </head>
-<body class="is-intro">
-
-<!-- ============================================================
-     INTRO OVERLAY — full-screen K, animates to cover position.
-     Hidden after first run via sessionStorage to skip on re-nav.
-     ============================================================ -->
-<div class="intro" id="intro" aria-hidden="true">
-  <img class="intro-mark" id="intro-mark" src="K_Block_White.png" alt="">
-</div>
+<body>
 
 <!-- ============================================================
      FIXED NAV (mix-blend-mode: difference makes it readable on
@@ -805,22 +782,22 @@
       </aside>
 
       <div class="work-list">
-        <a class="work-row" href="https://open.spotify.com/track/4pELR2pNO8P6Ue0Ml2VxSF" target="_blank" rel="noopener"><span class="work-num">01</span><span class="work-artist">junodream</span><span class="work-track">Pools of Colour</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/track/7D7C76K9lJvDiZhzMNZrlM" target="_blank" rel="noopener"><span class="work-num">02</span><span class="work-artist">junodream</span><span class="work-track">Dream Untitled</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/track/0OT4qBesl43phNlvSCLiTM" target="_blank" rel="noopener"><span class="work-num">03</span><span class="work-artist">junodream</span><span class="work-track">Death Drive 2.0</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/album/6JxM01jnOxp2uJsqFO072X" target="_blank" rel="noopener"><span class="work-num">04</span><span class="work-artist">junodream</span><span class="work-track">The Beach 2.0</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/track/3GxOJlWpm4Ri5nCWrIQjOY" target="_blank" rel="noopener"><span class="work-num">05</span><span class="work-artist">junodream</span><span class="work-track">Travel Guide</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/track/312FY481JrK4tqShdRcHaf" target="_blank" rel="noopener"><span class="work-num">06</span><span class="work-artist">junodream</span><span class="work-track">Isn’t It Lovely (To Be Alone)</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/track/7KTeCmYOof8NML28Lc9dWo" target="_blank" rel="noopener"><span class="work-num">07</span><span class="work-artist">junodream</span><span class="work-track">To The Moon</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/track/4Nx69Hi9xwCHsrMVqu6CVS" target="_blank" rel="noopener"><span class="work-num">08</span><span class="work-artist">junodream</span><span class="work-track">Galactica</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/track/4Vudlr60FXFP47yNlLzixA" target="_blank" rel="noopener"><span class="work-num">09</span><span class="work-artist">Talie Rae</span><span class="work-track">Blue</span><span class="work-role">Producer · Engineer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/artist/3ieiKo9qbVjYOwYNUcu073" target="_blank" rel="noopener"><span class="work-num">10</span><span class="work-artist">Korder</span><span class="work-track">Falling Awake</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/artist/3ieiKo9qbVjYOwYNUcu073" target="_blank" rel="noopener"><span class="work-num">11</span><span class="work-artist">Korder</span><span class="work-track">Waves</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
-        <span class="work-row" style="cursor:default"><span class="work-num">12</span><span class="work-artist">Samuel Austin</span><span class="work-track">Locksmith</span><span class="work-role">Mix</span><span class="work-arrow"></span></span>
-        <span class="work-row" style="cursor:default"><span class="work-num">13</span><span class="work-artist">Samuel Austin</span><span class="work-track">We</span><span class="work-role">Mix · Producer · Engineer</span><span class="work-arrow"></span></span>
-        <a class="work-row" href="https://open.spotify.com/artist/5EmOksBCNrQKk8VnsA6NbQ" target="_blank" rel="noopener"><span class="work-num">14</span><span class="work-artist">Angel Parker</span><span class="work-track">The House of the Poet</span><span class="work-role">Mix · Producer · Engineer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/artist/0pv9SuWJY3LaEaCcjBUd1W" target="_blank" rel="noopener"><span class="work-num">15</span><span class="work-artist">Porcelain Twin</span><span class="work-track">Everybody Running</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/artist/6n3j7Eco3oYQPE0sCHtyPo" target="_blank" rel="noopener"><span class="work-num">16</span><span class="work-artist">Joe Khalique-Brown</span><span class="work-track">The Getaway</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/2q5a2Z5nnjRDwdvHIRfJcL" target="_blank" rel="noopener"><span class="work-num">01</span><span class="work-artist">junodream</span><span class="work-track">Pools of Colour</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/5XECPBbINEHS50OWxyffhO" target="_blank" rel="noopener"><span class="work-num">02</span><span class="work-artist">junodream</span><span class="work-track">Dream Untitled</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/1pV93eHijKX4ZoC1yCxtfr" target="_blank" rel="noopener"><span class="work-num">03</span><span class="work-artist">junodream</span><span class="work-track">Death Drive 2.0</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/2EcNTgx9KPlp83rrTNfOi5" target="_blank" rel="noopener"><span class="work-num">04</span><span class="work-artist">junodream</span><span class="work-track">The Beach 2.0</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/4ngvkf94T5ZaFJ71MGuDUQ" target="_blank" rel="noopener"><span class="work-num">05</span><span class="work-artist">junodream</span><span class="work-track">Travel Guide</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/1BcTbXK7pvyCdWiAB83CPe" target="_blank" rel="noopener"><span class="work-num">06</span><span class="work-artist">junodream</span><span class="work-track">Isn’t It Lovely (To Be Alone)</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/3y8er1lVrR5Y9i6AwXNRcT" target="_blank" rel="noopener"><span class="work-num">07</span><span class="work-artist">junodream</span><span class="work-track">To The Moon</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/1fJDzNu9fVq9dnnZLcBAMv" target="_blank" rel="noopener"><span class="work-num">08</span><span class="work-artist">junodream</span><span class="work-track">Galactica</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/3LyaOh01KBQsQ0dSBJhIYz" target="_blank" rel="noopener"><span class="work-num">09</span><span class="work-artist">Talie Rae</span><span class="work-track">Blue</span><span class="work-role">Producer · Engineer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/6FNB45ZLlsRDetg0cAYXcW" target="_blank" rel="noopener"><span class="work-num">10</span><span class="work-artist">Korder</span><span class="work-track">Falling Awake</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/0NroQnI5YEQpNe0rcgvJ3J" target="_blank" rel="noopener"><span class="work-num">11</span><span class="work-artist">Korder</span><span class="work-track">Waves</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/3QNwE3Ehl77JvuN3bZTfWw" target="_blank" rel="noopener"><span class="work-num">12</span><span class="work-artist">Samuel Austin</span><span class="work-track">Locksmith</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/58q79mMO95nIts92SHa43O" target="_blank" rel="noopener"><span class="work-num">13</span><span class="work-artist">Samuel Austin</span><span class="work-track">We</span><span class="work-role">Mix · Producer · Engineer</span><span class="work-arrow">↗</span></a>
+        <span class="work-row" style="cursor:default"><span class="work-num">14</span><span class="work-artist">Angel Parker</span><span class="work-track">The House of the Poet</span><span class="work-role">Mix · Producer · Engineer</span><span class="work-arrow"></span></span>
+        <span class="work-row" style="cursor:default"><span class="work-num">15</span><span class="work-artist">Porcelain Twin</span><span class="work-track">Everybody Running</span><span class="work-role">Mix</span><span class="work-arrow"></span></span>
+        <a class="work-row" href="https://open.spotify.com/track/0Mt1EZ8vviQFV3vYJjZ9nK" target="_blank" rel="noopener"><span class="work-num">16</span><span class="work-artist">Joe Khalique-Brown</span><span class="work-track">The Getaway</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
         <span class="work-row" style="cursor:default"><span class="work-num">17</span><span class="work-artist">Somesuch · Super 8</span><span class="work-track">And Then There Were Two</span><span class="work-role">Mix · Producer · Engineer · Composer · Soundtrack</span><span class="work-arrow"></span></span>
         <span class="work-row" style="cursor:default"><span class="work-num">18</span><span class="work-artist">Saturday Born</span><span class="work-track">Film by Saabeah</span><span class="work-role">Producer · Engineer · Composer · Soundtrack</span><span class="work-arrow"></span></span>
       </div>
@@ -954,6 +931,10 @@
       <div>
         <a class="contact-mail" href="mailto:info&#64;kioskrecording.studio">→ info@kioskrecording.studio</a>
 
+        <figure class="contact-mark">
+          <img src="K_Block_Red.png" alt="">
+        </figure>
+
         <dl class="contact-foot">
           <div><dt>Located</dt><dd>SE16 7FQ<br>London</dd></div>
           <div><dt>Hours</dt><dd>By appointment only</dd></div>
@@ -968,72 +949,6 @@
 </main>
 
 <script>
-  /* ============================================================
-     INTRO ANIMATION
-     - Starts: K mark centered, large, on black.
-     - Ends:   K sitting in its real position on the cover.
-     - Method: measure target (the actual cover-mark img), animate
-       the overlay's transform from center → target rect.
-     - Skipped if already played in this session (so internal nav
-       doesn't replay it).
-     ============================================================ */
-  (function() {
-    const body = document.body;
-    const intro = document.getElementById('intro');
-    const introMark = document.getElementById('intro-mark');
-    const coverMarkImg = document.querySelector('.cover-mark img');
-
-    // Skip intro if user has already seen it this session
-    let skip = false;
-    try { skip = sessionStorage.getItem('kr-intro-played') === '1'; } catch (e) {}
-
-    if (skip || !introMark || !coverMarkImg) {
-      intro.style.display = 'none';
-      body.classList.remove('is-intro');
-      body.classList.add('intro-done');
-      return;
-    }
-
-    function run() {
-      // Measure the target: where the cover K sits at rest.
-      const targetRect = coverMarkImg.getBoundingClientRect();
-      const startRect  = introMark.getBoundingClientRect();
-
-      // Compute the FLIP delta: scale + translate from start → target
-      const scale = targetRect.width / startRect.width;
-      const dx = targetRect.left - startRect.left;
-      const dy = targetRect.top  - startRect.top;
-
-      // Force initial state, then on next frame animate to target
-      introMark.style.transform = 'translate(0,0) scale(1)';
-      // small hold before motion begins
-      setTimeout(() => {
-        introMark.style.transition = 'transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
-        introMark.style.transform  = `translate(${dx}px, ${dy}px) scale(${scale})`;
-      }, 700);
-
-      // After the move completes, hand off and fade overlay
-      setTimeout(() => {
-        body.classList.remove('is-intro');
-        body.classList.add('intro-done');
-        intro.classList.add('is-done');
-        try { sessionStorage.setItem('kr-intro-played', '1'); } catch (e) {}
-      }, 700 + 1400 - 60); // hand off slightly before the eased motion fully resolves
-
-      // Fully remove overlay from the layer stack after fade
-      setTimeout(() => { intro.style.display = 'none'; }, 700 + 1400 + 600);
-    }
-
-    // Wait for the cover image to be measurable (decoded + laid out)
-    if (coverMarkImg.complete && coverMarkImg.naturalWidth > 0) {
-      requestAnimationFrame(run);
-    } else {
-      coverMarkImg.addEventListener('load', () => requestAnimationFrame(run), { once: true });
-      // Safety fallback
-      setTimeout(() => { if (body.classList.contains('is-intro')) requestAnimationFrame(run); }, 1500);
-    }
-  })();
-
   // Subtle reveal on scroll — single sustained motion per page
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
