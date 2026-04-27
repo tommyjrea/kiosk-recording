@@ -73,7 +73,8 @@
   ::selection { background: var(--c-red); color: var(--c-white); }
 
   /* ============================================================
-     MASTHEAD — fixed, monochrome, mixes with section colour
+     MASTHEAD — fixed, scroll-aware. Switches text colour to suit
+     the section it's currently over. No blend mode = no hue tint.
      ============================================================ */
   .nav {
     position: fixed;
@@ -87,11 +88,12 @@
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    mix-blend-mode: difference;
     color: var(--c-white);
+    transition: color 0.3s ease;
     pointer-events: none;
   }
   .nav > * { pointer-events: auto; }
+  .nav.is-light { color: var(--c-black); }
   .nav-l { display: flex; gap: 24px; }
   .nav-c { letter-spacing: 0.10em; }
   .nav-r { display: flex; gap: 24px; justify-content: flex-end; }
@@ -326,11 +328,18 @@
     transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .gallery figure:hover img { transform: scale(1.025); }
-  .gallery .g1 { grid-column: 1 / span 8; aspect-ratio: 16 / 10; }
-  .gallery .g2 { grid-column: 9 / span 4; aspect-ratio: 3 / 4; }
-  .gallery .g3 { grid-column: 1 / span 4; aspect-ratio: 1 / 1; }
-  .gallery .g4 { grid-column: 5 / span 4; aspect-ratio: 1 / 1; }
-  .gallery .g5 { grid-column: 9 / span 4; aspect-ratio: 1 / 1; }
+  .gallery .g1  { grid-column: 1 / span 8;  aspect-ratio: 16 / 10; }
+  .gallery .g2  { grid-column: 9 / span 4;  aspect-ratio: 3 / 4; }
+  .gallery .g3  { grid-column: 1 / span 4;  aspect-ratio: 1 / 1; }
+  .gallery .g4  { grid-column: 5 / span 4;  aspect-ratio: 1 / 1; }
+  .gallery .g5  { grid-column: 9 / span 4;  aspect-ratio: 1 / 1; }
+  .gallery .g6  { grid-column: 1 / span 5;  aspect-ratio: 4 / 5; }
+  .gallery .g7  { grid-column: 6 / span 7;  aspect-ratio: 16 / 11; }
+  .gallery .g8  { grid-column: 1 / span 4;  aspect-ratio: 1 / 1; }
+  .gallery .g9  { grid-column: 5 / span 4;  aspect-ratio: 1 / 1; }
+  .gallery .g10 { grid-column: 9 / span 4;  aspect-ratio: 3 / 4; }
+  .gallery .g11 { grid-column: 1 / span 7;  aspect-ratio: 16 / 11; }
+  .gallery .g12 { grid-column: 8 / span 5;  aspect-ratio: 4 / 5; }
 
   /* ============================================================
      §03 — SELECTED WORK (grey ground, white K)
@@ -601,8 +610,8 @@
     display: block;
     height: auto;
     width: auto;
-    max-height: 280px;
-    max-width: 40%;
+    max-height: 180px;
+    max-width: 24%;
     user-select: none;
   }
 
@@ -680,11 +689,18 @@
 
     /* Gallery */
     .gallery { padding-top: 32px; gap: 8px; }
-    .gallery .g1 { grid-column: 1 / -1; aspect-ratio: 4 / 3; }
-    .gallery .g2 { grid-column: 1 / -1; aspect-ratio: 3 / 4; }
-    .gallery .g3 { grid-column: 1 / span 6; aspect-ratio: 1 / 1; }
-    .gallery .g4 { grid-column: 7 / span 6; aspect-ratio: 1 / 1; }
-    .gallery .g5 { grid-column: 1 / -1; aspect-ratio: 4 / 3; }
+    .gallery .g1  { grid-column: 1 / -1;     aspect-ratio: 4 / 3; }
+    .gallery .g2  { grid-column: 1 / -1;     aspect-ratio: 3 / 4; }
+    .gallery .g3  { grid-column: 1 / span 6; aspect-ratio: 1 / 1; }
+    .gallery .g4  { grid-column: 7 / span 6; aspect-ratio: 1 / 1; }
+    .gallery .g5  { grid-column: 1 / -1;     aspect-ratio: 4 / 3; }
+    .gallery .g6  { grid-column: 1 / -1;     aspect-ratio: 4 / 5; }
+    .gallery .g7  { grid-column: 1 / -1;     aspect-ratio: 4 / 3; }
+    .gallery .g8  { grid-column: 1 / span 6; aspect-ratio: 1 / 1; }
+    .gallery .g9  { grid-column: 7 / span 6; aspect-ratio: 1 / 1; }
+    .gallery .g10 { grid-column: 1 / -1;     aspect-ratio: 3 / 4; }
+    .gallery .g11 { grid-column: 1 / -1;     aspect-ratio: 4 / 3; }
+    .gallery .g12 { grid-column: 1 / -1;     aspect-ratio: 4 / 5; }
 
     /* Work */
     .work-body { grid-template-columns: 1fr; padding-top: 32px; }
@@ -725,7 +741,7 @@
     .contact-headline { font-size: clamp(40px, 14vw, 80px); margin-top: 32px; }
     .contact-mail { font-size: 22px; margin-top: 36px; }
     .contact-mark { margin-top: 36px; }
-    .contact-mark img { max-height: 160px; max-width: 50%; }
+    .contact-mark img { max-height: 110px; max-width: 30%; }
     .contact-foot { grid-template-columns: 1fr 1fr; gap: 20px var(--gutter); margin-top: 32px; }
 
     footer.colophon { grid-template-columns: 1fr; gap: 6px; }
@@ -828,21 +844,18 @@
     </header>
 
     <div class="gallery">
-      <figure class="g1">
-        <img src="studio_image_1.png" alt="Kiosk Recording, plate 01" loading="lazy">
-      </figure>
-      <figure class="g2">
-        <img src="studio_image_2.png" alt="Kiosk Recording, plate 02" loading="lazy">
-      </figure>
-      <figure class="g3">
-        <img src="studio_image_3.png" alt="Kiosk Recording, plate 03" loading="lazy">
-      </figure>
-      <figure class="g4">
-        <img src="studio_image_4.png" alt="Kiosk Recording, plate 04" loading="lazy">
-      </figure>
-      <figure class="g5">
-        <img src="studio_image_5.png" alt="Kiosk Recording, plate 05" loading="lazy">
-      </figure>
+      <figure class="g1"><img src="studio_image_1.jpg" alt="" loading="lazy"></figure>
+      <figure class="g2"><img src="studio_image_2.jpg" alt="" loading="lazy"></figure>
+      <figure class="g3"><img src="studio_image_3.jpg" alt="" loading="lazy"></figure>
+      <figure class="g4"><img src="studio_image_4.jpg" alt="" loading="lazy"></figure>
+      <figure class="g5"><img src="studio_image_5.jpg" alt="" loading="lazy"></figure>
+      <figure class="g6"><img src="studio_image_6.jpg" alt="" loading="lazy"></figure>
+      <figure class="g7"><img src="studio_image_7.jpg" alt="" loading="lazy"></figure>
+      <figure class="g8"><img src="studio_image_8.jpg" alt="" loading="lazy"></figure>
+      <figure class="g9"><img src="studio_image_9.jpg" alt="" loading="lazy"></figure>
+      <figure class="g10"><img src="studio_image_10.jpg" alt="" loading="lazy"></figure>
+      <figure class="g11"><img src="studio_image_11.jpg" alt="" loading="lazy"></figure>
+      <figure class="g12"><img src="studio_image_12.jpg" alt="" loading="lazy"></figure>
     </div>
   </section>
 
@@ -1040,6 +1053,34 @@
 </main>
 
 <script>
+  // Nav text colour per section — swap based on whichever section
+  // currently sits beneath the nav. Light grounds (white, grey) get
+  // dark text; dark grounds (black, oxblood, red) get white text.
+  (function() {
+    const nav = document.querySelector('.nav');
+    if (!nav) return;
+    const lightGrounds = new Set(['page--white', 'page--grey']);
+    const sections = Array.from(document.querySelectorAll('section.page, section.contact-block'));
+    if (!sections.length) return;
+
+    function update() {
+      const probeY = 30; // a few px under the top of the viewport
+      let current = sections[0];
+      for (const s of sections) {
+        const rect = s.getBoundingClientRect();
+        if (rect.top <= probeY && rect.bottom > probeY) {
+          current = s;
+          break;
+        }
+      }
+      const isLight = current && Array.from(current.classList).some(c => lightGrounds.has(c));
+      nav.classList.toggle('is-light', !!isLight);
+    }
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+  })();
+
   // Tom / Dougal switch on the work section
   (function() {
     const body = document.querySelector('.work-body');
