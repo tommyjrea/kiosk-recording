@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dougal Gray — Selected Work · Kiosk Recording</title>
+<meta name="description" content="Selected work by Dougal Gray — mixing, production, recording, and composition. Run as part of Kiosk Recording, an independent music studio in South London.">
+<link rel="icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:title" content="Dougal Gray — Selected Work">
+<meta property="og:description" content="Mix · Production · Recording · Composition. Selected work from Dougal Gray at Kiosk Recording.">
+<meta property="og:image" content="../K_Block_Red.png">
+<meta property="og:type" content="website">
+<style>
+  /* ============================================================
+     SELF-HOSTED FONTS (referenced from repo root, one level up)
+     ============================================================ */
+  @font-face {
+    font-family: 'SuisseIntl';
+    src: url('../SuisseIntl-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SuisseIntl';
+    src: url('../SuisseIntl-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'ABCDiatype';
+    src: url('../ABCDiatype-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --c-black:   #131313;
+    --c-white:   #ffffff;
+    --c-grey:    #A1A1A1;
+    --c-red:     #FD3249;
+    --rule:      rgba(255,255,255,0.30);
+
+    --gutter: 24px;
+    --margin: 32px;
+
+    --sans:  'SuisseIntl', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    --sans-alt: 'ABCDiatype', 'SuisseIntl', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--c-grey); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body {
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: 0.005em;
+    color: var(--c-white);
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--c-red); color: var(--c-white); }
+
+  /* ============================================================
+     MASTHEAD
+     ============================================================ */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 18px var(--margin);
+    background: var(--c-grey);
+    border-bottom: 1px solid var(--rule);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .nav-l { display: flex; gap: 24px; align-items: center; }
+  .nav-l a { transition: opacity .2s ease; }
+  .nav-l a:hover { opacity: 0.45; }
+  .nav-back {
+    justify-self: end;
+    transition: opacity .2s ease;
+  }
+  .nav-back:hover { opacity: 0.45; }
+
+  /* ============================================================
+     PAGE
+     ============================================================ */
+  main {
+    flex: 1;
+    padding: 72px var(--margin) 88px;
+  }
+
+  /* Page header — same pattern as main site */
+  .page-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    align-items: baseline;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .page-head .num    { grid-column: 1 / span 2; }
+  .page-head .name   { grid-column: 3 / span 6; }
+  .page-head .ground { grid-column: 9 / span 2; opacity: 0.55; }
+  .page-head .of     { grid-column: 11 / span 2; text-align: right; opacity: 0.55; }
+
+  /* Masthead title — large typographic anchor */
+  .masthead-title {
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    align-items: end;
+    padding-bottom: 56px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead-title h1 {
+    grid-column: 1 / span 9;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(56px, 9vw, 168px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--c-white);
+  }
+  .masthead-title h1 .reg {
+    font-size: 0.18em;
+    vertical-align: super;
+    color: var(--c-red);
+    margin-left: 0.05em;
+    font-weight: 400;
+  }
+  .masthead-title .meta {
+    grid-column: 10 / span 3;
+    text-align: right;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--c-white);
+  }
+  .masthead-title .meta .label { display: block; opacity: 0.55; margin-bottom: 6px; }
+
+  /* Body — list + sticky aside */
+  .work-body {
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+  }
+  .work-aside {
+    grid-column: 1 / span 3;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    position: sticky;
+    top: 90px;
+    align-self: start;
+  }
+  .work-aside .label { display: block; opacity: 0.55; margin-bottom: 8px; }
+  .work-aside .pill {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 5px 11px 6px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+  }
+
+  .work-list { grid-column: 4 / span 9; }
+
+  .work-row {
+    display: grid;
+    grid-template-columns: 56px 1fr 1.4fr 1.05fr 24px;
+    gap: 16px;
+    align-items: baseline;
+    padding: 18px 14px;
+    margin: 0 -14px;
+    border-top: 1px solid var(--rule);
+    transition: background-color .25s ease, color .25s ease;
+    cursor: pointer;
+  }
+  .work-row:last-child { border-bottom: 1px solid var(--rule); }
+  .work-row:hover { background: var(--c-white); color: var(--c-black); }
+  .work-row:hover .work-arrow { transform: translateX(4px); }
+
+  .work-num    { font-size: 11px; letter-spacing: 0.14em; opacity: 0.55; font-variant-numeric: tabular-nums; }
+  .work-row:hover .work-num { opacity: 0.55; color: var(--c-black); }
+  .work-artist { font-size: 18px; font-weight: 500; letter-spacing: -0.005em; }
+  .work-track  { font-size: 18px; font-weight: 400; letter-spacing: -0.005em; opacity: 0.92; }
+  .work-role   { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.55; }
+  .work-row:hover .work-role { opacity: 0.55; color: var(--c-black); }
+  .work-arrow  { font-size: 14px; transition: transform .25s ease; }
+
+  /* Footer */
+  .page-foot {
+    margin-top: 96px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .page-foot .l { grid-column: 1 / span 4; }
+  .page-foot .c { grid-column: 5 / span 4; }
+  .page-foot .r { grid-column: 9 / span 4; text-align: right; }
+  .page-foot a { transition: opacity .2s ease; }
+  .page-foot a:hover { opacity: 0.45; }
+
+  /* ============================================================
+     MOBILE
+     ============================================================ */
+  @media (max-width: 900px) {
+    :root { --margin: 18px; --gutter: 14px; }
+
+    .nav { font-size: 9px; padding: 14px var(--margin); }
+    main { padding: 48px var(--margin) 64px; }
+
+    .page-head { grid-template-columns: repeat(8, 1fr); }
+    .page-head .num    { grid-column: 1 / span 2; }
+    .page-head .name   { grid-column: 3 / span 6; }
+    .page-head .ground { display: none; }
+    .page-head .of     { display: none; }
+
+    .masthead-title { grid-template-columns: 1fr; gap: 24px; margin-top: 40px; padding-bottom: 36px; }
+    .masthead-title h1 { grid-column: 1 / -1; font-size: clamp(44px, 14vw, 96px); }
+    .masthead-title .meta { grid-column: 1 / -1; text-align: left; }
+
+    .work-body { grid-template-columns: 1fr; margin-top: 40px; }
+    .work-aside { grid-column: 1 / -1; position: static; margin-bottom: 28px; }
+    .work-list { grid-column: 1 / -1; }
+    .work-row {
+      grid-template-columns: 32px 1fr 18px;
+      grid-template-areas:
+        "num artist arrow"
+        "num track  arrow"
+        "num role   .";
+      gap: 4px 12px;
+      padding: 14px 8px;
+      margin: 0 -8px;
+      align-items: start;
+    }
+    .work-num    { grid-area: num; padding-top: 4px; }
+    .work-artist { grid-area: artist; font-size: 16px; }
+    .work-track  { grid-area: track; display: block; font-size: 14px; opacity: 0.85; }
+    .work-role   { grid-area: role; font-size: 10px; padding-top: 4px; }
+    .work-arrow  { grid-area: arrow; font-size: 12px; align-self: start; padding-top: 4px; }
+
+    .page-foot { grid-template-columns: 1fr; gap: 8px; margin-top: 56px; }
+    .page-foot .l, .page-foot .c, .page-foot .r {
+      grid-column: 1 / -1;
+      text-align: left;
+    }
+  }
+
+  /* ============================================================
+     EMPTY-STATE — used by /dougal page
+     ============================================================ */
+  .empty-state {
+    grid-column: 4 / span 9;
+    padding: 80px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .empty-state p {
+    font-family: var(--sans-alt);
+    font-weight: 500;
+    font-size: clamp(20px, 2.4vw, 32px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    max-width: 28ch;
+  }
+  @media (max-width: 900px) {
+    .empty-state { grid-column: 1 / -1; padding: 48px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     MASTHEAD
+     ============================================================ -->
+<header class="nav">
+  <div class="nav-l">
+    <a href="/">Kiosk Recording®</a>
+    <span style="opacity: 0.55">SE16 · London</span>
+  </div>
+  <a class="nav-back" href="/">↗ Back to studio</a>
+</header>
+
+<main>
+
+  <!-- Page header line -->
+  <header class="page-head">
+    <span class="num">03</span>
+    <span class="name">Selected Work</span>
+    <span class="ground">#A1A1A1</span>
+    <span class="of">Dougal Gray</span>
+  </header>
+
+  <!-- Big title -->
+  <section class="masthead-title">
+    <h1>Dougal Gray<span class="reg">®</span></h1>
+    <div class="meta">
+      <span class="label">Practice</span>
+      Mix · Production<br>Recording · Composition
+    </div>
+  </section>
+
+  <!-- Credit list -->
+  <section class="work-body">
+    <aside class="work-aside">
+      <span class="label">Selected Work</span>
+      <span class="pill">Recent Highlights</span>
+    </aside>
+
+    <div class="work-list empty-state">
+      <p>Selected work coming soon. In the meantime, get in touch — <a href="mailto:info&#64;kioskrecording.studio" style="border-bottom: 1px solid currentColor; padding-bottom: 1px">info@kioskrecording.studio</a></p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="page-foot">
+    <div class="l">Kiosk Recording®</div>
+    <div class="c">SE16 · London</div>
+    <div class="r"><a href="mailto:info&#64;kioskrecording.studio">info@kioskrecording.studio</a></div>
+  </footer>
+
+</main>
+
+</body>
+</html>
