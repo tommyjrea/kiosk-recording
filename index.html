@@ -167,18 +167,16 @@
   }
 
   .cover-mark {
-    position: relative;
-    overflow: hidden;
-    background: var(--c-white);
-    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
   }
   .cover-mark img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: right center;
+    display: block;
+    height: auto;
+    width: auto;
+    max-width: 100%;
+    max-height: 80%;
     user-select: none;
   }
 
@@ -340,13 +338,14 @@
     grid-template-columns: 56px 1fr 1.4fr 1.05fr 24px;
     gap: 16px;
     align-items: baseline;
-    padding: 18px 0;
+    padding: 18px 14px;
+    margin: 0 -14px;
     border-top: 1px solid var(--rule);
-    transition: background-color .25s ease, padding .25s ease, color .25s ease;
+    transition: background-color .25s ease, color .25s ease;
     cursor: pointer;
   }
   .work-row:last-child { border-bottom: 1px solid var(--rule); }
-  .work-row:hover { background: var(--c-white); color: var(--c-black); padding-left: 14px; padding-right: 14px; }
+  .work-row:hover { background: var(--c-white); color: var(--c-black); }
   .work-row:hover .work-arrow { transform: translateX(4px); }
 
   .work-num    { font-size: 11px; letter-spacing: 0.14em; opacity: 0.65; font-variant-numeric: tabular-nums; }
@@ -365,19 +364,15 @@
   }
   .practice-mark {
     position: absolute;
-    top: 0; bottom: 0; right: 0;
-    width: 14vw;
+    bottom: 56px;
+    right: var(--margin);
+    width: auto;
+    height: 50vh;
+    max-height: 480px;
     pointer-events: none;
     z-index: 0;
-  }
-  .practice-mark img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: right center;
     user-select: none;
   }
-  #practice .page-head { padding-right: 14vw; }
   .practice-body {
     position: relative;
     z-index: 1;
@@ -401,7 +396,6 @@
   .practice-list {
     grid-column: 4 / span 9;
     list-style: none;
-    padding-right: 14vw;
   }
   .practice-list li {
     display: grid;
@@ -512,18 +506,17 @@
   .contact-mail:hover { color: var(--c-white); padding-left: 8px; }
 
   .contact-mark {
-    margin-top: 48px;
-    width: 100%;
-    aspect-ratio: 16 / 7;
-    overflow: hidden;
-    background: var(--c-red);
+    margin-top: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
   }
   .contact-mark img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: right center;
     display: block;
+    height: auto;
+    width: auto;
+    max-height: 280px;
+    max-width: 40%;
     user-select: none;
   }
 
@@ -618,10 +611,10 @@
         "num track  arrow"
         "num role   .";
       gap: 4px 12px;
-      padding: 14px 0;
+      padding: 14px 8px;
+      margin: 0 -8px;
       align-items: start;
     }
-    .work-row:hover { padding: 14px 8px; }
     .work-num    { grid-area: num; padding-top: 4px; }
     .work-artist { grid-area: artist; font-size: 16px; }
     .work-track  { grid-area: track; display: block; font-size: 14px; opacity: 0.85; }
@@ -630,9 +623,7 @@
 
     /* Practice */
     .practice-mark { display: none; }
-    #practice .page-head { padding-right: 0; }
     .practice-body { grid-template-columns: 1fr; padding-top: 36px; gap: 36px; }
-    .practice-list { padding-right: 0; }
     .practice-aside { grid-column: 1 / -1; align-self: start; }
     .practice-list { grid-column: 1 / -1; }
     .practice-list li { grid-template-columns: 36px 1fr; padding: 16px 0; font-size: 40px; }
@@ -647,7 +638,8 @@
     /* Contact */
     .contact-headline { font-size: clamp(40px, 14vw, 80px); margin-top: 32px; }
     .contact-mail { font-size: 22px; margin-top: 36px; }
-    .contact-mark { margin-top: 32px; aspect-ratio: 16 / 9; }
+    .contact-mark { margin-top: 36px; }
+    .contact-mark img { max-height: 160px; max-width: 50%; }
     .contact-foot { grid-template-columns: 1fr 1fr; gap: 20px var(--gutter); margin-top: 32px; }
 
     footer.colophon { grid-template-columns: 1fr; gap: 6px; }
