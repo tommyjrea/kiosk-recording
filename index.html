@@ -1,176 +1,1084 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kiosk Recording</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiosk Recording — South London</title>
+<meta name="description" content="An independent music studio in South London, run by Tom Rea and Dougal Gray. Songwriting, production, recording and mixing.">
 <link rel="icon" href="favicon.ico">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:title" content="Kiosk Recording">
+<meta property="og:description" content="An independent music studio in South London, run by Tom Rea and Dougal Gray.">
+<meta property="og:image" content="K_Block_Red_White.png">
+<meta property="og:type" content="website">
 <style>
-@font-face { font-family: 'SuisseIntl'; src: url('SuisseIntl-Medium.woff') format('woff'); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: 'SuisseIntl'; src: url('SuisseIntl-Regular.woff') format('woff'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'ABCDiatype'; src: url('ABCDiatype-Medium.woff') format('woff'); font-weight: 500; font-style: normal; font-display: swap; }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { height: 100%; background: #fff; }
-body { -webkit-font-smoothing: antialiased; }
-a { color: inherit; text-decoration: none; }
-#intro { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; }
-#intro-bg { position: absolute; inset: 0; background: #fdfdfd; }
-#intro img { position: relative; width: 160px; height: auto; z-index: 1; }
-#intro.fade-white #intro-bg { transition: background-color 0.4s ease; background-color: #fff; }
-#intro.fade-white img { transition: opacity 0.4s ease; opacity: 0; }
-#intro.fade-out { transition: opacity 0.3s ease; opacity: 0; }
-#intro.hidden { display: none; }
-#site { display: none; }
-#site.visible { display: block; }
-.page-home { position: relative; width: 100%; height: 100vh; height: 100dvh; background: #fff; color: #000; overflow: hidden; }
-.home-header { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: flex-start; padding: 24px 28px; z-index: 2; }
-.home-title { font-family: 'Times New Roman', Times, serif; font-weight: 700; font-size: 30px; line-height: 1.1; white-space: nowrap; }
-.home-tagline { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 24px; line-height: 1.3; }
-.home-nav { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 24px; line-height: 1.3; }
-.home-nav a { display: block; }
-.home-nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
-.home-copyright { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 24px; line-height: 1.1; white-space: nowrap; }
-.home-image { position: absolute; bottom: 24px; left: 28px; z-index: 1; }
-.home-image img { display: block; width: 40vw; height: auto; }
-.home-counter { position: absolute; bottom: 24px; right: 28px; font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 24px; z-index: 2; }
-.home-footer-mobile { display: none; }
-.overlay { position: fixed; inset: 0; z-index: 50; overflow-y: auto; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-.overlay.open { transform: translateY(0); }
-.page-info { background: #480016; color: #FD3249; font-family: 'ABCDiatype', sans-serif; font-weight: 500; }
-.info-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 24px 28px; }
-.info-title { font-size: 24px; line-height: 1.1; }
-.overlay-close { font-size: 24px; cursor: pointer; background: none; border: none; color: inherit; line-height: 1; padding: 0; }
-.overlay-close:hover { opacity: 0.5; }
-.info-body { position: absolute; bottom: 0; left: 0; right: 0; padding: 0 28px 40px 28px; }
-.info-text { font-size: 24px; line-height: 1.3; max-width: 640px; }
-.info-text strong { font-family: 'Times New Roman', Times, serif; font-weight: 700; font-style: italic; }
-.info-text a { text-decoration: underline; text-underline-offset: 4px; }
-.info-text a:hover { opacity: 0.5; }
-.info-address { margin-top: 36px; font-size: 24px; line-height: 1.35; }
-.page-equip { background: #A1A1A1; color: #FFF; }
-.equip-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 24px 28px; }
-.equip-title { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 24px; line-height: 1.1; }
-.equip-list { padding: 80px 28px 60px 28px; max-width: 700px; }
-.equip-section { border-top: 1px solid rgba(255,255,255,0.35); padding: 20px 0 40px 0; display: grid; grid-template-columns: 200px 1fr; gap: 0 40px; }
-.equip-section-title { font-family: 'SuisseIntl', sans-serif; font-weight: 500; font-size: 16px; line-height: 140%; }
-.equip-section-body { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 16px; line-height: 140%; }
-.equip-section-body p { margin: 0; }
-@media (max-width: 768px) {
-  .home-header { display: block; padding: 20px; } .home-title { font-size: 24px; }
-  .home-tagline, .home-nav, .home-copyright { display: none; }
-  .home-image { left: 0; right: 0; bottom: auto; top: 50%; transform: translateY(-50%); padding: 0 20px; } .home-image img { width: 100%; }
-  .home-counter { display: none; }
-  .home-footer-mobile { display: flex; justify-content: space-between; align-items: flex-end; position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; z-index: 2; }
-  .mobile-nav { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 20px; line-height: 1.4; }
-  .mobile-nav a { display: block; } .mobile-nav a:hover { text-decoration: underline; text-underline-offset: 3px; }
-  .mobile-copyright { font-family: 'SuisseIntl', sans-serif; font-weight: 400; font-size: 20px; }
-  .info-header { padding: 20px; } .info-title { font-size: 20px; } .info-body { padding: 0 20px 32px 20px; } .info-text { font-size: 20px; } .info-address { font-size: 20px; }
-  .equip-header { padding: 20px; } .equip-title { font-size: 20px; } .equip-list { padding: 40px 20px 60px 20px; } .equip-section { display: block; } .equip-section-title { margin-bottom: 10px; }
-}
-@media (min-width: 769px) and (max-width: 1024px) {
-  .home-tagline { font-size: 20px; } .home-nav { font-size: 20px; } .home-copyright { font-size: 20px; } .home-counter { font-size: 20px; }
-  .home-image img { width: 45vw; } .info-text { font-size: 22px; } .info-address { font-size: 22px; }
-}
+  /* ============================================================
+     SELF-HOSTED FONTS
+     - SuisseIntl (Regular + Medium): primary grotesque
+     - ABCDiatype (Medium): used for statement/info passages
+     ============================================================ */
+  @font-face {
+    font-family: 'SuisseIntl';
+    src: url('SuisseIntl-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'SuisseIntl';
+    src: url('SuisseIntl-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'ABCDiatype';
+    src: url('ABCDiatype-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  :root {
+    /* The five brand grounds */
+    --c-black:   #131313;
+    --c-oxblood: #480016;
+    --c-red:     #FD3249;
+    --c-grey:    #A1A1A1;
+    --c-white:   #ffffff;
+
+    /* Hairline rules tuned per ground */
+    --rule-light: rgba(255,255,255,0.18);
+    --rule-dark:  rgba(0,0,0,0.16);
+
+    --gutter: 24px;
+    --margin: 32px;
+
+    --sans:  'SuisseIntl', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    --sans-alt: 'ABCDiatype', 'SuisseIntl', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--c-black); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overscroll-behavior: none; }
+  body {
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: 0.005em;
+    overflow-x: hidden;
+    color: var(--c-white);
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  ::selection { background: var(--c-red); color: var(--c-white); }
+
+  /* ============================================================
+     INTRO — fullscreen K mark, scales into cover position.
+     Uses FLIP-style coordinate hand-off for pixel accuracy.
+     ============================================================ */
+  .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: var(--c-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    /* opacity is held at 1 throughout — we hand off when the
+       overlay K reaches the cover K's slot, then fade overlay out */
+  }
+  .intro.is-done { opacity: 0; transition: opacity 0.5s ease 0.05s; }
+
+  .intro-mark {
+    /* sized in JS to match the cover-mark image's natural size at rest;
+       starts large + centered, then animates to the cover's coordinates */
+    width: min(58vmin, 520px);
+    height: auto;
+    transform-origin: top left;
+    will-change: transform, width;
+    user-select: none;
+  }
+
+  /* Initial states — cover wakes up after the intro transitions away */
+  body.is-intro .nav,
+  body.is-intro .cover-top,
+  body.is-intro .cover-text,
+  body.is-intro .cover-foot { opacity: 0; }
+  body.is-intro .cover-mark img { visibility: hidden; }
+
+  body.intro-done .nav,
+  body.intro-done .cover-top,
+  body.intro-done .cover-text,
+  body.intro-done .cover-foot {
+    opacity: 1;
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  body.intro-done .cover-text { transition-delay: 0.15s; }
+  body.intro-done .cover-foot { transition-delay: 0.25s; }
+  body.intro-done .cover-top  { transition-delay: 0.05s; }
+  body.intro-done .nav        { transition-delay: 0.30s; }
+
+  /* ============================================================
+     MASTHEAD — fixed, monochrome, mixes with section colour
+     ============================================================ */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 18px var(--margin);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    mix-blend-mode: difference;
+    color: var(--c-white);
+    pointer-events: none;
+  }
+  .nav > * { pointer-events: auto; }
+  .nav-l { display: flex; gap: 24px; }
+  .nav-c { letter-spacing: 0.10em; }
+  .nav-r { display: flex; gap: 24px; justify-content: flex-end; }
+  .nav a { transition: opacity .2s ease; }
+  .nav a:hover { opacity: 0.5; }
+
+  /* ============================================================
+     SHARED SECTION SHELL
+     ============================================================ */
+  section.page {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    padding: 88px var(--margin) 56px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Section header — same structure on every page, colour shifts */
+  .page-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    align-items: baseline;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .page-head .num   { grid-column: 1 / span 2; }
+  .page-head .name  { grid-column: 3 / span 6; }
+  .page-head .ground{ grid-column: 9 / span 2; opacity: 0.55; }
+  .page-head .of    { grid-column: 11 / span 2; text-align: right; opacity: 0.55; }
+
+  /* Per-ground colour rules */
+  .page--black   { background: var(--c-black);   color: var(--c-white);   --rule: var(--rule-light); }
+  .page--oxblood { background: var(--c-oxblood); color: var(--c-red);     --rule: rgba(253,50,73,0.30); }
+  .page--white   { background: var(--c-white);   color: var(--c-black);   --rule: var(--rule-dark); }
+  .page--grey    { background: var(--c-grey);    color: var(--c-white);   --rule: rgba(255,255,255,0.40); }
+  .page--red     { background: var(--c-red);     color: var(--c-white);   --rule: rgba(255,255,255,0.40); }
+
+  /* ============================================================
+     §00 — COVER (black ground, white K)
+     The opening title page. Scale matters here.
+     ============================================================ */
+  .cover {
+    justify-content: space-between;
+  }
+  .cover-top {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .cover-top > div:nth-child(1) { grid-column: 1 / span 4; }
+  .cover-top > div:nth-child(2) { grid-column: 5 / span 4; opacity: 0.55; }
+  .cover-top > div:nth-child(3) { grid-column: 9 / span 4; text-align: right; opacity: 0.55; }
+
+  .cover-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    align-items: stretch;
+    padding: 48px 0 0;
+  }
+
+  .cover-mark {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-right: var(--gutter);
+  }
+  .cover-mark img {
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    user-select: none;
+  }
+
+  .cover-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-left: var(--gutter);
+    border-left: 1px solid var(--rule);
+  }
+  .cover-wordmark {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(56px, 9.4vw, 168px);
+    line-height: 0.86;
+    letter-spacing: -0.045em;
+  }
+  .cover-wordmark .reg {
+    display: inline-block;
+    font-size: 0.16em;
+    vertical-align: top;
+    margin-top: 0.4em;
+    margin-left: 0.05em;
+    color: var(--c-red);
+    font-weight: 400;
+  }
+  .cover-byline {
+    margin-top: 28px;
+    font-size: 13px;
+    line-height: 1.45;
+    max-width: 38ch;
+    opacity: 0.85;
+  }
+
+  .cover-foot {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    margin-top: 48px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .cover-foot > div:nth-child(1) { grid-column: 1 / span 3; }
+  .cover-foot > div:nth-child(2) { grid-column: 4 / span 3; }
+  .cover-foot > div:nth-child(3) { grid-column: 7 / span 3; }
+  .cover-foot > div:nth-child(4) { grid-column: 10 / span 3; text-align: right; }
+  .cover-foot dt { opacity: 0.5; margin-bottom: 6px; font-weight: 500; }
+  .cover-foot dd { font-size: 12px; letter-spacing: 0.05em; text-transform: none; opacity: 0.95; line-height: 1.45; }
+
+  /* ============================================================
+     §01 — INFORMATION (oxblood ground, red K)
+     Statement page. Big quiet type.
+     ============================================================ */
+  .info-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    align-items: end;
+    padding-top: 80px;
+  }
+  .info-mark {
+    grid-column: 1 / span 4;
+    align-self: end;
+  }
+  .info-mark img {
+    width: 100%;
+    max-width: 320px;
+    margin-left: -12px;
+  }
+  .info-text {
+    grid-column: 6 / span 7;
+    font-family: var(--sans-alt);
+    font-weight: 500;
+    font-size: clamp(28px, 3.4vw, 48px);
+    line-height: 1.14;
+    letter-spacing: -0.022em;
+  }
+  .info-text p + p { margin-top: 0.85em; }
+  .info-text strong { font-weight: 500; }
+
+  .info-foot {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    margin-top: 80px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .info-foot > div:nth-child(1) { grid-column: 1 / span 4; opacity: 0.55; }
+  .info-foot > div:nth-child(2) { grid-column: 5 / span 4; }
+  .info-foot > div:nth-child(3) { grid-column: 9 / span 4; text-align: right; opacity: 0.55; }
+
+  /* ============================================================
+     §02 — STUDIO (white ground, red K)
+     The photograph chamber.
+     ============================================================ */
+  .gallery {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(0, auto);
+    gap: var(--gutter);
+    padding-top: 56px;
+  }
+  .gallery figure {
+    position: relative;
+    overflow: hidden;
+    background: var(--c-black);
+  }
+  .gallery figure img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: contrast(0.97) saturate(0.78);
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .gallery figure:hover img { transform: scale(1.025); }
+  .gallery figcaption {
+    position: absolute;
+    bottom: 14px; left: 14px; right: 14px;
+    color: var(--c-white);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    mix-blend-mode: difference;
+    opacity: 0.9;
+  }
+  .gallery .g1 { grid-column: 1 / span 8; aspect-ratio: 16 / 10; }
+  .gallery .g2 { grid-column: 9 / span 4; aspect-ratio: 3 / 4; }
+  .gallery .g3 { grid-column: 1 / span 4; aspect-ratio: 1 / 1; }
+  .gallery .g4 { grid-column: 5 / span 4; aspect-ratio: 1 / 1; }
+  .gallery .g5 { grid-column: 9 / span 4; aspect-ratio: 1 / 1; }
+
+  /* ============================================================
+     §03 — SELECTED WORK (grey ground, white K)
+     Typographic table of the credits.
+     ============================================================ */
+  .work-body {
+    flex: 1;
+    padding-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+  }
+  .work-aside {
+    grid-column: 1 / span 3;
+    position: sticky;
+    top: 88px;
+    align-self: start;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .work-aside .label { display: block; opacity: 0.65; margin-bottom: 8px; }
+  .work-aside .person { font-size: 22px; letter-spacing: -0.01em; text-transform: none; font-weight: 500; line-height: 1.1; margin-bottom: 14px; }
+  .work-aside .pill {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 5px 11px 6px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+  }
+
+  .work-list { grid-column: 4 / span 9; }
+  .work-row {
+    display: grid;
+    grid-template-columns: 56px 1fr 1.4fr 1.05fr 24px;
+    gap: 16px;
+    align-items: baseline;
+    padding: 18px 0;
+    border-top: 1px solid var(--rule);
+    transition: background-color .25s ease, padding .25s ease, color .25s ease;
+    cursor: pointer;
+  }
+  .work-row:last-child { border-bottom: 1px solid var(--rule); }
+  .work-row:hover { background: var(--c-white); color: var(--c-black); padding-left: 14px; padding-right: 14px; }
+  .work-row:hover .work-arrow { transform: translateX(4px); }
+
+  .work-num    { font-size: 11px; letter-spacing: 0.14em; opacity: 0.65; font-variant-numeric: tabular-nums; }
+  .work-artist { font-size: 18px; font-weight: 500; letter-spacing: -0.005em; }
+  .work-track  { font-size: 18px; font-weight: 400; letter-spacing: -0.005em; opacity: 0.92; }
+  .work-role   { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.65; }
+  .work-arrow  { font-size: 14px; transition: transform .25s ease; }
+
+  /* ============================================================
+     §04 — PRACTICE (red ground, white K)
+     Manifesto list. Largest type on the site.
+     ============================================================ */
+  .practice-body {
+    flex: 1;
+    padding-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    align-items: end;
+  }
+  .practice-aside {
+    grid-column: 1 / span 3;
+    align-self: end;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .practice-aside .small { opacity: 0.7; margin-bottom: 14px; }
+  .practice-aside img { width: 88px; margin-top: 60px; }
+
+  .practice-list {
+    grid-column: 4 / span 9;
+    list-style: none;
+  }
+  .practice-list li {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    align-items: baseline;
+    gap: 24px;
+    padding: 28px 0;
+    border-top: 1px solid var(--rule);
+    font-weight: 400;
+    font-size: clamp(48px, 7.8vw, 128px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+  .practice-list li:last-child { border-bottom: 1px solid var(--rule); }
+  .practice-list .roman { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500; opacity: 0.7; align-self: start; padding-top: 0.6em; font-variant-numeric: tabular-nums; }
+  .practice-list .word { transition: padding .3s ease; }
+  .practice-list li:hover .word { padding-left: 0.2em; }
+  .practice-list .meta { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; opacity: 0.7; align-self: end; padding-bottom: 0.4em; }
+
+  /* ============================================================
+     §05 — EQUIPMENT (black ground, white K)
+     Dense technical sheet.
+     ============================================================ */
+  .equip-body {
+    flex: 1;
+    padding-top: 64px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+  }
+  .equip-aside {
+    grid-column: 1 / span 3;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .equip-aside .small { opacity: 0.55; margin-bottom: 16px; }
+  .equip-aside h2 {
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    font-weight: 500;
+    line-height: 1.1;
+    max-width: 14ch;
+  }
+
+  .equip-grid {
+    grid-column: 4 / span 9;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px 48px;
+  }
+  .equip-block { border-top: 1px solid var(--rule); padding-top: 16px; }
+  .equip-block h3 {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .equip-block h3 .count { opacity: 0.5; font-variant-numeric: tabular-nums; }
+  .equip-block ul { list-style: none; }
+  .equip-block li {
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+    padding: 1px 0;
+  }
+
+  /* ============================================================
+     §06 — CONTACT (oxblood ground, red K)
+     Closing page.
+     ============================================================ */
+  .contact-body {
+    flex: 1;
+    padding-top: 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .contact-headline {
+    font-weight: 400;
+    font-size: clamp(56px, 12.8vw, 220px);
+    line-height: 0.86;
+    letter-spacing: -0.05em;
+    margin-top: 60px;
+  }
+  .contact-headline .lined { display: block; }
+  .contact-headline em { font-style: normal; color: var(--c-white); }
+
+  .contact-mid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    margin-top: 64px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    align-items: end;
+  }
+  .contact-mark { grid-column: 1 / span 3; }
+  .contact-mark img { width: 100%; max-width: 180px; }
+
+  .contact-mail {
+    grid-column: 5 / span 8;
+    font-weight: 400;
+    font-size: clamp(28px, 4.5vw, 72px);
+    letter-spacing: -0.025em;
+    line-height: 1;
+    border-bottom: 1px solid var(--rule);
+    padding: 20px 0;
+    transition: color .25s ease, padding .25s ease;
+  }
+  .contact-mail:hover { color: var(--c-white); padding-left: 8px; }
+
+  .contact-foot {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--gutter);
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .contact-foot dt { opacity: 0.55; margin-bottom: 6px; }
+  .contact-foot dd { font-size: 12px; letter-spacing: 0.04em; text-transform: none; line-height: 1.5; }
+  .contact-foot dd a:hover { color: var(--c-white); }
+
+  /* ============================================================
+     COLOPHON
+     ============================================================ */
+  footer.colophon {
+    background: var(--c-black);
+    color: rgba(255,255,255,0.55);
+    padding: 24px var(--margin);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  footer.colophon .center { text-align: center; }
+  footer.colophon .right { text-align: right; }
+
+  /* ============================================================
+     MOBILE
+     ============================================================ */
+  @media (max-width: 900px) {
+    :root { --margin: 18px; --gutter: 14px; }
+
+    .nav { font-size: 9px; padding: 14px var(--margin); grid-template-columns: 1fr auto; }
+    .nav-r { display: none; }
+
+    section.page { padding: 72px var(--margin) 44px; min-height: 100vh; }
+
+    .page-head { grid-template-columns: repeat(8, 1fr); }
+    .page-head .num    { grid-column: 1 / span 2; }
+    .page-head .name   { grid-column: 3 / span 6; }
+    .page-head .ground { display: none; }
+    .page-head .of     { display: none; }
+
+    /* Cover */
+    .cover-top { grid-template-columns: 1fr 1fr; }
+    .cover-top > div:nth-child(1) { grid-column: 1 / span 1; }
+    .cover-top > div:nth-child(2) { grid-column: 2 / span 1; text-align: right; }
+    .cover-top > div:nth-child(3) { display: none; }
+    .cover-body { grid-template-columns: 1fr; padding-top: 36px; gap: 28px; }
+    .cover-mark { padding-right: 0; justify-content: center; }
+    .cover-mark img { max-width: 60vw; }
+    .cover-text { padding-left: 0; border-left: none; border-top: 1px solid var(--rule); padding-top: 28px; }
+    .cover-wordmark { font-size: clamp(48px, 14vw, 96px); }
+    .cover-foot { grid-template-columns: 1fr 1fr; gap: 18px var(--gutter); margin-top: 36px; }
+    .cover-foot > div:nth-child(1), .cover-foot > div:nth-child(2),
+    .cover-foot > div:nth-child(3), .cover-foot > div:nth-child(4) {
+      grid-column: span 1 !important; text-align: left !important;
+    }
+
+    /* Info */
+    .info-body { grid-template-columns: 1fr; padding-top: 40px; gap: 36px; }
+    .info-mark { grid-column: 1 / -1; }
+    .info-mark img { max-width: 180px; margin-left: 0; }
+    .info-text { grid-column: 1 / -1; font-size: 22px; }
+    .info-foot { grid-template-columns: 1fr; gap: 8px; margin-top: 48px; }
+    .info-foot > div { grid-column: 1 / -1 !important; text-align: left !important; }
+
+    /* Gallery */
+    .gallery { padding-top: 32px; gap: 8px; }
+    .gallery .g1 { grid-column: 1 / -1; aspect-ratio: 4 / 3; }
+    .gallery .g2 { grid-column: 1 / -1; aspect-ratio: 3 / 4; }
+    .gallery .g3 { grid-column: 1 / span 6; aspect-ratio: 1 / 1; }
+    .gallery .g4 { grid-column: 7 / span 6; aspect-ratio: 1 / 1; }
+    .gallery .g5 { grid-column: 1 / -1; aspect-ratio: 4 / 3; }
+
+    /* Work */
+    .work-body { grid-template-columns: 1fr; padding-top: 32px; }
+    .work-aside { grid-column: 1 / -1; position: static; margin-bottom: 28px; }
+    .work-list { grid-column: 1 / -1; }
+    .work-row { grid-template-columns: 32px 1fr 18px; gap: 12px; padding: 14px 0; }
+    .work-row:hover { padding: 14px 8px; }
+    .work-track { display: none; }
+    .work-role  { grid-column: 1 / -1; padding-left: 44px; padding-top: 4px; font-size: 10px; }
+
+    /* Practice */
+    .practice-body { grid-template-columns: 1fr; padding-top: 36px; gap: 36px; }
+    .practice-aside { grid-column: 1 / -1; align-self: start; }
+    .practice-aside img { display: none; }
+    .practice-list { grid-column: 1 / -1; }
+    .practice-list li { grid-template-columns: 36px 1fr; padding: 16px 0; font-size: 40px; }
+    .practice-list .meta { display: none; }
+
+    /* Equip */
+    .equip-body { grid-template-columns: 1fr; padding-top: 32px; gap: 36px; }
+    .equip-aside { grid-column: 1 / -1; }
+    .equip-grid { grid-column: 1 / -1; grid-template-columns: 1fr; gap: 36px; }
+    .equip-block li { font-size: 15px; }
+
+    /* Contact */
+    .contact-headline { font-size: clamp(40px, 14vw, 80px); margin-top: 32px; }
+    .contact-mid { grid-template-columns: 1fr; gap: 24px; margin-top: 36px; }
+    .contact-mark { grid-column: 1 / -1; }
+    .contact-mark img { max-width: 100px; }
+    .contact-mail { grid-column: 1 / -1; font-size: 22px; }
+    .contact-foot { grid-template-columns: 1fr 1fr; gap: 20px var(--gutter); margin-top: 32px; }
+
+    footer.colophon { grid-template-columns: 1fr; gap: 6px; }
+    footer.colophon .center, footer.colophon .right { text-align: left; }
+  }
 </style>
 </head>
-<body>
-<div id="intro"><div id="intro-bg"></div><img id="intro-logo" src="K_Block_Red_White.png" alt="Kiosk Recording"></div>
-<div id="site">
-  <section class="page-home">
-    <div class="home-header">
-      <div class="home-title">Kiosk Recording&#174;</div>
-      <div class="home-tagline">SE16</div>
-      <nav class="home-nav">
-        <a href="#" class="nav-info">Information</a>
-        <a href="#" class="nav-equip">Equipment</a>
-        <a href="mailto:info&#64;kioskrecording.studio">Contact</a>
-        <a href="https://www.instagram.com/kioskrecording" target="_blank" rel="noopener">Instagram</a>
-      </nav>
-      <div class="home-copyright">&#169;2026</div>
-    </div>
-    <div class="home-image"><img id="studio-img" src="studio_image_1.png" alt="Studio"></div>
-    <div class="home-counter" id="home-counter">1/5</div>
-    <div class="home-footer-mobile">
-      <div class="mobile-nav">
-        <a href="#" class="nav-info">Information</a>
-        <a href="#" class="nav-equip">Equipment</a>
-        <a href="mailto:info&#64;kioskrecording.studio">Contact</a>
-        <a href="https://www.instagram.com/kioskrecording" target="_blank" rel="noopener">Instagram</a>
+<body class="is-intro">
+
+<!-- ============================================================
+     INTRO OVERLAY — full-screen K, animates to cover position.
+     Hidden after first run via sessionStorage to skip on re-nav.
+     ============================================================ -->
+<div class="intro" id="intro" aria-hidden="true">
+  <img class="intro-mark" id="intro-mark" src="K_Block_White_Black.png" alt="">
+</div>
+
+<!-- ============================================================
+     FIXED NAV (mix-blend-mode: difference makes it readable on
+     every coloured ground without code per section)
+     ============================================================ -->
+<nav class="nav" aria-label="Primary">
+  <div class="nav-l">
+    <span>Kiosk Recording®</span>
+    <span>SE16 · London</span>
+  </div>
+  <div class="nav-c"></div>
+  <div class="nav-r">
+    <a href="#information">Information</a>
+    <a href="#studio">Studio</a>
+    <a href="#work">Work</a>
+    <a href="#practice">Practice</a>
+    <a href="#equipment">Equipment</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- =========================================================
+       §00 — COVER (black / white K)
+       ========================================================= -->
+  <section class="page page--black cover" id="cover">
+    <header class="cover-top">
+      <div>00 · Cover</div>
+      <div>#131313</div>
+      <div>South London</div>
+    </header>
+
+    <div class="cover-body">
+      <div class="cover-mark">
+        <img src="K_Block_White_Black.png" alt="Kiosk Recording mark">
       </div>
-      <div class="mobile-copyright">&#169;2026</div>
+      <div class="cover-text">
+        <h1 class="cover-wordmark">Kiosk<br>Recording<span class="reg">®</span></h1>
+        <p class="cover-byline">An independent music studio in South London, run by Tom Rea and Dougal Gray.</p>
+      </div>
+    </div>
+
+    <dl class="cover-foot">
+      <div><dt>Located</dt><dd>Unit 2, Plough Way<br>SE16 7FQ, London</dd></div>
+      <div><dt>Practice</dt><dd>Songwriting, production,<br>recording &amp; mixing</dd></div>
+      <div><dt>Run by</dt><dd>Tom Rea<br>Dougal Gray</dd></div>
+      <div><dt>Enquiries</dt><dd><a href="mailto:info&#64;kioskrecording.studio">info@kioskrecording.studio</a></dd></div>
+    </dl>
+  </section>
+
+  <!-- =========================================================
+       §01 — INFORMATION (oxblood / red K)
+       ========================================================= -->
+  <section class="page page--oxblood" id="information">
+    <header class="page-head">
+      <span class="num">01</span>
+      <span class="name">Information</span>
+      <span class="ground">#480016</span>
+      <span class="of">01 / 06</span>
+    </header>
+
+    <div class="info-body">
+      <figure class="info-mark">
+        <img src="K_Block_Red_DarkRed.png" alt="">
+      </figure>
+      <div class="info-text">
+        <p><strong>Kiosk Recording®</strong> is an independent music studio in South London, run by Tom Rea and Dougal Gray.</p>
+        <p>We focus on making records with clarity and momentum. Big ideas, done quickly and properly. We work across songwriting, production and finishing — helping take tracks from rough demos to something ready to release.</p>
+      </div>
+    </div>
+
+    <footer class="info-foot">
+      <div>South London · Independent</div>
+      <div>Est. 2024</div>
+      <div>Continue → 02 / Studio</div>
+    </footer>
+  </section>
+
+  <!-- =========================================================
+       §02 — STUDIO (white / red K)
+       ========================================================= -->
+  <section class="page page--white" id="studio">
+    <header class="page-head">
+      <span class="num">02</span>
+      <span class="name">Studio · Photographs</span>
+      <span class="ground">#FFFFFF</span>
+      <span class="of">02 / 06</span>
+    </header>
+
+    <div class="gallery">
+      <figure class="g1">
+        <img src="studio_image_1.png" alt="Kiosk Recording, plate 01" loading="lazy">
+        <figcaption><span>Plate 01</span><span>SE16</span></figcaption>
+      </figure>
+      <figure class="g2">
+        <img src="studio_image_2.png" alt="Kiosk Recording, plate 02" loading="lazy">
+        <figcaption><span>Plate 02</span><span>SE16</span></figcaption>
+      </figure>
+      <figure class="g3">
+        <img src="studio_image_3.png" alt="Kiosk Recording, plate 03" loading="lazy">
+        <figcaption><span>Plate 03</span><span>SE16</span></figcaption>
+      </figure>
+      <figure class="g4">
+        <img src="studio_image_4.png" alt="Kiosk Recording, plate 04" loading="lazy">
+        <figcaption><span>Plate 04</span><span>SE16</span></figcaption>
+      </figure>
+      <figure class="g5">
+        <img src="studio_image_5.png" alt="Kiosk Recording, plate 05" loading="lazy">
+        <figcaption><span>Plate 05</span><span>SE16</span></figcaption>
+      </figure>
     </div>
   </section>
-  <div class="overlay page-info" id="page-info">
-    <div class="info-header"><div class="info-title">Information</div><button class="overlay-close" id="info-close" aria-label="Close">&#10005;</button></div>
-    <div class="info-body">
-      <div class="info-text"><strong>Kiosk Recording&#174;</strong> is an independent music studio in South London, run by <a href="/tom">Tom Rea</a> and Dougal Gray. We focus on making records with clarity and momentum. Big ideas, done quickly and properly. We work across songwriting, production and finishing, helping take tracks from rough demos to something ready to release. See <a href="#" id="equip-link">equipment list</a>.</div>
-      <div class="info-address">Unit 2<br>Plough Way<br>SE16 7FQ<br>London</div>
+
+  <!-- =========================================================
+       §03 — SELECTED WORK (grey / white K)
+       ========================================================= -->
+  <section class="page page--grey" id="work">
+    <header class="page-head">
+      <span class="num">03</span>
+      <span class="name">Selected Work · Tom Rea</span>
+      <span class="ground">#A1A1A1</span>
+      <span class="of">03 / 06</span>
+    </header>
+
+    <div class="work-body">
+      <aside class="work-aside">
+        <span class="label">Selected Work</span>
+        <div class="person"><a href="/tom" style="border-bottom: 1px solid currentColor; padding-bottom: 2px;">Tom Rea ↗</a></div>
+        <span class="label">Mix · Production<br>Recording · Composition</span>
+        <span class="pill">Recent Highlights</span>
+      </aside>
+
+      <div class="work-list">
+        <a class="work-row" href="#"><span class="work-num">01</span><span class="work-artist">junodream</span><span class="work-track">Pools of Colour</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">02</span><span class="work-artist">junodream</span><span class="work-track">Dream Untitled</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">03</span><span class="work-artist">junodream</span><span class="work-track">Death Drive 2.0</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">04</span><span class="work-artist">junodream</span><span class="work-track">The Beach 2.0</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">05</span><span class="work-artist">junodream</span><span class="work-track">Travel Guide</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">06</span><span class="work-artist">junodream</span><span class="work-track">Isn’t It Lovely (To Be Alone)</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">07</span><span class="work-artist">junodream</span><span class="work-track">To The Moon</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">08</span><span class="work-artist">junodream</span><span class="work-track">Galactica</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">09</span><span class="work-artist">Talie Rae</span><span class="work-track">Blue</span><span class="work-role">Producer · Engineer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">10</span><span class="work-artist">Korder</span><span class="work-track">Falling Awake</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">11</span><span class="work-artist">Korder</span><span class="work-track">Waves</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">12</span><span class="work-artist">Samuel Austin</span><span class="work-track">Locksmith</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">13</span><span class="work-artist">Samuel Austin</span><span class="work-track">We</span><span class="work-role">Mix · Producer · Engineer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">14</span><span class="work-artist">Angel Parker</span><span class="work-track">The House of the Poet</span><span class="work-role">Mix · Producer · Engineer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">15</span><span class="work-artist">Porcelain Twin</span><span class="work-track">Everybody Running</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">16</span><span class="work-artist">Joe Khalique-Brown</span><span class="work-track">The Getaway</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">17</span><span class="work-artist">Somesuch · Super 8</span><span class="work-track">And Then There Were Two</span><span class="work-role">Mix · Producer · Engineer · Composer · Soundtrack</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="#"><span class="work-num">18</span><span class="work-artist">Saturday Born</span><span class="work-track">Film by Saabeah</span><span class="work-role">Producer · Engineer · Composer · Soundtrack</span><span class="work-arrow">↗</span></a>
+      </div>
     </div>
-  </div>
-  <div class="overlay page-equip" id="page-equip">
-    <div class="equip-header"><div class="equip-title">Equipment</div><button class="overlay-close" id="equip-close" aria-label="Close">&#10005;</button></div>
-    <div class="equip-list">
-      <div class="equip-section"><div class="equip-section-title">Outboard</div><div class="equip-section-body"><p>Neve 1073 DPX</p><p>Focusrite 828 MKII</p><p>Universal Audio Apollo X8</p><p>Tech 21 SansAmp RBI</p></div></div>
-      <div class="equip-section"><div class="equip-section-title">Monitors</div><div class="equip-section-body"><p>Neumann KH310A (Pair)</p><p>Avantone Pro Active Mixcube (Mono)</p><p>NOS McOne Passive Monitor Controller</p><p>Beyerdynamic DT770 Pro (x2)</p></div></div>
-      <div class="equip-section"><div class="equip-section-title">Microphones</div><div class="equip-section-body"><p>Neumann TLM 102</p><p>AKG C414</p><p>AKG D190E</p><p>Line Audio Omni1 (x2)</p><p>Shure SM7B</p><p>Shure SM57</p><p>Audio-Technica ATM250</p></div></div>
-      <div class="equip-section"><div class="equip-section-title">Guitars/Bass/Amps</div><div class="equip-section-body"><p>Fender Telecaster (American) Custom 60&#39;s Reissue</p><p>Fender Stratocaster (American)</p><p>Gibson Les Paul Traditional</p><p>Fender Jazz Player II Bass</p><p>Marshall JCM2000</p><p>Fender Blues Junior</p><p>Kemper Rig Profiler Rack</p></div></div>
-      <div class="equip-section"><div class="equip-section-title">Keys/Synths</div><div class="equip-section-body"><p>Knight K10 Upright Piano</p><p>Moog Subsequent 37</p><p>Yamaha Portasound PS3</p><p>Teenage Engineering PO-12 Rhythm</p><p>Korg Volca Beats</p><p>Arturia Wireless MIDI Keyboard</p></div></div>
+  </section>
+
+  <!-- =========================================================
+       §04 — PRACTICE (red / white K)
+       ========================================================= -->
+  <section class="page page--red" id="practice">
+    <header class="page-head">
+      <span class="num">04</span>
+      <span class="name">Practice · What we do</span>
+      <span class="ground">#FD3249</span>
+      <span class="of">04 / 06</span>
+    </header>
+
+    <div class="practice-body">
+      <aside class="practice-aside">
+        <div class="small">Across<br>songwriting,<br>production<br>&amp; mixing</div>
+        <img src="K_Block_White_Red.png" alt="">
+      </aside>
+
+      <ol class="practice-list">
+        <li><span class="roman">i.</span><span class="word">Songwriting</span><span class="meta">Demo → Song</span></li>
+        <li><span class="roman">ii.</span><span class="word">Production</span><span class="meta">Arrangement</span></li>
+        <li><span class="roman">iii.</span><span class="word">Recording</span><span class="meta">Tracking</span></li>
+        <li><span class="roman">iv.</span><span class="word">Mixing</span><span class="meta">Balance</span></li>
+      </ol>
     </div>
-  </div>
-</div>
+  </section>
+
+  <!-- =========================================================
+       §05 — EQUIPMENT (black / white K)
+       ========================================================= -->
+  <section class="page page--black" id="equipment">
+    <header class="page-head">
+      <span class="num">05</span>
+      <span class="name">Equipment · Technical sheet</span>
+      <span class="ground">#131313</span>
+      <span class="of">05 / 06</span>
+    </header>
+
+    <div class="equip-body">
+      <aside class="equip-aside">
+        <div class="small">Selected · 27 items</div>
+        <h2>Instruments,<br>microphones<br>&amp; outboard.</h2>
+      </aside>
+
+      <div class="equip-grid">
+
+        <div class="equip-block">
+          <h3>Outboard <span class="count">04</span></h3>
+          <ul>
+            <li>Neve 1073 DPX</li>
+            <li>Focusrite 828 MKII</li>
+            <li>Universal Audio Apollo X8</li>
+            <li>Tech 21 SansAmp RBI</li>
+          </ul>
+        </div>
+
+        <div class="equip-block">
+          <h3>Monitors <span class="count">03</span></h3>
+          <ul>
+            <li>Neumann KH310A (Pair)</li>
+            <li>NOS McOne Passive Monitor Controller</li>
+            <li>Beyerdynamic DT770 Pro (×2)</li>
+          </ul>
+        </div>
+
+        <div class="equip-block">
+          <h3>Microphones <span class="count">07</span></h3>
+          <ul>
+            <li>Neumann TLM 102</li>
+            <li>AKG C414</li>
+            <li>AKG D190E</li>
+            <li>Line Audio Omni1 (×2)</li>
+            <li>Shure SM7B</li>
+            <li>Shure SM57</li>
+            <li>Audio-Technica ATM250</li>
+          </ul>
+        </div>
+
+        <div class="equip-block">
+          <h3>Guitars / Bass / Amps <span class="count">08</span></h3>
+          <ul>
+            <li>Fender Telecaster (American) Custom 60’s Reissue</li>
+            <li>Fender Stratocaster (American)</li>
+            <li>Gibson Les Paul Traditional</li>
+            <li>Hofner Ignition Bass</li>
+            <li>Fender Bronco Bass</li>
+            <li>Marshall JCM2000</li>
+            <li>Fender Blues Junior</li>
+            <li>Kemper Rig Profiler Rack</li>
+          </ul>
+        </div>
+
+        <div class="equip-block">
+          <h3>Keys / Synths <span class="count">05</span></h3>
+          <ul>
+            <li>Knight K10 Upright Piano</li>
+            <li>Sequential Prophet 6</li>
+            <li>Moog Little Phatty</li>
+            <li>Yamaha Portasound PS3</li>
+            <li>Arturia Wireless MIDI Keyboard</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       §06 — CONTACT (oxblood / red K)
+       ========================================================= -->
+  <section class="page page--oxblood" id="contact">
+    <header class="page-head">
+      <span class="num">06</span>
+      <span class="name">Contact</span>
+      <span class="ground">#480016</span>
+      <span class="of">06 / 06</span>
+    </header>
+
+    <div class="contact-body">
+
+      <h2 class="contact-headline">
+        <span class="lined">Get in</span>
+        <span class="lined"><em>touch.</em></span>
+      </h2>
+
+      <div>
+        <div class="contact-mid">
+          <figure class="contact-mark">
+            <img src="K_Block_Red_DarkRed.png" alt="">
+          </figure>
+          <a class="contact-mail" href="mailto:info&#64;kioskrecording.studio">→ info@kioskrecording.studio</a>
+        </div>
+
+        <dl class="contact-foot">
+          <div><dt>Located</dt><dd>SE16 7FQ<br>London</dd></div>
+          <div><dt>Hours</dt><dd>By appointment only</dd></div>
+          <div><dt>Run by</dt><dd>Tom Rea<br>Dougal Gray</dd></div>
+          <div><dt>Elsewhere</dt><dd><a href="https://www.instagram.com/kioskrecording" target="_blank" rel="noopener">↗ @kioskrecording</a></dd></div>
+        </dl>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
 <script>
-(function() {
-  var introEl = document.getElementById('intro');
-  var introBg = document.getElementById('intro-bg');
-  var introLogo = document.getElementById('intro-logo');
-  var siteEl = document.getElementById('site');
-  var states = [
-    { bg: '#fdfdfd', src: 'K_Block_Red_White.png' },
-    { bg: '#781c1f', src: 'K_Block_Red_DarkRed.png' },
-    { bg: '#fd3248', src: 'K_Block_White_Red.png' }
-  ];
-  var studioImages = ['studio_image_1.png', 'studio_image_2.png', 'studio_image_3.png', 'studio_image_4.png', 'studio_image_5.png'];
+  /* ============================================================
+     INTRO ANIMATION
+     - Starts: K mark centered, large, on black.
+     - Ends:   K sitting in its real position on the cover.
+     - Method: measure target (the actual cover-mark img), animate
+       the overlay's transform from center → target rect.
+     - Skipped if already played in this session (so internal nav
+       doesn't replay it).
+     ============================================================ */
+  (function() {
+    const body = document.body;
+    const intro = document.getElementById('intro');
+    const introMark = document.getElementById('intro-mark');
+    const coverMarkImg = document.querySelector('.cover-mark img');
 
-  states.forEach(function(s) { var i = new Image(); i.src = s.src; });
-  studioImages.forEach(function(s) { var i = new Image(); i.src = s; });
+    // Skip intro if user has already seen it this session
+    let skip = false;
+    try { skip = sessionStorage.getItem('kr-intro-played') === '1'; } catch (e) {}
 
-  var fromOwnSite = document.referrer && document.referrer.indexOf(location.hostname) !== -1;
-  if (fromOwnSite) {
-    introEl.classList.add('hidden');
-    siteEl.classList.add('visible');
-    beginCarousel();
-  } else {
-    var step = 0;
-    var timer = setInterval(function() {
-      step++;
-      if (step < states.length) {
-        introBg.style.backgroundColor = states[step].bg;
-        introLogo.src = states[step].src;
-      } else {
-        clearInterval(timer);
-        siteEl.classList.add('visible');
-        introEl.classList.add('fade-white');
-        setTimeout(function() { introEl.classList.add('fade-out'); }, 400);
-        setTimeout(function() { introEl.classList.add('hidden'); beginCarousel(); }, 800);
+    if (skip || !introMark || !coverMarkImg) {
+      intro.style.display = 'none';
+      body.classList.remove('is-intro');
+      body.classList.add('intro-done');
+      return;
+    }
+
+    function run() {
+      // Measure the target: where the cover K sits at rest.
+      const targetRect = coverMarkImg.getBoundingClientRect();
+      const startRect  = introMark.getBoundingClientRect();
+
+      // Compute the FLIP delta: scale + translate from start → target
+      const scale = targetRect.width / startRect.width;
+      const dx = targetRect.left - startRect.left;
+      const dy = targetRect.top  - startRect.top;
+
+      // Force initial state, then on next frame animate to target
+      introMark.style.transform = 'translate(0,0) scale(1)';
+      // small hold before motion begins
+      setTimeout(() => {
+        introMark.style.transition = 'transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        introMark.style.transform  = `translate(${dx}px, ${dy}px) scale(${scale})`;
+      }, 700);
+
+      // After the move completes, hand off and fade overlay
+      setTimeout(() => {
+        body.classList.remove('is-intro');
+        body.classList.add('intro-done');
+        intro.classList.add('is-done');
+        try { sessionStorage.setItem('kr-intro-played', '1'); } catch (e) {}
+      }, 700 + 1400 - 60); // hand off slightly before the eased motion fully resolves
+
+      // Fully remove overlay from the layer stack after fade
+      setTimeout(() => { intro.style.display = 'none'; }, 700 + 1400 + 600);
+    }
+
+    // Wait for the cover image to be measurable (decoded + laid out)
+    if (coverMarkImg.complete && coverMarkImg.naturalWidth > 0) {
+      requestAnimationFrame(run);
+    } else {
+      coverMarkImg.addEventListener('load', () => requestAnimationFrame(run), { once: true });
+      // Safety fallback
+      setTimeout(() => { if (body.classList.contains('is-intro')) requestAnimationFrame(run); }, 1500);
+    }
+  })();
+
+  // Subtle reveal on scroll — single sustained motion per page
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'none';
+        io.unobserve(e.target);
       }
-    }, 500);
-  }
+    });
+  }, { threshold: 0.04, rootMargin: '0px 0px -6% 0px' });
 
-  function beginCarousel() {
-    var cur = 0;
-    var el = document.getElementById('studio-img');
-    var ct = document.getElementById('home-counter');
-    setInterval(function() { cur = (cur + 1) % studioImages.length; el.src = studioImages[cur]; ct.textContent = (cur + 1) + '/' + studioImages.length; }, 3000);
-  }
-  var pi = document.getElementById('page-info');
-  var pe = document.getElementById('page-equip');
-  document.querySelectorAll('.nav-info').forEach(function(x) { x.addEventListener('click', function(e) { e.preventDefault(); pi.classList.add('open'); }); });
-  document.querySelectorAll('.nav-equip').forEach(function(x) { x.addEventListener('click', function(e) { e.preventDefault(); pe.classList.add('open'); }); });
-  document.getElementById('info-close').addEventListener('click', function() { pi.classList.remove('open'); });
-  document.getElementById('equip-link').addEventListener('click', function(e) { e.preventDefault(); pe.classList.add('open'); setTimeout(function() { pi.classList.remove('open'); }, 500); });
-  document.getElementById('equip-close').addEventListener('click', function() { pe.classList.remove('open'); });
-})();
+  document.querySelectorAll('section.page').forEach((el, i) => {
+    if (i === 0) return; // cover is visible immediately
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(12px)';
+    el.style.transition = 'opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
+    io.observe(el);
+  });
 </script>
+
 </body>
 </html>
