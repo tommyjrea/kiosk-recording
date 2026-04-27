@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:title" content="Kiosk Recording">
 <meta property="og:description" content="An independent music studio in South London, run by Tom Rea and Dougal Gray.">
-<meta property="og:image" content="K_Block_Red_White.png">
+<meta property="og:image" content="K_Block_Red.png">
 <meta property="og:type" content="website">
 <style>
   /* ============================================================
@@ -80,23 +80,21 @@
     position: fixed;
     inset: 0;
     z-index: 200;
-    background: var(--c-black);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: var(--c-white);
+    overflow: hidden;
     pointer-events: none;
-    /* opacity is held at 1 throughout — we hand off when the
-       overlay K reaches the cover K's slot, then fade overlay out */
   }
   .intro.is-done { opacity: 0; transition: opacity 0.5s ease 0.05s; }
 
   .intro-mark {
-    /* sized in JS to match the cover-mark image's natural size at rest;
-       starts large + centered, then animates to the cover's coordinates */
-    width: min(58vmin, 520px);
-    height: auto;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
     transform-origin: top left;
-    will-change: transform, width;
+    will-change: transform, width, height;
     user-select: none;
   }
 
@@ -210,18 +208,21 @@
     grid-template-columns: 1fr 1.05fr;
     align-items: stretch;
     padding: 48px 0 0;
+    gap: var(--gutter);
   }
 
   .cover-mark {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding-right: var(--gutter);
+    position: relative;
+    overflow: hidden;
+    background: var(--c-white);
   }
   .cover-mark img {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    max-width: 520px;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
     user-select: none;
   }
 
@@ -229,8 +230,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding-left: var(--gutter);
-    border-left: 1px solid var(--rule);
+    padding-left: 0;
+    border-left: none;
   }
   .cover-wordmark {
     font-family: var(--sans);
@@ -287,17 +288,8 @@
     align-items: end;
     padding-top: 80px;
   }
-  .info-mark {
-    grid-column: 1 / span 4;
-    align-self: end;
-  }
-  .info-mark img {
-    width: 100%;
-    max-width: 320px;
-    margin-left: -12px;
-  }
   .info-text {
-    grid-column: 6 / span 7;
+    grid-column: 3 / span 9;
     font-family: var(--sans-alt);
     font-weight: 500;
     font-size: clamp(28px, 3.4vw, 48px);
@@ -347,19 +339,6 @@
     transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .gallery figure:hover img { transform: scale(1.025); }
-  .gallery figcaption {
-    position: absolute;
-    bottom: 14px; left: 14px; right: 14px;
-    color: var(--c-white);
-    font-size: 10px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    font-weight: 500;
-    display: flex;
-    justify-content: space-between;
-    mix-blend-mode: difference;
-    opacity: 0.9;
-  }
   .gallery .g1 { grid-column: 1 / span 8; aspect-ratio: 16 / 10; }
   .gallery .g2 { grid-column: 9 / span 4; aspect-ratio: 3 / 4; }
   .gallery .g3 { grid-column: 1 / span 4; aspect-ratio: 1 / 1; }
@@ -421,10 +400,31 @@
   .work-arrow  { font-size: 14px; transition: transform .25s ease; }
 
   /* ============================================================
-     §04 — PRACTICE (red ground, white K)
+     §04 — PRACTICE (red / black chevron)
      Manifesto list. Largest type on the site.
      ============================================================ */
+  #practice {
+    position: relative;
+    overflow: hidden;
+  }
+  .practice-mark {
+    position: absolute;
+    top: 0; bottom: 0; right: 0;
+    width: 14vw;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .practice-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: right center;
+    user-select: none;
+  }
+  #practice .page-head { padding-right: 14vw; }
   .practice-body {
+    position: relative;
+    z-index: 1;
     flex: 1;
     padding-top: 80px;
     display: grid;
@@ -441,11 +441,11 @@
     font-weight: 500;
   }
   .practice-aside .small { opacity: 0.7; margin-bottom: 14px; }
-  .practice-aside img { width: 88px; margin-top: 60px; }
 
   .practice-list {
     grid-column: 4 / span 9;
     list-style: none;
+    padding-right: 14vw;
   }
   .practice-list li {
     display: grid;
@@ -541,26 +541,16 @@
   .contact-headline .lined { display: block; }
   .contact-headline em { font-style: normal; color: var(--c-white); }
 
-  .contact-mid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: var(--gutter);
-    margin-top: 64px;
-    padding-top: 16px;
-    border-top: 1px solid var(--rule);
-    align-items: end;
-  }
-  .contact-mark { grid-column: 1 / span 3; }
-  .contact-mark img { width: 100%; max-width: 180px; }
-
   .contact-mail {
-    grid-column: 5 / span 8;
+    display: block;
+    margin-top: 64px;
     font-weight: 400;
     font-size: clamp(28px, 4.5vw, 72px);
     letter-spacing: -0.025em;
     line-height: 1;
+    border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
-    padding: 20px 0;
+    padding: 28px 0;
     transition: color .25s ease, padding .25s ease;
   }
   .contact-mail:hover { color: var(--c-white); padding-left: 8px; }
@@ -633,8 +623,6 @@
 
     /* Info */
     .info-body { grid-template-columns: 1fr; padding-top: 40px; gap: 36px; }
-    .info-mark { grid-column: 1 / -1; }
-    .info-mark img { max-width: 180px; margin-left: 0; }
     .info-text { grid-column: 1 / -1; font-size: 22px; }
     .info-foot { grid-template-columns: 1fr; gap: 8px; margin-top: 48px; }
     .info-foot > div { grid-column: 1 / -1 !important; text-align: left !important; }
@@ -657,9 +645,11 @@
     .work-role  { grid-column: 1 / -1; padding-left: 44px; padding-top: 4px; font-size: 10px; }
 
     /* Practice */
+    .practice-mark { display: none; }
+    #practice .page-head { padding-right: 0; }
     .practice-body { grid-template-columns: 1fr; padding-top: 36px; gap: 36px; }
+    .practice-list { padding-right: 0; }
     .practice-aside { grid-column: 1 / -1; align-self: start; }
-    .practice-aside img { display: none; }
     .practice-list { grid-column: 1 / -1; }
     .practice-list li { grid-template-columns: 36px 1fr; padding: 16px 0; font-size: 40px; }
     .practice-list .meta { display: none; }
@@ -672,10 +662,7 @@
 
     /* Contact */
     .contact-headline { font-size: clamp(40px, 14vw, 80px); margin-top: 32px; }
-    .contact-mid { grid-template-columns: 1fr; gap: 24px; margin-top: 36px; }
-    .contact-mark { grid-column: 1 / -1; }
-    .contact-mark img { max-width: 100px; }
-    .contact-mail { grid-column: 1 / -1; font-size: 22px; }
+    .contact-mail { font-size: 22px; margin-top: 36px; }
     .contact-foot { grid-template-columns: 1fr 1fr; gap: 20px var(--gutter); margin-top: 32px; }
 
     footer.colophon { grid-template-columns: 1fr; gap: 6px; }
@@ -690,7 +677,7 @@
      Hidden after first run via sessionStorage to skip on re-nav.
      ============================================================ -->
 <div class="intro" id="intro" aria-hidden="true">
-  <img class="intro-mark" id="intro-mark" src="K_Block_White_Black.png" alt="">
+  <img class="intro-mark" id="intro-mark" src="K_Block_White.png" alt="">
 </div>
 
 <!-- ============================================================
@@ -727,7 +714,7 @@
 
     <div class="cover-body">
       <div class="cover-mark">
-        <img src="K_Block_White_Black.png" alt="Kiosk Recording mark">
+        <img src="K_Block_White.png" alt="Kiosk Recording mark">
       </div>
       <div class="cover-text">
         <h1 class="cover-wordmark">Kiosk<br>Recording<span class="reg">®</span></h1>
@@ -755,9 +742,6 @@
     </header>
 
     <div class="info-body">
-      <figure class="info-mark">
-        <img src="K_Block_Red_DarkRed.png" alt="">
-      </figure>
       <div class="info-text">
         <p><strong>Kiosk Recording®</strong> is an independent music studio in South London, run by Tom Rea and Dougal Gray.</p>
         <p>We focus on making records with clarity and momentum. Big ideas, done quickly and properly. We work across songwriting, production and finishing — helping take tracks from rough demos to something ready to release.</p>
@@ -785,23 +769,18 @@
     <div class="gallery">
       <figure class="g1">
         <img src="studio_image_1.png" alt="Kiosk Recording, plate 01" loading="lazy">
-        <figcaption><span>Plate 01</span><span>SE16</span></figcaption>
       </figure>
       <figure class="g2">
         <img src="studio_image_2.png" alt="Kiosk Recording, plate 02" loading="lazy">
-        <figcaption><span>Plate 02</span><span>SE16</span></figcaption>
       </figure>
       <figure class="g3">
         <img src="studio_image_3.png" alt="Kiosk Recording, plate 03" loading="lazy">
-        <figcaption><span>Plate 03</span><span>SE16</span></figcaption>
       </figure>
       <figure class="g4">
         <img src="studio_image_4.png" alt="Kiosk Recording, plate 04" loading="lazy">
-        <figcaption><span>Plate 04</span><span>SE16</span></figcaption>
       </figure>
       <figure class="g5">
         <img src="studio_image_5.png" alt="Kiosk Recording, plate 05" loading="lazy">
-        <figcaption><span>Plate 05</span><span>SE16</span></figcaption>
       </figure>
     </div>
   </section>
@@ -826,24 +805,24 @@
       </aside>
 
       <div class="work-list">
-        <a class="work-row" href="#"><span class="work-num">01</span><span class="work-artist">junodream</span><span class="work-track">Pools of Colour</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">02</span><span class="work-artist">junodream</span><span class="work-track">Dream Untitled</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">03</span><span class="work-artist">junodream</span><span class="work-track">Death Drive 2.0</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">04</span><span class="work-artist">junodream</span><span class="work-track">The Beach 2.0</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">05</span><span class="work-artist">junodream</span><span class="work-track">Travel Guide</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">06</span><span class="work-artist">junodream</span><span class="work-track">Isn’t It Lovely (To Be Alone)</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">07</span><span class="work-artist">junodream</span><span class="work-track">To The Moon</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">08</span><span class="work-artist">junodream</span><span class="work-track">Galactica</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">09</span><span class="work-artist">Talie Rae</span><span class="work-track">Blue</span><span class="work-role">Producer · Engineer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">10</span><span class="work-artist">Korder</span><span class="work-track">Falling Awake</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">11</span><span class="work-artist">Korder</span><span class="work-track">Waves</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">12</span><span class="work-artist">Samuel Austin</span><span class="work-track">Locksmith</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">13</span><span class="work-artist">Samuel Austin</span><span class="work-track">We</span><span class="work-role">Mix · Producer · Engineer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">14</span><span class="work-artist">Angel Parker</span><span class="work-track">The House of the Poet</span><span class="work-role">Mix · Producer · Engineer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">15</span><span class="work-artist">Porcelain Twin</span><span class="work-track">Everybody Running</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">16</span><span class="work-artist">Joe Khalique-Brown</span><span class="work-track">The Getaway</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">17</span><span class="work-artist">Somesuch · Super 8</span><span class="work-track">And Then There Were Two</span><span class="work-role">Mix · Producer · Engineer · Composer · Soundtrack</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="#"><span class="work-num">18</span><span class="work-artist">Saturday Born</span><span class="work-track">Film by Saabeah</span><span class="work-role">Producer · Engineer · Composer · Soundtrack</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/track/4pELR2pNO8P6Ue0Ml2VxSF" target="_blank" rel="noopener"><span class="work-num">01</span><span class="work-artist">junodream</span><span class="work-track">Pools of Colour</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/track/7D7C76K9lJvDiZhzMNZrlM" target="_blank" rel="noopener"><span class="work-num">02</span><span class="work-artist">junodream</span><span class="work-track">Dream Untitled</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/track/0OT4qBesl43phNlvSCLiTM" target="_blank" rel="noopener"><span class="work-num">03</span><span class="work-artist">junodream</span><span class="work-track">Death Drive 2.0</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/album/6JxM01jnOxp2uJsqFO072X" target="_blank" rel="noopener"><span class="work-num">04</span><span class="work-artist">junodream</span><span class="work-track">The Beach 2.0</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/track/3GxOJlWpm4Ri5nCWrIQjOY" target="_blank" rel="noopener"><span class="work-num">05</span><span class="work-artist">junodream</span><span class="work-track">Travel Guide</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/track/312FY481JrK4tqShdRcHaf" target="_blank" rel="noopener"><span class="work-num">06</span><span class="work-artist">junodream</span><span class="work-track">Isn’t It Lovely (To Be Alone)</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/track/7KTeCmYOof8NML28Lc9dWo" target="_blank" rel="noopener"><span class="work-num">07</span><span class="work-artist">junodream</span><span class="work-track">To The Moon</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/track/4Nx69Hi9xwCHsrMVqu6CVS" target="_blank" rel="noopener"><span class="work-num">08</span><span class="work-artist">junodream</span><span class="work-track">Galactica</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/track/4Vudlr60FXFP47yNlLzixA" target="_blank" rel="noopener"><span class="work-num">09</span><span class="work-artist">Talie Rae</span><span class="work-track">Blue</span><span class="work-role">Producer · Engineer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/artist/3ieiKo9qbVjYOwYNUcu073" target="_blank" rel="noopener"><span class="work-num">10</span><span class="work-artist">Korder</span><span class="work-track">Falling Awake</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/artist/3ieiKo9qbVjYOwYNUcu073" target="_blank" rel="noopener"><span class="work-num">11</span><span class="work-artist">Korder</span><span class="work-track">Waves</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
+        <span class="work-row" style="cursor:default"><span class="work-num">12</span><span class="work-artist">Samuel Austin</span><span class="work-track">Locksmith</span><span class="work-role">Mix</span><span class="work-arrow"></span></span>
+        <span class="work-row" style="cursor:default"><span class="work-num">13</span><span class="work-artist">Samuel Austin</span><span class="work-track">We</span><span class="work-role">Mix · Producer · Engineer</span><span class="work-arrow"></span></span>
+        <a class="work-row" href="https://open.spotify.com/artist/5EmOksBCNrQKk8VnsA6NbQ" target="_blank" rel="noopener"><span class="work-num">14</span><span class="work-artist">Angel Parker</span><span class="work-track">The House of the Poet</span><span class="work-role">Mix · Producer · Engineer</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/artist/0pv9SuWJY3LaEaCcjBUd1W" target="_blank" rel="noopener"><span class="work-num">15</span><span class="work-artist">Porcelain Twin</span><span class="work-track">Everybody Running</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
+        <a class="work-row" href="https://open.spotify.com/artist/6n3j7Eco3oYQPE0sCHtyPo" target="_blank" rel="noopener"><span class="work-num">16</span><span class="work-artist">Joe Khalique-Brown</span><span class="work-track">The Getaway</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
+        <span class="work-row" style="cursor:default"><span class="work-num">17</span><span class="work-artist">Somesuch · Super 8</span><span class="work-track">And Then There Were Two</span><span class="work-role">Mix · Producer · Engineer · Composer · Soundtrack</span><span class="work-arrow"></span></span>
+        <span class="work-row" style="cursor:default"><span class="work-num">18</span><span class="work-artist">Saturday Born</span><span class="work-track">Film by Saabeah</span><span class="work-role">Producer · Engineer · Composer · Soundtrack</span><span class="work-arrow"></span></span>
       </div>
     </div>
   </section>
@@ -852,6 +831,7 @@
        §04 — PRACTICE (red / white K)
        ========================================================= -->
   <section class="page page--red" id="practice">
+    <img class="practice-mark" src="K_Block_Red.png" alt="" aria-hidden="true">
     <header class="page-head">
       <span class="num">04</span>
       <span class="name">Practice · What we do</span>
@@ -862,7 +842,6 @@
     <div class="practice-body">
       <aside class="practice-aside">
         <div class="small">Across<br>songwriting,<br>production<br>&amp; mixing</div>
-        <img src="K_Block_White_Red.png" alt="">
       </aside>
 
       <ol class="practice-list">
@@ -973,12 +952,7 @@
       </h2>
 
       <div>
-        <div class="contact-mid">
-          <figure class="contact-mark">
-            <img src="K_Block_Red_DarkRed.png" alt="">
-          </figure>
-          <a class="contact-mail" href="mailto:info&#64;kioskrecording.studio">→ info@kioskrecording.studio</a>
-        </div>
+        <a class="contact-mail" href="mailto:info&#64;kioskrecording.studio">→ info@kioskrecording.studio</a>
 
         <dl class="contact-foot">
           <div><dt>Located</dt><dd>SE16 7FQ<br>London</dd></div>
