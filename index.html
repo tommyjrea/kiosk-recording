@@ -346,11 +346,10 @@
 
   /* ============================================================
      §02 — STUDIO (white ground, red K)
-     Photographs in row-major order. Each row is a fixed-height
-     flex strip; image widths flex by natural aspect ratio (set
-     by JS once images load), so every image keeps its true ratio
-     without cropping while the row width fills exactly. First 6
-     visible by default; "Show more" reveals the rest.
+     Masonry layout. JS distributes figures across N columns, each
+     filled top-to-bottom, in shortest-first order. Native aspect
+     ratios preserved (no cropping). First 6 visible by default;
+     "Show more" reveals the rest.
      ============================================================ */
   .gallery {
     flex: 1;
@@ -359,40 +358,38 @@
     flex-direction: column;
     gap: var(--gutter);
   }
-  .gallery-row {
+  .gallery-grid {
     display: flex;
-    flex-direction: row;
     gap: var(--gutter);
-    height: clamp(200px, 24vw, 340px);
+    align-items: flex-start;
+  }
+  .gallery-col {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gutter);
+    min-width: 0;
   }
   .gallery figure {
     margin: 0;
     overflow: hidden;
     background: var(--c-black);
-    /* JS sets flex-grow per natural aspect ratio; fallback to 1 */
-    flex: 1 1 0;
-    min-width: 0;
-    height: 100%;
+    display: block;
   }
   .gallery figure img {
     width: 100%;
-    height: 100%;
-    object-fit: cover; /* fallback during load; once flex is sized
-                          correctly the image's natural ratio matches
-                          the cell so no actual cropping occurs */
+    height: auto;
     display: block;
     filter: contrast(0.97) saturate(0.78);
     transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .gallery figure:hover img { transform: scale(1.025); }
-
-  /* Hide rows beyond the first two until expanded */
-  .gallery .gallery-row.is-hidden { display: none; }
-  .gallery.is-expanded .gallery-row.is-hidden { display: flex; }
+  .gallery figure.is-hidden { display: none; }
+  .gallery.is-expanded figure.is-hidden { display: block; }
 
   .gallery-toggle {
     align-self: center;
-    margin-top: 20px;
+    margin-top: 4px;
     font-family: var(--sans);
     font-size: 11px;
     letter-spacing: 0.16em;
@@ -407,6 +404,7 @@
     transition: background-color .25s ease, color .25s ease;
   }
   .gallery-toggle:hover { background: var(--c-black); color: var(--c-white); }
+  html.is-daylight .gallery-toggle:hover { background: var(--c-white); color: var(--c-black); }
 
   /* ============================================================
      §03 — SELECTED WORK (grey ground, white K)
@@ -645,30 +643,30 @@
 
   .contact-headline {
     font-weight: 400;
-    font-size: clamp(56px, 12.8vw, 220px);
-    line-height: 0.86;
-    letter-spacing: -0.05em;
-    margin-top: 60px;
+    font-size: clamp(48px, 7.6vw, 116px);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    margin-top: 24px;
   }
   .contact-headline .lined { display: block; }
   .contact-headline em { font-style: normal; color: var(--c-white); }
 
   .contact-mail {
     display: block;
-    margin-top: 64px;
+    margin-top: 28px;
     font-weight: 400;
-    font-size: clamp(28px, 4.5vw, 72px);
-    letter-spacing: -0.025em;
+    font-size: clamp(22px, 2.8vw, 42px);
+    letter-spacing: -0.02em;
     line-height: 1;
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
-    padding: 28px 0;
+    padding: 18px 0;
     transition: color .25s ease, padding .25s ease;
   }
   .contact-mail:hover { color: var(--c-white); padding-left: 8px; }
 
   .contact-mark {
-    margin-top: 56px;
+    margin-top: 24px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -677,8 +675,8 @@
     display: block;
     height: auto;
     width: auto;
-    max-height: 180px;
-    max-width: 24%;
+    max-height: 96px;
+    max-width: 14%;
     user-select: none;
   }
 
@@ -686,7 +684,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--gutter);
-    margin-top: 48px;
+    margin-top: 24px;
     padding-top: 16px;
     border-top: 1px solid var(--rule);
     font-size: 11px;
@@ -755,7 +753,7 @@
     .info-foot > div { grid-column: 1 / -1 !important; text-align: left !important; }
 
     /* Gallery — horizontal swipe carousel.
-       Flatten rows into one strip; show all images. */
+       Flatten the masonry wrappers; show all images. */
     .gallery {
       flex-direction: row;
       align-items: center;
@@ -769,15 +767,17 @@
       scrollbar-width: none;
     }
     .gallery::-webkit-scrollbar { display: none; }
-    .gallery-row,
-    .gallery-row.is-hidden {
+    .gallery-grid,
+    .gallery-col {
       display: contents;
     }
-    .gallery figure {
+    .gallery figure,
+    .gallery figure.is-hidden {
       flex: 0 0 auto;
       height: 70vh;
       max-height: 560px;
       scroll-snap-align: center;
+      display: block;
     }
     .gallery figure img {
       width: auto;
@@ -931,27 +931,21 @@
     </header>
 
     <div class="gallery">
-      <div class="gallery-row">
+      <div class="gallery-grid">
         <figure><img src="studio_image_1.jpg" alt="" loading="lazy"></figure>
         <figure><img src="studio_image_2.jpg" alt="" loading="lazy"></figure>
         <figure><img src="studio_image_3.jpg" alt="" loading="lazy"></figure>
-      </div>
-      <div class="gallery-row">
         <figure><img src="studio_image_4.jpg" alt="" loading="lazy"></figure>
         <figure><img src="studio_image_5.jpg" alt="" loading="lazy"></figure>
         <figure><img src="studio_image_6.jpg" alt="" loading="lazy"></figure>
+        <figure class="is-hidden"><img src="studio_image_7.jpg" alt="" loading="lazy"></figure>
+        <figure class="is-hidden"><img src="studio_image_8.jpg" alt="" loading="lazy"></figure>
+        <figure class="is-hidden"><img src="studio_image_9.jpg" alt="" loading="lazy"></figure>
+        <figure class="is-hidden"><img src="studio_image_10.jpg" alt="" loading="lazy"></figure>
+        <figure class="is-hidden"><img src="studio_image_11.jpg" alt="" loading="lazy"></figure>
+        <figure class="is-hidden"><img src="studio_image_12.jpg" alt="" loading="lazy"></figure>
       </div>
-      <div class="gallery-row is-hidden">
-        <figure><img src="studio_image_7.jpg" alt="" loading="lazy"></figure>
-        <figure><img src="studio_image_8.jpg" alt="" loading="lazy"></figure>
-        <figure><img src="studio_image_9.jpg" alt="" loading="lazy"></figure>
-      </div>
-      <div class="gallery-row is-hidden">
-        <figure><img src="studio_image_10.jpg" alt="" loading="lazy"></figure>
-        <figure><img src="studio_image_11.jpg" alt="" loading="lazy"></figure>
-        <figure><img src="studio_image_12.jpg" alt="" loading="lazy"></figure>
-      </div>
-      <button type="button" class="gallery-toggle" data-state="collapsed">Show more — 6 of 12</button>
+      <button type="button" class="gallery-toggle">Show more — 6 of 12</button>
     </div>
   </section>
 
@@ -1149,36 +1143,112 @@
 </main>
 
 <script>
-  // Gallery: set each figure's flex-grow proportional to its image's
-  // natural aspect ratio so within each row, widths scale to keep
-  // every image at its true ratio (no cropping) while filling the row.
-  (function() {
-    const figures = document.querySelectorAll('.gallery figure');
-    if (!figures.length) return;
-    figures.forEach(fig => {
-      const img = fig.querySelector('img');
-      if (!img) return;
-      const apply = () => {
-        const ratio = img.naturalWidth / img.naturalHeight;
-        if (ratio && isFinite(ratio)) {
-          fig.style.flexGrow = ratio.toFixed(4);
-        }
-      };
-      if (img.complete && img.naturalWidth > 0) apply();
-      else img.addEventListener('load', apply, { once: true });
-    });
-  })();
-
-  // Gallery show-more toggle
+  // Gallery: distribute figures into columns to form a masonry layout.
+  // Each figure keeps its native aspect ratio. Distribution is
+  // shortest-column-first, in source order, so the visual flow reads
+  // approximately row-major and columns end at roughly equal heights.
   (function() {
     const gallery = document.querySelector('.gallery');
-    const btn = document.querySelector('.gallery-toggle');
-    if (!gallery || !btn) return;
-    btn.addEventListener('click', () => {
-      const expanded = gallery.classList.toggle('is-expanded');
-      btn.textContent = expanded ? 'Show less' : 'Show more — 6 of 12';
-      btn.dataset.state = expanded ? 'expanded' : 'collapsed';
+    const grid = document.querySelector('.gallery-grid');
+    if (!gallery || !grid) return;
+    const allFigures = Array.from(grid.querySelectorAll(':scope > figure'));
+    if (!allFigures.length) return;
+
+    function colCount() {
+      const w = window.innerWidth;
+      if (w < 700)  return 1;
+      if (w < 1100) return 2;
+      return 3;
+    }
+
+    let lastCols = -1;
+    function layout() {
+      const n = colCount();
+      // Skip mobile single-column on phone — there the gallery is
+      // overridden to a horizontal scroll-snap strip via CSS.
+      if (n === 1) {
+        grid.replaceChildren(...allFigures);
+        return;
+      }
+      if (n === lastCols && grid.querySelectorAll(':scope > .gallery-col').length === n) {
+        // count unchanged: just re-distribute
+      } else {
+        lastCols = n;
+      }
+
+      // Build N empty column wrappers
+      const cols = [];
+      for (let i = 0; i < n; i++) {
+        const c = document.createElement('div');
+        c.className = 'gallery-col';
+        cols.push(c);
+      }
+      grid.replaceChildren(...cols);
+
+      // Distribute figures: each goes into the shortest column.
+      // For visible figures only — hidden ones ride along but don't
+      // affect column heights for the collapsed view.
+      const visible  = allFigures.filter(f => !f.classList.contains('is-hidden'));
+      const hidden   = allFigures.filter(f =>  f.classList.contains('is-hidden'));
+
+      const heights = new Array(n).fill(0);
+      const measureHeight = (fig) => {
+        const img = fig.querySelector('img');
+        if (img && img.naturalWidth && img.naturalHeight) {
+          // approximate height = column width × (h/w) — column width
+          // is the same for all cols, so we can use ratio directly
+          return img.naturalHeight / img.naturalWidth;
+        }
+        return 1; // fallback equal weight
+      };
+
+      function place(figs) {
+        figs.forEach(fig => {
+          let shortest = 0;
+          for (let i = 1; i < n; i++) {
+            if (heights[i] < heights[shortest]) shortest = i;
+          }
+          cols[shortest].appendChild(fig);
+          heights[shortest] += measureHeight(fig);
+        });
+      }
+      place(visible);
+      // Re-measure after expanding, treating hidden figures as part of
+      // the same balance so when revealed they extend their column
+      // without re-shuffling everything visible above.
+      place(hidden);
+    }
+
+    // Re-layout once images have measurable dimensions.
+    const imgs = allFigures.map(f => f.querySelector('img')).filter(Boolean);
+    let pending = imgs.length;
+    if (pending === 0) layout();
+    imgs.forEach(img => {
+      if (img.complete && img.naturalWidth > 0) {
+        if (--pending === 0) layout();
+      } else {
+        img.addEventListener('load', () => { if (--pending === 0) layout(); }, { once: true });
+        img.addEventListener('error', () => { if (--pending === 0) layout(); }, { once: true });
+      }
     });
+    // Initial layout with whatever's available, then re-layout on load.
+    layout();
+
+    // Re-layout on resize (debounced)
+    let rId;
+    window.addEventListener('resize', () => {
+      clearTimeout(rId);
+      rId = setTimeout(layout, 120);
+    });
+
+    // Show-more toggle
+    const btn = document.querySelector('.gallery-toggle');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        const expanded = gallery.classList.toggle('is-expanded');
+        btn.textContent = expanded ? 'Show less' : 'Show more — 6 of 12';
+      });
+    }
   })();
 
   // Nav text colour per section — swap based on whichever section
