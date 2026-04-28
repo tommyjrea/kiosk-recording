@@ -1241,29 +1241,35 @@
         });
       }
       place(visible);
+      // Place hidden figures into columns now (display:none, so they
+      // don't affect rendered column heights yet, but they're ready to
+      // reveal on Show more without re-distributing visible images).
+      place(hidden);
 
-      // Measure actual column heights after layout, find the shortest,
-      // and set --cap only on columns that are taller than it. The
-      // shortest column needs no cap/fade — it's already the baseline.
-      requestAnimationFrame(() => {
-        const rects = cols.map(c => c.getBoundingClientRect());
-        const heightsPx = rects.map(r => r.height);
-        const minH = Math.min(...heightsPx);
-        if (minH > 0 && isFinite(minH)) {
-          cols.forEach((c, i) => {
-            if (heightsPx[i] > minH + 4) {
-              c.style.setProperty('--cap', Math.round(minH) + 'px');
-            } else {
-              c.style.removeProperty('--cap');
-            }
-          });
+      // Initial cap measurement after a frame for layout to settle.
+      requestAnimationFrame(applyCap);
+    }
+
+    // Measure column heights and apply --cap to taller-than-shortest
+    // columns so the collapsed-state mask can fade their bottoms down
+    // to the shortest column's baseline. Uses scrollHeight so it reads
+    // the natural content height regardless of any active max-height
+    // clip from a previous run. Called on initial layout and re-run on
+    // Show less so the fade lands evenly each time.
+    function applyCap() {
+      if (gallery.classList.contains('is-expanded')) return;
+      const cols = Array.from(grid.querySelectorAll(':scope > .gallery-col'));
+      if (cols.length < 2) return;
+      const heightsPx = cols.map(c => c.scrollHeight);
+      const minH = Math.min(...heightsPx);
+      if (!(minH > 0) || !isFinite(minH)) return;
+      cols.forEach((c, i) => {
+        if (heightsPx[i] > minH + 4) {
+          c.style.setProperty('--cap', Math.round(minH) + 'px');
+        } else {
+          c.style.removeProperty('--cap');
         }
       });
-
-      // Re-measure after expanding, treating hidden figures as part of
-      // the same balance so when revealed they extend their column
-      // without re-shuffling everything visible above.
-      place(hidden);
     }
 
     // Re-layout once images have measurable dimensions.
@@ -1294,6 +1300,11 @@
       btn.addEventListener('click', () => {
         const expanded = gallery.classList.toggle('is-expanded');
         btn.textContent = expanded ? 'Show less' : 'Show more — 6 of 12';
+        if (!expanded) {
+          // Returning to collapsed view — re-measure and re-apply cap
+          // so the fade lands evenly across the columns.
+          requestAnimationFrame(() => requestAnimationFrame(applyCap));
+        }
       });
     }
   })();
