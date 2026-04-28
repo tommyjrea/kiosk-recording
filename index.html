@@ -51,9 +51,9 @@
   :root {
     /* The five brand grounds */
     --c-black:   #131313;
-    --c-oxblood: #480016;
+    --c-oxblood: #4F010A;
     --c-red:     #FD3249;
-    --c-grey:    #A1A1A1;
+    --c-grey:    #B1B1B1;
     --c-white:   #ffffff;
 
     /* Hairline rules tuned per ground */
@@ -68,7 +68,7 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { background: var(--c-black); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overscroll-behavior: none; }
+  html, body { background: var(--c-oxblood); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overscroll-behavior: none; }
   body {
     font-family: var(--sans);
     font-weight: 400;
@@ -255,6 +255,12 @@
   html.is-daylight .cover-mark .night { display: none; }
   html.is-daylight .cover-mark .day { display: block; }
 
+  /* Cover ground hex label — swap between #131313 and #FFFFFF
+     by time of day, mirroring the K mark logic above. */
+  .cover-top .ground-day { display: none; }
+  html.is-daylight .cover-top .ground-night { display: none; }
+  html.is-daylight .cover-top .ground-day { display: inline; }
+
   .cover-text {
     display: flex;
     flex-direction: column;
@@ -386,6 +392,26 @@
   .gallery figure:hover img { transform: scale(1.025); }
   .gallery figure.is-hidden { display: none; }
   .gallery.is-expanded figure.is-hidden { display: block; }
+
+  /* Collapsed-state column fade — JS sets a CSS variable on each
+     column with the cap height, and a soft mask fades the bottom
+     so all columns visually end at roughly the same baseline. */
+  .gallery:not(.is-expanded) .gallery-col[style*="--cap"] {
+    max-height: var(--cap);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      black 0,
+      black calc(var(--cap) - 96px),
+      transparent var(--cap)
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      black 0,
+      black calc(var(--cap) - 96px),
+      transparent var(--cap)
+    );
+  }
 
   .gallery-toggle {
     align-self: center;
@@ -792,6 +818,8 @@
     .work-body { grid-template-columns: 1fr; padding-top: 32px; }
     .work-aside { grid-column: 1 / -1; position: static; margin-bottom: 28px; }
     .work-list { grid-column: 1 / -1; }
+    .work-empty { grid-column: 1 / -1; padding: 48px 0; }
+    .work-empty p { font-size: 20px; max-width: none; }
     .work-row {
       grid-template-columns: 32px 1fr 18px;
       grid-template-areas:
@@ -871,7 +899,7 @@
   <section class="page page--black cover" id="cover">
     <header class="cover-top">
       <div>00 · Cover</div>
-      <div>#131313</div>
+      <div><span class="ground-night">#131313</span><span class="ground-day">#FFFFFF</span></div>
       <div>South London</div>
     </header>
 
@@ -901,7 +929,7 @@
     <header class="page-head">
       <span class="num">01</span>
       <span class="name">Information</span>
-      <span class="ground">#480016</span>
+      <span class="ground">#4F010A</span>
       <span class="of">01 / 06</span>
     </header>
 
@@ -955,8 +983,8 @@
   <section class="page page--grey" id="work">
     <header class="page-head">
       <span class="num">03</span>
-      <span class="name">Selected Work · Tom Rea</span>
-      <span class="ground">#A1A1A1</span>
+      <span class="name">Selected Work</span>
+      <span class="ground">#B1B1B1</span>
       <span class="of">03 / 06</span>
     </header>
 
@@ -1044,7 +1072,7 @@
       <div class="equip-grid">
 
         <div class="equip-block">
-          <h3>Outboard <span class="count">04</span></h3>
+          <h3>Outboard <span class="count">04 Items</span></h3>
           <ul>
             <li>Neve 1073 DPX</li>
             <li>Focusrite 828 MKII</li>
@@ -1054,7 +1082,7 @@
         </div>
 
         <div class="equip-block">
-          <h3>Monitors <span class="count">03</span></h3>
+          <h3>Monitors <span class="count">03 Items</span></h3>
           <ul>
             <li>Neumann KH310A (Pair)</li>
             <li>NOS McOne Passive Monitor Controller</li>
@@ -1063,7 +1091,7 @@
         </div>
 
         <div class="equip-block">
-          <h3>Microphones <span class="count">07</span></h3>
+          <h3>Microphones <span class="count">07 Items</span></h3>
           <ul>
             <li>Neumann TLM 102</li>
             <li>AKG C414</li>
@@ -1076,7 +1104,7 @@
         </div>
 
         <div class="equip-block">
-          <h3>Guitars / Bass / Amps <span class="count">08</span></h3>
+          <h3>Guitars / Bass / Amps <span class="count">08 Items</span></h3>
           <ul>
             <li>Fender Telecaster (American) Custom 60’s Reissue</li>
             <li>Fender Stratocaster (American)</li>
@@ -1090,7 +1118,7 @@
         </div>
 
         <div class="equip-block">
-          <h3>Keys / Synths <span class="count">05</span></h3>
+          <h3>Keys / Synths <span class="count">05 Items</span></h3>
           <ul>
             <li>Knight K10 Upright Piano</li>
             <li>Sequential Prophet 6</li>
@@ -1111,7 +1139,7 @@
     <header class="page-head">
       <span class="num">06</span>
       <span class="name">Contact</span>
-      <span class="ground">#480016</span>
+      <span class="ground">#4F010A</span>
       <span class="of">06 / 06</span>
     </header>
 
@@ -1213,6 +1241,25 @@
         });
       }
       place(visible);
+
+      // Measure actual column heights after layout, find the shortest,
+      // and set --cap only on columns that are taller than it. The
+      // shortest column needs no cap/fade — it's already the baseline.
+      requestAnimationFrame(() => {
+        const rects = cols.map(c => c.getBoundingClientRect());
+        const heightsPx = rects.map(r => r.height);
+        const minH = Math.min(...heightsPx);
+        if (minH > 0 && isFinite(minH)) {
+          cols.forEach((c, i) => {
+            if (heightsPx[i] > minH + 4) {
+              c.style.setProperty('--cap', Math.round(minH) + 'px');
+            } else {
+              c.style.removeProperty('--cap');
+            }
+          });
+        }
+      });
+
       // Re-measure after expanding, treating hidden figures as part of
       // the same balance so when revealed they extend their column
       // without re-shuffling everything visible above.
