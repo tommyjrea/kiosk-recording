@@ -11,6 +11,16 @@
 <meta property="og:description" content="An independent music studio in South London, run by Tom Rea and Dougal Gray.">
 <meta property="og:image" content="K_Block_Red.png">
 <meta property="og:type" content="website">
+<script>
+  // Set day/night theme before first paint so cover ground doesn't flash.
+  // Daylight = 06:00 to 18:00 local time.
+  (function() {
+    var h = new Date().getHours();
+    if (h >= 6 && h < 18) {
+      document.documentElement.classList.add('is-daylight');
+    }
+  })();
+</script>
 <style>
   /* ============================================================
      SELF-HOSTED FONTS
@@ -171,6 +181,32 @@
   .page--red     { background: var(--c-red);     color: var(--c-white);   --rule: rgba(255,255,255,0.40); }
 
   /* ============================================================
+     DAYLIGHT MODE — applied to <html class="is-daylight">.
+     Cover and Studio sections invert by time of day:
+       06:00–18:00  cover = white,  studio = black
+       otherwise    cover = black,  studio = white  (default above)
+     Other sections unchanged.
+     ============================================================ */
+  html.is-daylight #cover {
+    background: var(--c-white);
+    color: var(--c-black);
+    --rule: var(--rule-dark);
+  }
+  html.is-daylight #cover .cover-wordmark { color: var(--c-black); }
+  html.is-daylight #cover .cover-byline { color: var(--c-black); }
+  html.is-daylight #cover .cover-foot dd a { color: var(--c-black); }
+
+  html.is-daylight #studio {
+    background: var(--c-black);
+    color: var(--c-white);
+    --rule: var(--rule-light);
+  }
+  html.is-daylight #studio .gallery-toggle:hover {
+    background: var(--c-white);
+    color: var(--c-black);
+  }
+
+  /* ============================================================
      §00 — COVER (black ground, white K)
      The opening title page. Scale matters here.
      ============================================================ */
@@ -205,6 +241,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    position: relative;
   }
   .cover-mark img {
     display: block;
@@ -214,6 +251,9 @@
     max-height: 56vh;
     user-select: none;
   }
+  .cover-mark .day  { display: none; }
+  html.is-daylight .cover-mark .night { display: none; }
+  html.is-daylight .cover-mark .day { display: block; }
 
   .cover-text {
     display: flex;
@@ -306,35 +346,67 @@
 
   /* ============================================================
      §02 — STUDIO (white ground, red K)
-     The photograph chamber. CSS columns let each image keep its
-     native aspect ratio while packing tightly. On mobile this
-     converts to a horizontal scroll-snap carousel.
+     Photographs in row-major order. Each row is a fixed-height
+     flex strip; image widths flex by natural aspect ratio (set
+     by JS once images load), so every image keeps its true ratio
+     without cropping while the row width fills exactly. First 6
+     visible by default; "Show more" reveals the rest.
      ============================================================ */
   .gallery {
     flex: 1;
     padding-top: 56px;
-    column-count: 4;
-    column-gap: var(--gutter);
-    column-fill: balance;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gutter);
   }
-  @media (max-width: 1280px) {
-    .gallery { column-count: 3; }
+  .gallery-row {
+    display: flex;
+    flex-direction: row;
+    gap: var(--gutter);
+    height: clamp(200px, 24vw, 340px);
   }
   .gallery figure {
-    break-inside: avoid;
-    margin: 0 0 var(--gutter);
+    margin: 0;
     overflow: hidden;
     background: var(--c-black);
-    display: block;
+    /* JS sets flex-grow per natural aspect ratio; fallback to 1 */
+    flex: 1 1 0;
+    min-width: 0;
+    height: 100%;
   }
   .gallery figure img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover; /* fallback during load; once flex is sized
+                          correctly the image's natural ratio matches
+                          the cell so no actual cropping occurs */
     display: block;
     filter: contrast(0.97) saturate(0.78);
     transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .gallery figure:hover img { transform: scale(1.025); }
+
+  /* Hide rows beyond the first two until expanded */
+  .gallery .gallery-row.is-hidden { display: none; }
+  .gallery.is-expanded .gallery-row.is-hidden { display: flex; }
+
+  .gallery-toggle {
+    align-self: center;
+    margin-top: 20px;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 12px 22px 13px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color .25s ease, color .25s ease;
+  }
+  .gallery-toggle:hover { background: var(--c-black); color: var(--c-white); }
 
   /* ============================================================
      §03 — SELECTED WORK (grey ground, white K)
@@ -683,40 +755,38 @@
     .info-foot > div { grid-column: 1 / -1 !important; text-align: left !important; }
 
     /* Gallery — horizontal swipe carousel.
-       Images keep their native aspect ratio; height is capped so the
-       strip reads consistently and width adapts per image. */
+       Flatten rows into one strip; show all images. */
     .gallery {
-      column-count: unset;
-      column-gap: unset;
-      display: flex;
       flex-direction: row;
       align-items: center;
       gap: 12px;
       overflow-x: auto;
       overflow-y: hidden;
       scroll-snap-type: x mandatory;
-      /* full-bleed strip */
       margin: 32px calc(-1 * var(--margin)) 0;
       padding: 0 var(--margin);
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
     .gallery::-webkit-scrollbar { display: none; }
+    .gallery-row,
+    .gallery-row.is-hidden {
+      display: contents;
+    }
     .gallery figure {
       flex: 0 0 auto;
-      margin: 0;
-      scroll-snap-align: center;
       height: 70vh;
       max-height: 560px;
-      aspect-ratio: auto;
-      grid-column: unset;
+      scroll-snap-align: center;
     }
     .gallery figure img {
       width: auto;
       height: 100%;
       max-width: none;
+      object-fit: cover;
       display: block;
     }
+    .gallery-toggle { display: none; }
 
     /* Work */
     .work-body { grid-template-columns: 1fr; padding-top: 32px; }
@@ -807,7 +877,8 @@
 
     <div class="cover-body">
       <div class="cover-mark">
-        <img src="K_Block_White.png" alt="Kiosk Recording mark">
+        <img class="night" src="K_Block_White.png" alt="Kiosk Recording mark">
+        <img class="day" src="K_Block_Red.png" alt="Kiosk Recording mark">
       </div>
       <div class="cover-text">
         <h1 class="cover-wordmark">Kiosk<br>Recording<span class="reg">®</span></h1>
@@ -860,18 +931,27 @@
     </header>
 
     <div class="gallery">
-      <figure class="g1"><img src="studio_image_1.jpg" alt="" loading="lazy"></figure>
-      <figure class="g2"><img src="studio_image_2.jpg" alt="" loading="lazy"></figure>
-      <figure class="g3"><img src="studio_image_3.jpg" alt="" loading="lazy"></figure>
-      <figure class="g4"><img src="studio_image_4.jpg" alt="" loading="lazy"></figure>
-      <figure class="g5"><img src="studio_image_5.jpg" alt="" loading="lazy"></figure>
-      <figure class="g6"><img src="studio_image_6.jpg" alt="" loading="lazy"></figure>
-      <figure class="g7"><img src="studio_image_7.jpg" alt="" loading="lazy"></figure>
-      <figure class="g8"><img src="studio_image_8.jpg" alt="" loading="lazy"></figure>
-      <figure class="g9"><img src="studio_image_9.jpg" alt="" loading="lazy"></figure>
-      <figure class="g10"><img src="studio_image_10.jpg" alt="" loading="lazy"></figure>
-      <figure class="g11"><img src="studio_image_11.jpg" alt="" loading="lazy"></figure>
-      <figure class="g12"><img src="studio_image_12.jpg" alt="" loading="lazy"></figure>
+      <div class="gallery-row">
+        <figure><img src="studio_image_1.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_2.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_3.jpg" alt="" loading="lazy"></figure>
+      </div>
+      <div class="gallery-row">
+        <figure><img src="studio_image_4.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_5.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_6.jpg" alt="" loading="lazy"></figure>
+      </div>
+      <div class="gallery-row is-hidden">
+        <figure><img src="studio_image_7.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_8.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_9.jpg" alt="" loading="lazy"></figure>
+      </div>
+      <div class="gallery-row is-hidden">
+        <figure><img src="studio_image_10.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_11.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_12.jpg" alt="" loading="lazy"></figure>
+      </div>
+      <button type="button" class="gallery-toggle" data-state="collapsed">Show more — 6 of 12</button>
     </div>
   </section>
 
@@ -1069,18 +1149,53 @@
 </main>
 
 <script>
+  // Gallery: set each figure's flex-grow proportional to its image's
+  // natural aspect ratio so within each row, widths scale to keep
+  // every image at its true ratio (no cropping) while filling the row.
+  (function() {
+    const figures = document.querySelectorAll('.gallery figure');
+    if (!figures.length) return;
+    figures.forEach(fig => {
+      const img = fig.querySelector('img');
+      if (!img) return;
+      const apply = () => {
+        const ratio = img.naturalWidth / img.naturalHeight;
+        if (ratio && isFinite(ratio)) {
+          fig.style.flexGrow = ratio.toFixed(4);
+        }
+      };
+      if (img.complete && img.naturalWidth > 0) apply();
+      else img.addEventListener('load', apply, { once: true });
+    });
+  })();
+
+  // Gallery show-more toggle
+  (function() {
+    const gallery = document.querySelector('.gallery');
+    const btn = document.querySelector('.gallery-toggle');
+    if (!gallery || !btn) return;
+    btn.addEventListener('click', () => {
+      const expanded = gallery.classList.toggle('is-expanded');
+      btn.textContent = expanded ? 'Show less' : 'Show more — 6 of 12';
+      btn.dataset.state = expanded ? 'expanded' : 'collapsed';
+    });
+  })();
+
   // Nav text colour per section — swap based on whichever section
   // currently sits beneath the nav. Light grounds (white, grey) get
   // dark text; dark grounds (black, oxblood, red) get white text.
+  // In daylight mode, cover and studio invert their grounds, so the
+  // observer treats them accordingly.
   (function() {
     const nav = document.querySelector('.nav');
     if (!nav) return;
     const lightGrounds = new Set(['page--white', 'page--grey']);
     const sections = Array.from(document.querySelectorAll('section.page, section.contact-block'));
     if (!sections.length) return;
+    const isDaylight = document.documentElement.classList.contains('is-daylight');
 
     function update() {
-      const probeY = 30; // a few px under the top of the viewport
+      const probeY = 30;
       let current = sections[0];
       for (const s of sections) {
         const rect = s.getBoundingClientRect();
@@ -1089,7 +1204,12 @@
           break;
         }
       }
-      const isLight = current && Array.from(current.classList).some(c => lightGrounds.has(c));
+      let isLight = current && Array.from(current.classList).some(c => lightGrounds.has(c));
+      // In daylight: cover (#cover) is light, studio (#studio) is dark
+      if (isDaylight && current) {
+        if (current.id === 'cover')  isLight = true;
+        if (current.id === 'studio') isLight = false;
+      }
       nav.classList.toggle('is-light', !!isLight);
     }
     update();
