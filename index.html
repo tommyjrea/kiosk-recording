@@ -1222,20 +1222,43 @@
     // columns so the collapsed-state mask can fade their bottoms down
     // to the shortest column's baseline. Uses scrollHeight so it reads
     // the natural content height regardless of any active max-height
-    // clip from a previous run. Called on initial layout and re-run on
-    // Show less so the fade lands evenly each time.
+    // clip from a previous run. If columns aren't measurable yet
+    // (images still loading), schedules a retry.
+    let capRetries = 0;
     function applyCap() {
       if (gallery.classList.contains('is-expanded')) return;
       const cols = Array.from(grid.querySelectorAll(':scope > .gallery-col'));
       if (cols.length < 2) return;
       const heightsPx = cols.map(c => c.scrollHeight);
       const minH = Math.min(...heightsPx);
-      if (!(minH > 0) || !isFinite(minH)) return;
+      const maxH = Math.max(...heightsPx);
+      // If columns are tiny, images probably haven't painted yet.
+      // Retry shortly. Cap retries to avoid infinite loops.
+      if (minH < 60) {
+        if (capRetries < 20) {
+          capRetries++;
+          setTimeout(applyCap, 100);
+        }
+        return;
+      }
+      capRetries = 0;
+      // Columns naturally balanced — no cap needed.
+      if (maxH - minH < 4) {
+        cols.forEach(c => {
+          if (c.style.getPropertyValue('--cap')) c.style.removeProperty('--cap');
+        });
+        return;
+      }
+      const newCap = Math.round(minH) + 'px';
       cols.forEach((c, i) => {
         if (heightsPx[i] > minH + 4) {
-          c.style.setProperty('--cap', Math.round(minH) + 'px');
+          if (c.style.getPropertyValue('--cap') !== newCap) {
+            c.style.setProperty('--cap', newCap);
+          }
         } else {
-          c.style.removeProperty('--cap');
+          if (c.style.getPropertyValue('--cap')) {
+            c.style.removeProperty('--cap');
+          }
         }
       });
     }
@@ -1254,6 +1277,28 @@
     });
     // Initial layout with whatever's available, then re-layout on load.
     layout();
+
+    // Final settled measurement after window load — fonts, all images,
+    // any remaining subresources. Catches edge cases where image
+    // load events fire before our listeners attach (e.g. cache hits).
+    window.addEventListener('load', () => {
+      capRetries = 0;
+      requestAnimationFrame(() => requestAnimationFrame(applyCap));
+    });
+
+    // Watch the grid's height — any time it changes (a late image
+    // settling, font loading shifting layout, etc.) re-apply the cap.
+    if ('ResizeObserver' in window) {
+      let roTimer;
+      const ro = new ResizeObserver(() => {
+        clearTimeout(roTimer);
+        roTimer = setTimeout(() => {
+          capRetries = 0;
+          applyCap();
+        }, 60);
+      });
+      ro.observe(grid);
+    }
 
     // Re-layout on resize (debounced)
     let rId;
