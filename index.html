@@ -117,6 +117,10 @@
     padding-bottom: 20px;
     margin-bottom: -20px;
   }
+  .nav-work-trigger {
+    cursor: default;
+    user-select: none;
+  }
   .nav-work-menu {
     position: absolute;
     top: 100%;
@@ -182,9 +186,9 @@
 
   /* ============================================================
      DAYLIGHT MODE — applied to <html class="is-daylight">.
-     Cover and Studio sections invert by time of day:
-       06:00–18:00  cover = white,  studio = black
-       otherwise    cover = black,  studio = white  (default above)
+     Cover, Studio and Equipment sections invert by time of day:
+       06:00–18:00  cover = white,  studio = black,  equipment = white
+       otherwise    cover = black,  studio = white,  equipment = black  (default above)
      Other sections unchanged.
      ============================================================ */
   html.is-daylight #cover {
@@ -204,6 +208,12 @@
   html.is-daylight #studio .gallery-toggle:hover {
     background: var(--c-white);
     color: var(--c-black);
+  }
+
+  html.is-daylight #equipment {
+    background: var(--c-white);
+    color: var(--c-black);
+    --rule: var(--rule-dark);
   }
 
   /* ============================================================
@@ -257,9 +267,11 @@
 
   /* Cover ground hex label — swap between #131313 and #FFFFFF
      by time of day, mirroring the K mark logic above. */
-  .cover-top .ground-day { display: none; }
-  html.is-daylight .cover-top .ground-night { display: none; }
-  html.is-daylight .cover-top .ground-day { display: inline; }
+  /* Day/night hex label swap — used in cover-top and any page-head
+     where the section's ground inverts by time of day. */
+  .ground-day { display: none; }
+  html.is-daylight .ground-night { display: none; }
+  html.is-daylight .ground-day { display: inline; }
 
   .cover-text {
     display: flex;
@@ -877,7 +889,7 @@
     <a href="#information">Information</a>
     <a href="#studio">Studio</a>
     <span class="nav-work">
-      <a href="#work">Work</a>
+      <span class="nav-work-trigger">Work</span>
       <span class="nav-work-menu">
         <a href="/tom">↗ Tom</a>
         <a href="/dougal">↗ Dougal</a>
@@ -926,7 +938,7 @@
       <span class="num">01</span>
       <span class="name">Information</span>
       <span class="ground">#4F010A</span>
-      <span class="of">01 / 05</span>
+      <span class="of">01 / 04</span>
     </header>
 
     <div class="info-body">
@@ -951,8 +963,8 @@
     <header class="page-head">
       <span class="num">02</span>
       <span class="name">Studio · Photographs</span>
-      <span class="ground">#FFFFFF</span>
-      <span class="of">02 / 05</span>
+      <span class="ground"><span class="ground-night">#FFFFFF</span><span class="ground-day">#131313</span></span>
+      <span class="of">02 / 04</span>
     </header>
 
     <div class="gallery">
@@ -974,73 +986,27 @@
     </div>
   </section>
 
-  <!-- =========================================================
-       §03 — SELECTED WORK (grey / white K)
-       ========================================================= -->
-  <section class="page page--grey" id="work">
-    <header class="page-head">
-      <span class="num">03</span>
-      <span class="name">Selected Work</span>
-      <span class="ground">#B1B1B1</span>
-      <span class="of">03 / 05</span>
-    </header>
-
-    <div class="work-body" data-view="tom">
-      <aside class="work-aside">
-        <div class="work-switch" role="tablist">
-          <button type="button" data-target="tom" class="is-active">Tom Rea</button>
-          <button type="button" data-target="dougal">Dougal Gray</button>
-        </div>
-      </aside>
-
-      <div class="work-list">
-        <a class="work-row" href="https://open.spotify.com/album/2q5a2Z5nnjRDwdvHIRfJcL" target="_blank" rel="noopener"><span class="work-num">01</span><span class="work-artist">junodream</span><span class="work-track">Pools of Colour</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/album/5XECPBbINEHS50OWxyffhO" target="_blank" rel="noopener"><span class="work-num">02</span><span class="work-artist">junodream</span><span class="work-track">Dream Untitled</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/album/1pV93eHijKX4ZoC1yCxtfr" target="_blank" rel="noopener"><span class="work-num">03</span><span class="work-artist">junodream</span><span class="work-track">Death Drive 2.0</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/album/2EcNTgx9KPlp83rrTNfOi5" target="_blank" rel="noopener"><span class="work-num">04</span><span class="work-artist">junodream</span><span class="work-track">The Beach 2.0</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/album/4ngvkf94T5ZaFJ71MGuDUQ" target="_blank" rel="noopener"><span class="work-num">05</span><span class="work-artist">junodream</span><span class="work-track">Travel Guide</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/album/1BcTbXK7pvyCdWiAB83CPe" target="_blank" rel="noopener"><span class="work-num">06</span><span class="work-artist">junodream</span><span class="work-track">Isn’t It Lovely (To Be Alone)</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/album/3y8er1lVrR5Y9i6AwXNRcT" target="_blank" rel="noopener"><span class="work-num">07</span><span class="work-artist">junodream</span><span class="work-track">To The Moon</span><span class="work-role">Mix · Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/album/1fJDzNu9fVq9dnnZLcBAMv" target="_blank" rel="noopener"><span class="work-num">08</span><span class="work-artist">junodream</span><span class="work-track">Galactica</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/album/3LyaOh01KBQsQ0dSBJhIYz" target="_blank" rel="noopener"><span class="work-num">09</span><span class="work-artist">Talie Rae</span><span class="work-track">Blue</span><span class="work-role">Producer · Engineer</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/album/6FNB45ZLlsRDetg0cAYXcW" target="_blank" rel="noopener"><span class="work-num">10</span><span class="work-artist">Korder</span><span class="work-track">Falling Awake</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/album/0NroQnI5YEQpNe0rcgvJ3J" target="_blank" rel="noopener"><span class="work-num">11</span><span class="work-artist">Korder</span><span class="work-track">Waves</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/album/3QNwE3Ehl77JvuN3bZTfWw" target="_blank" rel="noopener"><span class="work-num">12</span><span class="work-artist">Samuel Austin</span><span class="work-track">Locksmith</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
-        <a class="work-row" href="https://open.spotify.com/album/58q79mMO95nIts92SHa43O" target="_blank" rel="noopener"><span class="work-num">13</span><span class="work-artist">Samuel Austin</span><span class="work-track">We</span><span class="work-role">Mix · Producer · Engineer</span><span class="work-arrow">↗</span></a>
-        <span class="work-row" style="cursor:default"><span class="work-num">14</span><span class="work-artist">Angel Parker</span><span class="work-track">The House of the Poet</span><span class="work-role">Mix · Producer · Engineer</span><span class="work-arrow"></span></span>
-        <span class="work-row" style="cursor:default"><span class="work-num">15</span><span class="work-artist">Porcelain Twin</span><span class="work-track">Everybody Running</span><span class="work-role">Mix</span><span class="work-arrow"></span></span>
-        <a class="work-row" href="https://open.spotify.com/track/0Mt1EZ8vviQFV3vYJjZ9nK" target="_blank" rel="noopener"><span class="work-num">16</span><span class="work-artist">Joe Khalique-Brown</span><span class="work-track">The Getaway</span><span class="work-role">Mix</span><span class="work-arrow">↗</span></a>
-        <span class="work-row" style="cursor:default"><span class="work-num">17</span><span class="work-artist">Somesuch · Super 8</span><span class="work-track">And Then There Were Two</span><span class="work-role">Mix · Producer · Engineer · Composer · Soundtrack</span><span class="work-arrow"></span></span>
-        <span class="work-row" style="cursor:default"><span class="work-num">18</span><span class="work-artist">Saturday Born</span><span class="work-track">Film by Saabeah</span><span class="work-role">Producer · Engineer · Composer · Soundtrack</span><span class="work-arrow"></span></span>
-      </div>
-
-      <div class="work-empty">
-        <p>Selected work coming soon. In the meantime, get in touch — <a href="mailto:info&#64;kioskrecording.studio">info@kioskrecording.studio</a></p>
-      </div>
-    </div>
-  </section>
 
   <!-- =========================================================
-       §05 — EQUIPMENT (black / white K)
+       §05 — EQUIPMENT (black night / white daylight)
        ========================================================= -->
   <section class="page page--black" id="equipment">
     <header class="page-head">
-      <span class="num">04</span>
+      <span class="num">03</span>
       <span class="name">Equipment</span>
-      <span class="ground">#131313</span>
-      <span class="of">04 / 05</span>
+      <span class="ground"><span class="ground-night">#131313</span><span class="ground-day">#FFFFFF</span></span>
+      <span class="of">03 / 04</span>
     </header>
 
     <div class="equip-body">
       <aside class="equip-aside">
-        <div class="small">Selected · 27 items</div>
         <h2>Instruments,<br>microphones<br>&amp; outboard.</h2>
       </aside>
 
       <div class="equip-grid">
 
         <div class="equip-block">
-          <h3>Outboard <span class="count">04 Items</span></h3>
+          <h3>Outboard</h3>
           <ul>
             <li>Neve 1073 DPX</li>
             <li>Focusrite 828 MKII</li>
@@ -1050,7 +1016,7 @@
         </div>
 
         <div class="equip-block">
-          <h3>Monitors <span class="count">03 Items</span></h3>
+          <h3>Monitors</h3>
           <ul>
             <li>Neumann KH310A (Pair)</li>
             <li>NOS McOne Passive Monitor Controller</li>
@@ -1059,7 +1025,7 @@
         </div>
 
         <div class="equip-block">
-          <h3>Microphones <span class="count">07 Items</span></h3>
+          <h3>Microphones</h3>
           <ul>
             <li>Neumann TLM 102</li>
             <li>AKG C414</li>
@@ -1072,7 +1038,7 @@
         </div>
 
         <div class="equip-block">
-          <h3>Guitars / Bass / Amps <span class="count">08 Items</span></h3>
+          <h3>Guitars / Bass / Amps</h3>
           <ul>
             <li>Fender Telecaster (American) Custom 60’s Reissue</li>
             <li>Fender Stratocaster (American)</li>
@@ -1086,7 +1052,7 @@
         </div>
 
         <div class="equip-block">
-          <h3>Keys / Synths <span class="count">05 Items</span></h3>
+          <h3>Keys / Synths</h3>
           <ul>
             <li>Knight K10 Upright Piano</li>
             <li>Sequential Prophet 6</li>
@@ -1105,10 +1071,10 @@
        ========================================================= -->
   <section class="page page--oxblood" id="contact">
     <header class="page-head">
-      <span class="num">05</span>
+      <span class="num">04</span>
       <span class="name">Contact</span>
       <span class="ground">#4F010A</span>
-      <span class="of">05 / 05</span>
+      <span class="of">04 / 04</span>
     </header>
 
     <div class="contact-body">
@@ -1360,31 +1326,17 @@
         }
       }
       let isLight = current && Array.from(current.classList).some(c => lightGrounds.has(c));
-      // In daylight: cover (#cover) is light, studio (#studio) is dark
+      // In daylight: cover and equipment are light; studio is dark.
       if (isDaylight && current) {
-        if (current.id === 'cover')  isLight = true;
-        if (current.id === 'studio') isLight = false;
+        if (current.id === 'cover')     isLight = true;
+        if (current.id === 'studio')    isLight = false;
+        if (current.id === 'equipment') isLight = true;
       }
       nav.classList.toggle('is-light', !!isLight);
     }
     update();
     window.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
-  })();
-
-  // Tom / Dougal switch on the work section
-  (function() {
-    const body = document.querySelector('.work-body');
-    if (!body) return;
-    body.querySelectorAll('.work-switch button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const target = btn.dataset.target;
-        body.dataset.view = target;
-        body.querySelectorAll('.work-switch button').forEach(b => {
-          b.classList.toggle('is-active', b.dataset.target === target);
-        });
-      });
-    });
   })();
 
   // Subtle reveal on scroll — single sustained motion per page
