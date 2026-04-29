@@ -186,9 +186,9 @@
 
   /* ============================================================
      DAYLIGHT MODE — applied to <html class="is-daylight">.
-     Cover, Studio and Equipment sections invert by time of day:
-       06:00–18:00  cover = white,  studio = black,  equipment = white
-       otherwise    cover = black,  studio = white,  equipment = black  (default above)
+     Cover and Studio sections invert by time of day:
+       06:00–18:00  cover = white,  studio = black
+       otherwise    cover = black,  studio = white  (default above)
      Other sections unchanged.
      ============================================================ */
   html.is-daylight #cover {
@@ -208,12 +208,6 @@
   html.is-daylight #studio .gallery-toggle:hover {
     background: var(--c-white);
     color: var(--c-black);
-  }
-
-  html.is-daylight #equipment {
-    background: var(--c-white);
-    color: var(--c-black);
-    --rule: var(--rule-dark);
   }
 
   /* ============================================================
@@ -988,13 +982,13 @@
 
 
   <!-- =========================================================
-       §05 — EQUIPMENT (black night / white daylight)
+       §03 — EQUIPMENT (grey)
        ========================================================= -->
-  <section class="page page--black" id="equipment">
+  <section class="page page--grey" id="equipment">
     <header class="page-head">
       <span class="num">03</span>
       <span class="name">Equipment</span>
-      <span class="ground"><span class="ground-night">#131313</span><span class="ground-day">#FFFFFF</span></span>
+      <span class="ground">#B1B1B1</span>
       <span class="of">03 / 04</span>
     </header>
 
@@ -1326,11 +1320,10 @@
         }
       }
       let isLight = current && Array.from(current.classList).some(c => lightGrounds.has(c));
-      // In daylight: cover and equipment are light; studio is dark.
+      // In daylight: cover and studio invert; other sections are static.
       if (isDaylight && current) {
-        if (current.id === 'cover')     isLight = true;
-        if (current.id === 'studio')    isLight = false;
-        if (current.id === 'equipment') isLight = true;
+        if (current.id === 'cover')  isLight = true;
+        if (current.id === 'studio') isLight = false;
       }
       nav.classList.toggle('is-light', !!isLight);
     }
