@@ -1225,16 +1225,31 @@
     // clip from a previous run. If columns aren't measurable yet
     // (images still loading), schedules a retry.
     let capRetries = 0;
+    let applyingCap = false;
     function applyCap() {
       if (gallery.classList.contains('is-expanded')) return;
+      if (applyingCap) return; // re-entrancy guard for ResizeObserver
       const cols = Array.from(grid.querySelectorAll(':scope > .gallery-col'));
       if (cols.length < 2) return;
-      const heightsPx = cols.map(c => c.scrollHeight);
+
+      applyingCap = true;
+      // Temporarily clear any existing caps so we can measure the
+      // true natural heights (scrollHeight on a clipped flex column
+      // returns the clipped height, not the content height).
+      const prevCaps = cols.map(c => c.style.getPropertyValue('--cap'));
+      cols.forEach(c => c.style.removeProperty('--cap'));
+      // Force a synchronous reflow so heights reflect uncapped state.
+      const heightsPx = cols.map(c => c.getBoundingClientRect().height);
       const minH = Math.min(...heightsPx);
       const maxH = Math.max(...heightsPx);
+
       // If columns are tiny, images probably haven't painted yet.
-      // Retry shortly. Cap retries to avoid infinite loops.
+      // Restore previous caps and retry shortly.
       if (minH < 60) {
+        cols.forEach((c, i) => {
+          if (prevCaps[i]) c.style.setProperty('--cap', prevCaps[i]);
+        });
+        applyingCap = false;
         if (capRetries < 20) {
           capRetries++;
           setTimeout(applyCap, 100);
@@ -1242,24 +1257,23 @@
         return;
       }
       capRetries = 0;
+
       // Columns naturally balanced — no cap needed.
       if (maxH - minH < 4) {
-        cols.forEach(c => {
-          if (c.style.getPropertyValue('--cap')) c.style.removeProperty('--cap');
-        });
+        applyingCap = false;
         return;
       }
       const newCap = Math.round(minH) + 'px';
       cols.forEach((c, i) => {
         if (heightsPx[i] > minH + 4) {
-          if (c.style.getPropertyValue('--cap') !== newCap) {
-            c.style.setProperty('--cap', newCap);
-          }
-        } else {
-          if (c.style.getPropertyValue('--cap')) {
-            c.style.removeProperty('--cap');
-          }
+          c.style.setProperty('--cap', newCap);
         }
+      });
+      // Release the re-entrancy guard after the next frame so the
+      // ResizeObserver fires from our cap change don't trigger us
+      // recursively. By the next frame the layout has settled.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { applyingCap = false; });
       });
     }
 
