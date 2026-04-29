@@ -304,10 +304,9 @@
     text-transform: uppercase;
     font-weight: 500;
   }
-  .cover-foot > div:nth-child(1) { grid-column: 1 / span 3; }
-  .cover-foot > div:nth-child(2) { grid-column: 4 / span 3; }
-  .cover-foot > div:nth-child(3) { grid-column: 7 / span 3; }
-  .cover-foot > div:nth-child(4) { grid-column: 10 / span 3; text-align: right; }
+  .cover-foot > div:nth-child(1) { grid-column: 1 / span 4; }
+  .cover-foot > div:nth-child(2) { grid-column: 5 / span 4; }
+  .cover-foot > div:nth-child(3) { grid-column: 9 / span 4; text-align: right; }
   .cover-foot dt { opacity: 0.5; margin-bottom: 6px; font-weight: 500; }
   .cover-foot dd { font-size: 12px; letter-spacing: 0.05em; text-transform: none; opacity: 0.95; line-height: 1.45; }
 
@@ -471,7 +470,6 @@
     border: 1px solid var(--rule);
     border-radius: 999px;
     padding: 3px;
-    margin-bottom: 18px;
     gap: 2px;
   }
   .work-switch button {
@@ -768,7 +766,7 @@
     .cover-wordmark { font-size: clamp(48px, 14vw, 96px); }
     .cover-foot { grid-template-columns: 1fr 1fr; gap: 18px var(--gutter); margin-top: 36px; }
     .cover-foot > div:nth-child(1), .cover-foot > div:nth-child(2),
-    .cover-foot > div:nth-child(3), .cover-foot > div:nth-child(4) {
+    .cover-foot > div:nth-child(3) {
       grid-column: span 1 !important; text-align: left !important;
     }
 
@@ -885,7 +883,6 @@
         <a href="/dougal">↗ Dougal</a>
       </span>
     </span>
-    <a href="#practice">Practice</a>
     <a href="#equipment">Equipment</a>
     <a href="#contact">Contact</a>
   </div>
@@ -915,8 +912,7 @@
     </div>
 
     <dl class="cover-foot">
-      <div><dt>Located</dt><dd>Unit 2, Plough Way<br>SE16 7FQ, London</dd></div>
-      <div><dt>Practice</dt><dd>Songwriting, production,<br>recording &amp; mixing</dd></div>
+      <div><dt>Located</dt><dd>SE16, London</dd></div>
       <div><dt>Run by</dt><dd>Tom Rea<br>Dougal Gray</dd></div>
       <div><dt>Enquiries</dt><dd><a href="mailto:info&#64;kioskrecording.studio">info@kioskrecording.studio</a></dd></div>
     </dl>
@@ -930,13 +926,14 @@
       <span class="num">01</span>
       <span class="name">Information</span>
       <span class="ground">#4F010A</span>
-      <span class="of">01 / 06</span>
+      <span class="of">01 / 05</span>
     </header>
 
     <div class="info-body">
       <div class="info-text">
         <p><strong>Kiosk Recording®</strong> is an independent music studio in South London, run by Tom Rea and Dougal Gray.</p>
-        <p>We focus on making records with clarity and momentum. Big ideas, done quickly and properly. We work across songwriting, production and finishing — helping take tracks from rough demos to something ready to release.</p>
+        <p>Songwriting, production, recording and mixing. Built around clarity, instinct and long-term collaboration.</p>
+        <p>Records first. Everything else follows.</p>
       </div>
     </div>
 
@@ -955,7 +952,7 @@
       <span class="num">02</span>
       <span class="name">Studio · Photographs</span>
       <span class="ground">#FFFFFF</span>
-      <span class="of">02 / 06</span>
+      <span class="of">02 / 05</span>
     </header>
 
     <div class="gallery">
@@ -985,18 +982,15 @@
       <span class="num">03</span>
       <span class="name">Selected Work</span>
       <span class="ground">#B1B1B1</span>
-      <span class="of">03 / 06</span>
+      <span class="of">03 / 05</span>
     </header>
 
     <div class="work-body" data-view="tom">
       <aside class="work-aside">
-        <span class="label">Selected Work</span>
         <div class="work-switch" role="tablist">
           <button type="button" data-target="tom" class="is-active">Tom Rea</button>
           <button type="button" data-target="dougal">Dougal Gray</button>
         </div>
-        <span class="label">Mix · Production<br>Recording · Composition</span>
-        <span class="pill">Recent Highlights</span>
       </aside>
 
       <div class="work-list">
@@ -1027,40 +1021,14 @@
   </section>
 
   <!-- =========================================================
-       §04 — PRACTICE (red / white K)
-       ========================================================= -->
-  <section class="page page--red" id="practice">
-    <img class="practice-mark" src="K_Block_Red.png" alt="" aria-hidden="true">
-    <header class="page-head">
-      <span class="num">04</span>
-      <span class="name">Practice · What we do</span>
-      <span class="ground">#FD3249</span>
-      <span class="of">04 / 06</span>
-    </header>
-
-    <div class="practice-body">
-      <aside class="practice-aside">
-        <div class="small">Across<br>songwriting,<br>production<br>&amp; mixing</div>
-      </aside>
-
-      <ol class="practice-list">
-        <li><span class="roman">i.</span><span class="word">Songwriting</span><span class="meta">Demo → Song</span></li>
-        <li><span class="roman">ii.</span><span class="word">Production</span><span class="meta">Arrangement</span></li>
-        <li><span class="roman">iii.</span><span class="word">Recording</span><span class="meta">Tracking</span></li>
-        <li><span class="roman">iv.</span><span class="word">Mixing</span><span class="meta">Balance</span></li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- =========================================================
        §05 — EQUIPMENT (black / white K)
        ========================================================= -->
   <section class="page page--black" id="equipment">
     <header class="page-head">
-      <span class="num">05</span>
-      <span class="name">Equipment · Technical sheet</span>
+      <span class="num">04</span>
+      <span class="name">Equipment</span>
       <span class="ground">#131313</span>
-      <span class="of">05 / 06</span>
+      <span class="of">04 / 05</span>
     </header>
 
     <div class="equip-body">
@@ -1137,10 +1105,10 @@
        ========================================================= -->
   <section class="page page--oxblood" id="contact">
     <header class="page-head">
-      <span class="num">06</span>
+      <span class="num">05</span>
       <span class="name">Contact</span>
       <span class="ground">#4F010A</span>
-      <span class="of">06 / 06</span>
+      <span class="of">05 / 05</span>
     </header>
 
     <div class="contact-body">
