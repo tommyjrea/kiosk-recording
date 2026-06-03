@@ -57,6 +57,11 @@
     font-weight: 500; font-style: normal; font-display: swap;
   }
   @font-face {
+    font-family: 'Beausite';
+    src: url('BeausiteClassicWebTrial-Bold.woff2') format('woff2');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+  @font-face {
     font-family: 'SuisseFallback';
     src: url('SuisseIntl-Regular.woff') format('woff');
     font-weight: 400; font-style: normal; font-display: swap;
@@ -287,7 +292,9 @@
     grid-template-columns: repeat(12, 1fr);
     gap: var(--gutter);
     padding: 30px 0 60px;
+    align-items: start;
   }
+  .info-head { grid-column: 1 / span 4; padding: 0; }
   .info-col { display: flex; flex-direction: column; gap: 6px; }
   .info-col.c1 { grid-column: 5 / span 3; }
   .info-col.c2 { grid-column: 8 / span 5; }
@@ -357,21 +364,27 @@
   /* ============================================================
      STUDIO — equipment specification
      ============================================================ */
-  .studio-body { padding: 20px 0 40px; }
-  .equip-row {
+  .studio-body {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
+    gap: var(--gutter);
+    padding: 20px 0 40px;
+    align-items: start;
+  }
+  .studio-head { grid-column: 1 / span 4; padding: 0; }
+  .equip-list { grid-column: 5 / span 8; }
+  .equip-row {
+    display: grid;
+    grid-template-columns: 3fr 5fr;
     gap: var(--gutter);
     padding: 0 0 22px;
   }
   .equip-row:last-child { padding-bottom: 0; }
   .equip-cat {
-    grid-column: 5 / span 3;
     font-weight: 500; font-size: 15px; letter-spacing: 0;
     line-height: 1.3;
   }
   .equip-items {
-    grid-column: 8 / span 5;
     list-style: none;
   }
   .equip-items li { font-weight: 400; letter-spacing: 0; color: var(--ink); line-height: 1.3; }
@@ -389,9 +402,10 @@
   .touch { padding: 0 var(--margin); }
   .touch h2 {
     font-weight: 500;
-    font-size: clamp(22px, 2.4vw, 30px);
-    letter-spacing: -0.02em;
-    margin-bottom: 16px;
+    font-size: clamp(20px, 2.2vw, 28px);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    margin-bottom: 0;
   }
   .touch a {
     display: block;
@@ -409,10 +423,10 @@
   }
   .colophon .word {
     display: block;
-    font-weight: 500;
+    font-weight: 700;
     font-size: 80px;            /* initial; JS fits it to the content width */
     line-height: 1.0;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
     white-space: nowrap;
     padding-bottom: 0.08em;     /* room for the descender of 'g' */
   }
@@ -434,7 +448,12 @@
     .intro p { font-size: clamp(22px, 6.4vw, 34px); max-width: none; }
 
     .info-body { grid-template-columns: 1fr 1fr; gap: 28px var(--gutter); }
+    .info-head { grid-column: 1 / -1; margin-bottom: 4px; }
     .info-col.c1, .info-col.c2 { grid-column: auto; }
+
+    .studio-body { display: block; }
+    .studio-head { margin-bottom: 20px; }
+    .equip-list { grid-column: auto; }
   }
 
   /* Phone only — stack the gallery and equipment spec. */
@@ -458,7 +477,6 @@
     .gallery-more { display: flex; justify-content: center; padding: 22px 0 0; }
 
     .equip-row { grid-template-columns: 1fr; gap: 10px; }
-    .equip-cat, .equip-items { grid-column: auto; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -523,9 +541,9 @@
 
   <!-- INFORMATION -->
   <section id="information">
-    <div class="wrap"><h2 class="section-head">Information</h2></div>
     <div class="wrap">
       <div class="info-body">
+        <h2 class="section-head info-head">Information</h2>
         <div class="info-col c1">
           <div class="info-block">
             <div class="info-label">Contact</div>
@@ -575,60 +593,62 @@
 
   <!-- STUDIO -->
   <section id="studio">
-    <div class="wrap"><h2 class="section-head">Studio</h2></div>
     <div class="wrap">
       <div class="studio-body">
-        <div class="equip-row">
-          <div class="equip-cat">Outboard</div>
-          <ul class="equip-items">
-            <li>Neve 1073 DPX</li>
-            <li>Focusrite 828 MKII</li>
-            <li>Universal Audio Apollo X8</li>
-            <li>Tech 21 SansAmp RBI</li>
-          </ul>
-        </div>
-        <div class="equip-row">
-          <div class="equip-cat">Monitors</div>
-          <ul class="equip-items">
-            <li>Neumann KH310A (Pair)</li>
-            <li>NOS McOne Passive Monitor Controller</li>
-            <li>Beyerdynamic DT770 Pro (×2)</li>
-          </ul>
-        </div>
-        <div class="equip-row">
-          <div class="equip-cat">Microphones</div>
-          <ul class="equip-items">
-            <li>Neumann TLM 102</li>
-            <li>AKG C414</li>
-            <li>AKG D190E</li>
-            <li>Line Audio Omni1 (×2)</li>
-            <li>Shure SM7B</li>
-            <li>Shure SM57</li>
-            <li>Audio-Technica ATM250</li>
-          </ul>
-        </div>
-        <div class="equip-row">
-          <div class="equip-cat">Guitars / Bass / Amps</div>
-          <ul class="equip-items">
-            <li>Fender Telecaster (American) Custom 60's Reissue</li>
-            <li>Fender Stratocaster (American)</li>
-            <li>Gibson Les Paul Traditional</li>
-            <li>Hofner Ignition Bass</li>
-            <li>Fender Bronco Bass</li>
-            <li>Marshall JCM2000</li>
-            <li>Fender Blues Junior</li>
-            <li>Kemper Rig Profiler Rack</li>
-          </ul>
-        </div>
-        <div class="equip-row">
-          <div class="equip-cat">Keys / Synths</div>
-          <ul class="equip-items">
-            <li>Knight K10 Upright Piano</li>
-            <li>Sequential Prophet 6</li>
-            <li>Moog Little Phatty</li>
-            <li>Yamaha Portasound PS3</li>
-            <li>Arturia Wireless MIDI Keyboard</li>
-          </ul>
+        <h2 class="section-head studio-head">Studio</h2>
+        <div class="equip-list">
+          <div class="equip-row">
+            <div class="equip-cat">Outboard</div>
+            <ul class="equip-items">
+              <li>Neve 1073 DPX</li>
+              <li>Focusrite 828 MKII</li>
+              <li>Universal Audio Apollo X8</li>
+              <li>Tech 21 SansAmp RBI</li>
+            </ul>
+          </div>
+          <div class="equip-row">
+            <div class="equip-cat">Monitors</div>
+            <ul class="equip-items">
+              <li>Neumann KH310A (Pair)</li>
+              <li>NOS McOne Passive Monitor Controller</li>
+              <li>Beyerdynamic DT770 Pro (×2)</li>
+            </ul>
+          </div>
+          <div class="equip-row">
+            <div class="equip-cat">Microphones</div>
+            <ul class="equip-items">
+              <li>Neumann TLM 102</li>
+              <li>AKG C414</li>
+              <li>AKG D190E</li>
+              <li>Line Audio Omni1 (×2)</li>
+              <li>Shure SM7B</li>
+              <li>Shure SM57</li>
+              <li>Audio-Technica ATM250</li>
+            </ul>
+          </div>
+          <div class="equip-row">
+            <div class="equip-cat">Guitars / Bass / Amps</div>
+            <ul class="equip-items">
+              <li>Fender Telecaster (American) Custom 60's Reissue</li>
+              <li>Fender Stratocaster (American)</li>
+              <li>Gibson Les Paul Traditional</li>
+              <li>Hofner Ignition Bass</li>
+              <li>Fender Bronco Bass</li>
+              <li>Marshall JCM2000</li>
+              <li>Fender Blues Junior</li>
+              <li>Kemper Rig Profiler Rack</li>
+            </ul>
+          </div>
+          <div class="equip-row">
+            <div class="equip-cat">Keys / Synths</div>
+            <ul class="equip-items">
+              <li>Knight K10 Upright Piano</li>
+              <li>Sequential Prophet 6</li>
+              <li>Moog Little Phatty</li>
+              <li>Yamaha Portasound PS3</li>
+              <li>Arturia Wireless MIDI Keyboard</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
