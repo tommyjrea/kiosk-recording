@@ -87,14 +87,13 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { overflow-x: hidden; }
   html, body {
     background: var(--paper);
     color: var(--ink);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overscroll-behavior: none;
-    overflow-x: hidden;
-    max-width: 100%;
   }
   body {
     font-family: var(--sans);
@@ -392,22 +391,30 @@
     font-weight: 500;
     font-size: clamp(22px, 2.4vw, 30px);
     letter-spacing: -0.02em;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
-  .touch a { display: block; color: var(--muted); width: fit-content; }
+  .touch a {
+    display: block;
+    color: var(--muted);
+    width: fit-content;
+    font-size: clamp(20px, 2.2vw, 28px);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
   .touch a:hover { color: var(--ink); }
 
   .colophon {
     padding: 0 var(--margin);
+    overflow: hidden;
   }
   .colophon .word {
     display: block;
     font-weight: 500;
-    font-size: clamp(48px, 13.5vw, 320px);
+    font-size: 80px;            /* initial; JS fits it to the content width */
     line-height: 1.0;
     letter-spacing: -0.03em;
     white-space: nowrap;
-    padding-bottom: 0.08em;   /* room for the descender of 'g' */
+    padding-bottom: 0.08em;     /* room for the descender of 'g' */
   }
 
   /* ============================================================
@@ -832,6 +839,36 @@ x:0,y:0};var a=this.getPoint([this.a.x,this.b.x,this.c.x,this.d.x],[this.a.y,thi
     } else {
       enable();
     }
+  })();
+
+  // Size the bottom "Kiosk Recording®" wordmark to fill the content width
+  // exactly (so it always fits the screen, never overflows).
+  (function(){
+    var word = document.querySelector('.colophon .word');
+    if (!word) return;
+    function fit(){
+      var cs = getComputedStyle(document.documentElement);
+      var margin = parseFloat(cs.getPropertyValue('--margin')) || 40;
+      var avail = document.documentElement.clientWidth - margin * 2;
+      if (avail <= 0) return;
+      // Measure the natural text width at a known size. A block element reports
+      // its container width, so measure as inline-block to get the true text run.
+      word.style.fontSize = '100px';
+      word.style.display = 'inline-block';
+      var natural = word.getBoundingClientRect().width;
+      word.style.display = 'block';
+      if (natural > 0) {
+        word.style.fontSize = (100 * (avail / natural)) + 'px';
+      }
+    }
+    function fitSoon(){ requestAnimationFrame(fit); }
+    fitSoon();
+    window.addEventListener('resize', fitSoon);
+    window.addEventListener('load', fitSoon);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitSoon);
+    // Re-fit after the intro finishes (layout/scrollbars settle by then).
+    setTimeout(fitSoon, 3000);
+    setTimeout(fitSoon, 5200);
   })();
 </script>
 
