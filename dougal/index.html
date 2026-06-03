@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dougal Gray — Selected Work · Kiosk Recording®</title>
+<meta name="description" content="Selected work by Dougal Gray — mixing, production, recording and composition. Part of Kiosk Recording, an independent music studio in South London.">
+<meta property="og:title" content="Dougal Gray — Selected Work">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kioskrecording.studio/dougal">
+<link rel="canonical" href="https://kioskrecording.studio/dougal">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../K_red.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="apple-touch-icon" href="../favicon-180.png">
+<meta property="og:image" content="https://kioskrecording.studio/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://kioskrecording.studio/og-image.png">
+<script>
+  (function(){
+    var h = new Date().getHours();
+    if (h >= 22 || h < 6) document.documentElement.classList.add('is-dark');
+  })();
+</script>
+<style>
+  @font-face { font-family:'Beausite'; src:url('../BeausiteClassicWebTrial-Regular.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:'Beausite'; src:url('../BeausiteClassicWebTrial-Medium.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+  @font-face { font-family:'SuisseFallback'; src:url('../SuisseIntl-Regular.woff') format('woff'); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:'SuisseFallback'; src:url('../SuisseIntl-Medium.woff') format('woff'); font-weight:500; font-style:normal; font-display:swap; }
+
+  :root {
+    --paper:#ffffff; --ink:#0a0a0a; --red:#DE0404;
+    --rule:rgba(10,10,10,0.16); --muted:rgba(10,10,10,0.55);
+    --sans:'Beausite','SuisseFallback',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
+    --margin:40px; --gutter:24px;
+  }
+  html.is-dark { --paper:#0a0a0a; --ink:#ffffff; --rule:rgba(255,255,255,0.20); --muted:rgba(255,255,255,0.55); }
+
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { background:var(--paper); color:var(--ink); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overscroll-behavior:none; }
+  body { font-family:var(--sans); font-weight:400; font-size:15px; line-height:1.45; min-height:100vh; display:flex; flex-direction:column; transition:background-color .4s ease,color .4s ease; }
+  a { color:inherit; text-decoration:none; }
+  ::selection { background:var(--red); color:#fff; }
+  .reg { font-family:'SuisseFallback',sans-serif; font-size:0.5em; vertical-align:0.55em; font-weight:400; margin-left:0.04em; color:var(--red); }
+
+  /* Header */
+  .masthead { display:flex; justify-content:space-between; align-items:baseline; padding:22px var(--margin); }
+  .masthead .brand { font-weight:500; font-size:15px; }
+  .masthead .back { font-weight:500; font-size:15px; transition:opacity .2s ease; }
+  .masthead .back:hover { opacity:0.5; }
+
+  /* Big title */
+  .title-block { padding:8vh var(--margin) 6vh; }
+  .title-block h1 {
+    font-weight:500; font-size:clamp(56px,11vw,200px); line-height:0.9;
+    letter-spacing:-0.03em;
+  }
+
+  /* Credit list */
+  .work { flex:1; padding:0 var(--margin) 8vh; }
+  .work-row {
+    display:grid;
+    grid-template-columns:48px 1.4fr 1.6fr 2fr 24px;
+    gap:var(--gutter);
+    align-items:baseline;
+    padding:18px 0;
+    border-top:1px solid var(--rule);
+    transition:opacity .2s ease;
+  }
+  .work-row:last-child { border-bottom:1px solid var(--rule); }
+  a.work-row:hover { opacity:0.55; }
+  .work-num { font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .work-artist { font-weight:500; font-size:clamp(18px,2vw,24px); letter-spacing:-0.01em; }
+  .work-track { font-weight:400; font-size:clamp(18px,2vw,24px); letter-spacing:-0.01em; color:var(--muted); }
+  .work-role { font-size:12px; letter-spacing:0; text-transform:uppercase; color:var(--muted); align-self:center; }
+  .work-arrow { font-size:14px; color:var(--muted); align-self:center; text-align:right; }
+
+  /* Footer */
+  .foot {
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:var(--gutter);
+    padding:24px var(--margin); border-top:1px solid var(--rule);
+    font-size:13px; color:var(--muted);
+  }
+  .foot a:hover { color:var(--ink); }
+  .foot .r { text-align:right; }
+
+  @media (max-width:900px) {
+    :root { --margin:20px; }
+    .work-row { grid-template-columns:32px 1fr 24px; gap:12px; row-gap:2px; }
+    .work-track { grid-column:2; }
+    .work-role { grid-column:2; grid-row:auto; }
+    .work-num { grid-row:1; }
+    .work-arrow { grid-row:1; grid-column:3; }
+    .foot { grid-template-columns:1fr; gap:4px; }
+    .foot .r { text-align:left; }
+  }
+  @media (prefers-reduced-motion:reduce) { * { transition:none!important; } }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a class="brand" href="/">Kiosk Recording<span class="reg">®</span></a>
+  <a class="back" href="/">↗ Back to studio</a>
+</header>
+
+<section class="title-block">
+  <h1>Dougal Gray<span class="reg">®</span></h1>
+</section>
+
+<section class="work">
+  <div class="work-list">
+<a class="work-row" href="https://open.spotify.com/album/2q5a2Z5nnjRDwdvHIRfJcL" target="_blank" rel="noopener"><span class="work-num">01</span><span class="work-artist">junodream</span><span class="work-track">Pools of Colour</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+      <a class="work-row" href="https://open.spotify.com/album/5XECPBbINEHS50OWxyffhO" target="_blank" rel="noopener"><span class="work-num">02</span><span class="work-artist">junodream</span><span class="work-track">Dream Untitled</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+      <a class="work-row" href="https://open.spotify.com/album/1pV93eHijKX4ZoC1yCxtfr" target="_blank" rel="noopener"><span class="work-num">03</span><span class="work-artist">junodream</span><span class="work-track">Death Drive 2.0</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+      <a class="work-row" href="https://open.spotify.com/album/2EcNTgx9KPlp83rrTNfOi5" target="_blank" rel="noopener"><span class="work-num">04</span><span class="work-artist">junodream</span><span class="work-track">The Beach 2.0</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+      <a class="work-row" href="https://open.spotify.com/album/4ngvkf94T5ZaFJ71MGuDUQ" target="_blank" rel="noopener"><span class="work-num">05</span><span class="work-artist">junodream</span><span class="work-track">Travel Guide</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+      <a class="work-row" href="https://open.spotify.com/album/1BcTbXK7pvyCdWiAB83CPe" target="_blank" rel="noopener"><span class="work-num">06</span><span class="work-artist">junodream</span><span class="work-track">Isn’t It Lovely</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+      <a class="work-row" href="https://open.spotify.com/album/3y8er1lVrR5Y9i6AwXNRcT" target="_blank" rel="noopener"><span class="work-num">07</span><span class="work-artist">junodream</span><span class="work-track">To The Moon</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+      <a class="work-row" href="https://open.spotify.com/album/1fJDzNu9fVq9dnnZLcBAMv" target="_blank" rel="noopener"><span class="work-num">08</span><span class="work-artist">junodream</span><span class="work-track">Galactica</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+      <a class="work-row" href="https://open.spotify.com/album/3LyaOh01KBQsQ0dSBJhIYz" target="_blank" rel="noopener"><span class="work-num">09</span><span class="work-artist">Talia Rae</span><span class="work-track">Blue</span><span class="work-role">Producer · Engineer · Composer</span><span class="work-arrow">↗</span></a>
+      <a class="work-row" href="https://open.spotify.com/album/58q79mMO95nIts92SHa43O" target="_blank" rel="noopener"><span class="work-num">10</span><span class="work-artist">Samuel Austin</span><span class="work-track">We</span><span class="work-role">Producer · Composer</span><span class="work-arrow">↗</span></a>
+      <span class="work-row" style="cursor:default"><span class="work-num">11</span><span class="work-artist">Angel Parker</span><span class="work-track">The House of the Poet</span><span class="work-role">Producer</span><span class="work-arrow"></span></span>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="l">Kiosk Recording<span class="reg">®</span></div>
+  <div class="c">SE16 · London</div>
+  <div class="r"><a href="mailto:info&#64;kioskrecording.studio">info@kioskrecording.studio</a></div>
+</footer>
+
+</body>
+</html>
