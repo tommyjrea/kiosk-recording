@@ -145,9 +145,9 @@
   .intro-overlay svg path { fill: currentColor; opacity: 0; }
   .intro-overlay.done { display: none; }
 
-  /* While the intro plays, hide page content (revealed mid-morph). */
+  /* While the intro plays, lock scrolling via overflow only. (Avoid setting
+     body height here — toggling it on finish causes a reflow/jump.) */
   html.intro-lock, html.intro-lock body { overflow: hidden; }
-  html.intro-lock body { height: 100vh; }
   html.intro-playing main,
   html.intro-playing .masthead { opacity: 0; }
   /* Keep the real hero logo hidden until the morph hands off to it. */
@@ -552,7 +552,7 @@
   <!-- GALLERY -->
   <section class="gallery-wrap" id="gallery">
     <div class="gallery">
-        <figure><img src="studio_image_1.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_1.jpg" alt="" loading="eager"></figure>
         <figure><img src="studio_image_2.jpg" alt="" loading="lazy"></figure>
         <figure><img src="studio_image_3.jpg" alt="" loading="lazy"></figure>
         <figure><img src="studio_image_4.jpg" alt="" loading="lazy"></figure>
@@ -775,10 +775,17 @@ x:0,y:0};var a=this.getPoint([this.a.x,this.b.x,this.c.x,this.d.x],[this.a.y,thi
       }
       out.textContent = Math.min(best + 1, total);
     }
+    // Always start at photo 1. Lazy images loading can otherwise leave the
+    // scroll offset partway along, so reset on load and as images settle.
+    function reset(){ g.scrollLeft = 0; update(); }
+    reset();
+    window.addEventListener('load', reset);
+    g.querySelectorAll('img').forEach(function(img){
+      if (!img.complete) img.addEventListener('load', function(){ if (g.scrollLeft === 0) update(); });
+    });
     g.addEventListener('scroll', function(){
       window.requestAnimationFrame(update);
     }, { passive: true });
-    update();
   })();
 
   // Nav hover: per-letter weight ripple (Regular → Medium, staggered).
