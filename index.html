@@ -347,21 +347,16 @@
   }
   .gallery figure:hover img { transform: scale(1.03); }
 
-  /* On desktop every image is visible in the scrolling row; the
-     Show more button is only used on mobile. */
-  .gallery figure.is-hidden { display: block; }
-  .gallery-more { display: none; }
-  .gallery-toggle {
-    font-family: var(--sans);
-    font-weight: 500; font-size: 13px;
-    letter-spacing: 0;
-    padding: 11px 20px 12px;
-    border: 1px solid var(--rule);
-    border-radius: 999px;
-    background: transparent; color: inherit; cursor: pointer;
-    transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+  /* Scroll position indicator ("N of 12") — shown on mobile/touch where the
+     sideways scroll is less obvious; hidden on desktop. */
+  .gallery-count {
+    display: none;
+    padding: 14px var(--margin) 0;
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
   }
-  .gallery-toggle:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
   /* ============================================================
      STUDIO — equipment specification
@@ -458,27 +453,11 @@
     .equip-list { grid-column: auto; }
   }
 
-  /* Phone only — stack the gallery and equipment spec. */
+  /* Phone only — stack the equipment spec. Gallery keeps the desktop
+     behaviour (one image-height row, scrolls sideways). */
   @media (max-width: 700px) {
-    .gallery {
-      flex-direction: column;
-      overflow: visible;
-      gap: 10px;
-      padding-right: var(--margin);
-    }
-    .gallery figure {
-      height: auto;
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      scroll-snap-align: none;
-    }
-    .gallery img { width: 100%; height: 100%; }
-    .gallery figure.is-hidden { display: none; }
-    .gallery.is-expanded figure.is-hidden { display: block; }
-    .gallery-wrap { padding: 0 var(--margin); }
-    .gallery-more { display: flex; justify-content: center; padding: 22px 0 0; }
-
     .equip-row { grid-template-columns: 1fr; gap: 10px; }
+    .gallery-count { display: block; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -577,18 +556,16 @@
         <figure><img src="studio_image_2.jpg" alt="" loading="lazy"></figure>
         <figure><img src="studio_image_3.jpg" alt="" loading="lazy"></figure>
         <figure><img src="studio_image_4.jpg" alt="" loading="lazy"></figure>
-        <figure class="is-hidden"><img src="studio_image_5.jpg" alt="" loading="lazy"></figure>
-        <figure class="is-hidden"><img src="studio_image_6.jpg" alt="" loading="lazy"></figure>
-        <figure class="is-hidden"><img src="studio_image_7.jpg" alt="" loading="lazy"></figure>
-        <figure class="is-hidden"><img src="studio_image_8.jpg" alt="" loading="lazy"></figure>
-        <figure class="is-hidden"><img src="studio_image_9.jpg" alt="" loading="lazy"></figure>
-        <figure class="is-hidden"><img src="studio_image_10.jpg" alt="" loading="lazy"></figure>
-        <figure class="is-hidden"><img src="studio_image_11.jpg" alt="" loading="lazy"></figure>
-        <figure class="is-hidden"><img src="studio_image_12.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_5.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_6.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_7.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_8.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_9.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_10.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_11.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="studio_image_12.jpg" alt="" loading="lazy"></figure>
     </div>
-    <div class="gallery-more">
-      <button type="button" class="gallery-toggle">Show more — 4 of 12</button>
-    </div>
+    <div class="gallery-count" aria-hidden="true"><span id="galleryIndex">1</span> of 12</div>
   </section>
 
   <hr class="rule" style="margin: 60px var(--margin) 0;">
@@ -725,12 +702,18 @@ x:0,y:0};var a=this.getPoint([this.a.x,this.b.x,this.c.x,this.d.x],[this.a.y,thi
       });
     }
 
-    function play(){
-      // Position the morph SVG to exactly overlap the real hero logo.
+    function positionMorph(){
+      // Anchor the morph SVG exactly over the real hero logo. Re-measured
+      // every frame so any mobile layout shift (address bar, late font load,
+      // viewport unit changes) can't cause a jump at handoff.
       var r = heroSvg.getBoundingClientRect();
       morphSvg.style.left  = r.left + 'px';
       morphSvg.style.top   = r.top + 'px';
       morphSvg.style.width = r.width + 'px';
+    }
+
+    function play(){
+      positionMorph();
       cells.forEach(function(c){ c.el.setAttribute('d', SEED); c.el.style.opacity = '0'; });
 
       var start = performance.now() + P.hold;
@@ -738,6 +721,7 @@ x:0,y:0};var a=this.getPoint([this.a.x,this.b.x,this.c.x,this.d.x],[this.a.y,thi
       var revealed = false;
 
       function frame(now){
+        positionMorph();   // keep locked to the hero every frame
         var anyRunning = false;
         ordered.forEach(function(c){
           var t = (now - start - c.idx * P.stagger) / P.dur;
@@ -773,15 +757,28 @@ x:0,y:0};var a=this.getPoint([this.a.x,this.b.x,this.c.x,this.d.x],[this.a.y,thi
     setTimeout(finish, 5000);
   })();
 
-  // Gallery show-more toggle (mobile)
+  // Gallery scroll-position indicator — updates "N of 12" as the row scrolls.
   (function(){
     var g = document.querySelector('.gallery');
-    var btn = document.querySelector('.gallery-toggle');
-    if (!g || !btn) return;
-    btn.addEventListener('click', function(){
-      var expanded = g.classList.toggle('is-expanded');
-      btn.textContent = expanded ? 'Show less' : 'Show more — 4 of 12';
-    });
+    var out = document.getElementById('galleryIndex');
+    if (!g || !out) return;
+    var figures = g.querySelectorAll('figure');
+    var total = figures.length;
+    function update(){
+      // Which figure's left edge is closest to the current scroll position.
+      var scroll = g.scrollLeft;
+      var best = 0, bestDist = Infinity;
+      for (var i = 0; i < figures.length; i++){
+        var left = figures[i].offsetLeft - g.offsetLeft;
+        var d = Math.abs(left - scroll);
+        if (d < bestDist) { bestDist = d; best = i; }
+      }
+      out.textContent = Math.min(best + 1, total);
+    }
+    g.addEventListener('scroll', function(){
+      window.requestAnimationFrame(update);
+    }, { passive: true });
+    update();
   })();
 
   // Nav hover: per-letter weight ripple (Regular → Medium, staggered).
