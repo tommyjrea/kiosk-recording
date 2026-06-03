@@ -34,6 +34,7 @@
     try { seen = sessionStorage.getItem('kioskIntroSeen') === '1'; } catch(e){}
     if (!prefersReduced && !seen) {
       document.documentElement.classList.add('intro-playing');
+      document.documentElement.classList.add('intro-lock');
     }
   })();
 </script>
@@ -139,8 +140,8 @@
   .intro-overlay.done { display: none; }
 
   /* While the intro plays, hide page content (revealed mid-morph). */
-  html.intro-playing, html.intro-playing body { overflow: hidden; }
-  html.intro-playing body { height: 100vh; }
+  html.intro-lock, html.intro-lock body { overflow: hidden; }
+  html.intro-lock body { height: 100vh; }
   html.intro-playing main,
   html.intro-playing .masthead { opacity: 0; }
   /* Keep the real hero logo hidden until the morph hands off to it. */
@@ -232,11 +233,11 @@
 
   section { position: relative; }
 
-  /* Section heading (Information, Studio) — Beausite Medium, spacing 0 */
+  /* Section heading (Information, Studio) — Beausite Medium, spacing -2 */
   .section-head {
     font-weight: 500;
     font-size: clamp(22px, 2.4vw, 30px);
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
     padding: 26px 0;
   }
 
@@ -260,6 +261,7 @@
     transition: fill .35s cubic-bezier(0.16,1,0.3,1);
   }
   #heroLogo.interactive path { cursor: pointer; }
+  #heroLogo.interactive { -webkit-user-select: none; user-select: none; }
 
   /* ============================================================
      INTRO — large copy, Beausite Medium, spacing -2 (-0.02em)
@@ -272,7 +274,7 @@
     font-size: clamp(24px, 3.4vw, 46px);
     line-height: 1.12;
     letter-spacing: -0.02em;
-    max-width: 22ch;
+    max-width: none;
   }
   .intro p .soft { color: var(--muted); }
 
@@ -308,7 +310,7 @@
   .gallery {
     display: flex;
     flex-direction: row;
-    gap: var(--gutter);
+    gap: 12px;
     overflow-x: auto;
     overflow-y: hidden;
     padding-right: var(--margin);
@@ -359,40 +361,41 @@
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: var(--gutter);
-    padding: 22px 0;
-    border-top: 1px solid var(--rule);
+    padding: 0 0 30px;
   }
-  .equip-row:first-child { border-top: 0; }
+  .equip-row:last-child { padding-bottom: 0; }
   .equip-cat {
     grid-column: 5 / span 3;
-    font-weight: 500; font-size: 15px;
+    font-weight: 500; font-size: 15px; letter-spacing: 0;
   }
   .equip-items {
     grid-column: 8 / span 5;
     list-style: none;
   }
-  .equip-items li { color: var(--muted); }
+  .equip-items li { font-weight: 400; letter-spacing: 0; color: var(--ink); }
 
   /* ============================================================
-     CONTACT / GET IN TOUCH
+     CONTACT / GET IN TOUCH + COLOPHON — full-height closing block
      ============================================================ */
-  .touch {
-    padding: 56px var(--margin) 40px;
+  .closing {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 56px 0 6vh;
   }
+  .touch { padding: 0 var(--margin); }
   .touch h2 {
     font-weight: 500;
     font-size: clamp(22px, 2.4vw, 30px);
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
     margin-bottom: 14px;
   }
   .touch a { display: block; color: var(--muted); width: fit-content; }
   .touch a:hover { color: var(--ink); }
 
-  /* ============================================================
-     COLOPHON — giant wordmark at the very bottom
-     ============================================================ */
   .colophon {
-    padding: 8vh var(--margin) 6vh;
+    padding: 0 var(--margin);
     overflow: hidden;
   }
   .colophon .word {
@@ -622,16 +625,16 @@
 
   <hr class="rule" style="margin: 0 var(--margin);">
 
-  <!-- CONTACT -->
-  <section class="touch" id="contact">
-    <h2>Get in touch</h2>
-    <a href="mailto:info&#64;kioskrecording.studio">info@kioskrecording.studio</a>
-    <a href="https://www.instagram.com/kioskrecording" target="_blank" rel="noopener">Instagram</a>
-  </section>
-
-  <!-- COLOPHON -->
-  <section class="colophon">
-    <div class="word">Kiosk Recording<span class="reg">®</span></div>
+  <!-- CONTACT + COLOPHON — full-height closing block -->
+  <section class="closing" id="contact">
+    <div class="touch">
+      <h2>Get in touch</h2>
+      <a href="mailto:info&#64;kioskrecording.studio">info@kioskrecording.studio</a>
+      <a href="https://www.instagram.com/kioskrecording" target="_blank" rel="noopener">Instagram</a>
+    </div>
+    <div class="colophon">
+      <div class="word">Kiosk Recording<span class="reg">®</span></div>
+    </div>
   </section>
 
 </main>
@@ -651,6 +654,7 @@ x:0,y:0};var a=this.getPoint([this.a.x,this.b.x,this.c.x,this.d.x],[this.a.y,thi
     if (!overlay || !morphSvg || !heroSvg || !html.classList.contains('intro-playing')) {
       if (overlay) overlay.remove();
       html.classList.remove('intro-playing');
+      html.classList.remove('intro-lock');
       return;
     }
     try { sessionStorage.setItem('kioskIntroSeen', '1'); } catch(e){}
@@ -679,6 +683,7 @@ x:0,y:0};var a=this.getPoint([this.a.x,this.b.x,this.c.x,this.d.x],[this.a.y,thi
       cancelAnimationFrame(raf);
       heroSvg.style.opacity = '1';
       html.classList.remove('intro-playing');
+      html.classList.remove('intro-lock');   // unlock scrolling now the morph is complete
       requestAnimationFrame(function(){
         overlay.classList.add('done');
         if (overlay.parentNode) overlay.remove();
@@ -781,22 +786,34 @@ x:0,y:0};var a=this.getPoint([this.a.x,this.b.x,this.c.x,this.d.x],[this.a.y,thi
     });
   })();
 
-  // Click a hero logo block to recolour it with a random brand colour.
+  // Click a hero logo block to recolour it. Each block cycles through the
+  // brand palette in sequence; a newly-clicked block always starts on a
+  // different colour than the previously-clicked block started on.
   (function(){
     var hero = document.getElementById('heroLogo');
     if (!hero) return;
     var PALETTE = ['#000000', '#063BB1', '#0AAF7E', '#CBCBCB', '#DE0404'];
 
+    var lastBlock = null;     // the path most recently engaged
+    var lastStart = -1;       // palette index the previous block started on
+
     function enable(){
       hero.classList.add('interactive');
       [].forEach.call(hero.querySelectorAll('path'), function(p){
+        // Stop a click+drag on the logo from selecting nearby page text.
+        p.addEventListener('mousedown', function(e){ e.preventDefault(); });
         p.addEventListener('click', function(){
-          var last = p.getAttribute('fill');
-          var c;
-          // pick a colour different from the current one
-          do { c = PALETTE[Math.floor(Math.random()*PALETTE.length)]; }
-          while (c === last && PALETTE.length > 1);
-          p.setAttribute('fill', c);
+          if (p !== lastBlock) {
+            // New block: choose a start index different from the previous block's.
+            var start = (lastStart + 1) % PALETTE.length;
+            p._step = start;
+            lastStart = start;
+            lastBlock = p;
+          } else {
+            // Same block clicked again: advance one step through the sequence.
+            p._step = (p._step + 1) % PALETTE.length;
+          }
+          p.setAttribute('fill', PALETTE[p._step]);
         });
       });
     }
