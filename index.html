@@ -721,7 +721,12 @@ x:0,y:0};var a=this.getPoint([this.a.x,this.b.x,this.c.x,this.d.x],[this.a.y,thi
       var revealed = false;
 
       function frame(now){
-        positionMorph();   // keep locked to the hero every frame
+        // Keep the morph locked to the hero ONLY until the reveal begins.
+        // Once `main` starts its translateY reveal, the hero slides 14px; if we
+        // kept re-measuring we'd chase that slide and produce a visible jump.
+        // Freezing the anchor at the hero's natural (translateY:0) position —
+        // exactly where it lands when the reveal settles — hands off seamlessly.
+        if (!revealed) positionMorph();
         var anyRunning = false;
         ordered.forEach(function(c){
           var t = (now - start - c.idx * P.stagger) / P.dur;
@@ -731,6 +736,9 @@ x:0,y:0};var a=this.getPoint([this.a.x,this.b.x,this.c.x,this.d.x],[this.a.y,thi
           c.el.setAttribute('d', c.interp(easeOutExpo(t)));
         });
         if (!revealed && now - start > total * 0.45) {
+          // Lock the anchor one last time at the resting position before the
+          // reveal slide starts, then stop tracking.
+          positionMorph();
           revealed = true;
           var main = document.querySelector('main');
           var nav = document.querySelector('.masthead');
