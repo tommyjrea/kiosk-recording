@@ -177,6 +177,8 @@
     font-size: 15px;
     letter-spacing: 0;
   }
+  /* Brand wordmark stacks to two lines on mobile (see 900px media query) */
+  .brand-break { white-space: pre; }
   .masthead nav {
     display: flex;
     gap: 28px;
@@ -252,8 +254,9 @@
      HERO — giant KIOSK logotype
      ============================================================ */
   .hero {
-    padding: 150px var(--margin) 0;
-    min-height: 78vh;
+    padding: 150px var(--margin) var(--margin);
+    min-height: 100svh;
+    box-sizing: border-box;
     display: flex;
     align-items: flex-end;
   }
@@ -394,7 +397,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 56px 0;
+    padding: 56px 0 var(--margin);
   }
   .touch { padding: 0 var(--margin); }
   .touch h2 {
@@ -435,12 +438,15 @@
      their desktop form (scrolling photo row, two-column spec). */
   @media (max-width: 900px) {
     :root { --margin: 20px; }
-    .masthead { padding: 16px var(--margin); }
+    .masthead { padding: 16px var(--margin); align-items: flex-start; }
     .masthead nav { gap: 18px; font-size: 13px; }
-    .masthead .brand { font-size: 13px; }
+    .masthead .brand { font-size: 13px; line-height: 1.25; }
     .nav-work-menu { left: auto; right: 0; }
 
-    .hero { padding-top: 110px; min-height: 52vh; }
+    /* Stack the wordmark to two lines on mobile */
+    .brand-break { display: block; white-space: normal; }
+
+    .hero { padding-top: 90px; min-height: 100svh; }
 
     .intro p { font-size: clamp(22px, 6.4vw, 34px); max-width: none; }
 
@@ -472,9 +478,9 @@
 </div>
 
 <header class="masthead">
-  <a class="brand" href="/">Kiosk Recording<span class="reg">®</span></a>
+  <a class="brand" href="/">Kiosk<span class="brand-break"> </span>Recording<span class="reg">®</span></a>
   <nav aria-label="Primary">
-    <a href="#information">Information</a>
+    <a href="#information" data-label="Information" data-label-mobile="Info">Information</a>
     <a href="#studio">Studio</a>
     <span class="nav-work">
       <span class="nav-work-trigger">Work</span>
@@ -515,7 +521,7 @@
 
   <!-- INTRO -->
   <section class="intro">
-    <p><strong style="font-weight:500">Kiosk Recording<span class="reg">®</span></strong> is an independent music studio in South London, run by Tom Rea and Dougal Gray. <span class="soft">Songwriting, production, recording and mixing. Built around clarity, instinct and long-term collaboration. Records first. Everything else follows.</span></p>
+    <p><strong style="font-weight:500">Kiosk Recording<span class="reg">®</span></strong> is an independent music studio in South London, run by Tom Rea and Dougal Gray. <span class="soft">Built around clarity, instinct and long-term collaboration. Records first. Everything else follows.</span></p>
   </section>
 
   <hr class="rule" style="margin: 0 var(--margin);">
@@ -799,8 +805,15 @@ x:0,y:0};var a=this.getPoint([this.a.x,this.b.x,this.c.x,this.d.x],[this.a.y,thi
   // Nav hover: per-letter weight ripple (Regular → Medium, staggered).
   (function(){
     var STEP = 28; // ms between letters
+    var mq = window.matchMedia('(max-width: 900px)');
+    function labelFor(el){
+      // Use a shorter label on mobile when one is provided (e.g. Information → Info).
+      if (mq.matches && el.dataset && el.dataset.labelMobile) return el.dataset.labelMobile;
+      if (el.dataset && el.dataset.label) return el.dataset.label;
+      return el.textContent;
+    }
     function wrap(el){
-      var text = el.textContent;
+      var text = labelFor(el);
       el.textContent = '';
       el.classList.add('nav-label');
       var letters = [];
@@ -819,20 +832,33 @@ x:0,y:0};var a=this.getPoint([this.a.x,this.b.x,this.c.x,this.d.x],[this.a.y,thi
     // Apply to each interactive nav target.
     var targets = document.querySelectorAll('.masthead nav a, .masthead .nav-work-trigger');
     targets.forEach(function(t){
-      var letters = wrap(t);
-      var n = letters.length;
       // host element that toggles the .nav-hover state
       var host = t;
       if (t.tagName === 'A') t.classList.add('has-ripple');
 
-      function setDelays(reverse){
-        letters.forEach(function(l, i){
-          var idx = reverse ? (n - 1 - i) : i;
-          l.style.setProperty('--d', (idx * STEP) + 'ms');
-        });
+      function build(){
+        var letters = wrap(t);
+        var n = letters.length;
+        function setDelays(reverse){
+          letters.forEach(function(l, i){
+            var idx = reverse ? (n - 1 - i) : i;
+            l.style.setProperty('--d', (idx * STEP) + 'ms');
+          });
+        }
+        host._setDelays = setDelays;
       }
-      host.addEventListener('mouseenter', function(){ setDelays(false); host.classList.add('nav-hover'); });
-      host.addEventListener('mouseleave', function(){ setDelays(true);  host.classList.remove('nav-hover'); });
+      build();
+
+      host.addEventListener('mouseenter', function(){ host._setDelays(false); host.classList.add('nav-hover'); });
+      host.addEventListener('mouseleave', function(){ host._setDelays(true);  host.classList.remove('nav-hover'); });
+
+      // Rebuild letters when crossing the mobile breakpoint, so labels with a
+      // mobile variant (e.g. Information → Info) swap cleanly.
+      if (t.dataset && t.dataset.labelMobile) {
+        var onChange = function(){ host.classList.remove('nav-hover'); build(); };
+        if (mq.addEventListener) mq.addEventListener('change', onChange);
+        else if (mq.addListener) mq.addListener(onChange);
+      }
     });
   })();
 
